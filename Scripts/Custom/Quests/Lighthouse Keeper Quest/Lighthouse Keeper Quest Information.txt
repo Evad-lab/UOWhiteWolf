@@ -1,0 +1,13 @@
+Lighthouse Keeper Quest
+
+This quest is a very simple one.
+
+The basic story line is that there is a Lighthouse Keeper located at the lighthouse in Haven (3462 3052 7). A player visits the Keeper and talks with him. The keeper sends him on a mission to defeat a Crystal Golem.
+
+The Crystal Golem is found in Haven, also (3544 2720 2). Once the Crystal Golem is defeated, it will drop a Light Enhancing Crystal. The player takes the Light Enhancing Crystal back to the Lighthouse Keeper. 
+
+Once the player drops the crystal on the Lighthouse Keeper, the player receives a Travel Book with 25 charges. The Travel Book is simply a book that opens the public moongate gump when double clicked. Once it has been used 25 times, the book deletes itself with a "bang". The player does not receive any damage, but it does sound cool.
+
+Please feel free to alter any of the scripts in this package to best suit your shard's needs.
+
+*EDIT* There is an auto generator now added to the package as of 12/30/05. To activate this quest on your shard, just unzip and drop the package into your custom scripts folder then type [genlkq ingame. This will generate the quest for your players.

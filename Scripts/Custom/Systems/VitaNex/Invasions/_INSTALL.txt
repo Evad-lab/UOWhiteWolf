@@ -1,0 +1,89 @@
+
+
+
+
+
+
+
+
+
+
+EDIT: Scripts/Mobiles/Normal/BaseCreature.cs
+
+
+FIND >>>
+public class BaseCreature
+
+AFTER >>>
+public const int MaxLoyalty = 100;
+
+INSERT >>>
+#region Invasions
+private Server.Invasions.Invasion _Invasion;
+
+[CommandProperty(AccessLevel.GameMaster)]
+public Server.Invasions.Invasion Invasion
+{
+    get { return _Invasion; }
+    set
+    {
+        if (_Invasion == value)
+        {
+            return;
+        }
+
+        if (_Invasion != null)
+        {
+            _Invasion.Invaders.Remove(this);
+        }
+
+        _Invasion = value;
+
+	    if (_Invasion != null)
+        {
+            _Invasion.Invaders.AddOrReplace(this);
+        }
+    }
+}
+#endregion
+
+
+
+
+
+REPLACE >>>
+public virtual bool IgnoreYoungProtection { get { return false; } }
+
+WITH >>>
+public virtual bool IgnoreYoungProtection { get { return Invasion != null; } }
+
+
+
+
+FIND >>>
+public override void OnDamage(int amount, Mobile from, bool willKill)
+
+BEFORE >>>
+base.OnDamage(amount, from, willKill);
+
+INSERT >>>
+if (Invasion != null)
+{
+    Invasion.HandleDamage(this, from, amount);
+}
+
+
+
+
+
+FIND >>>
+public override void OnDeath(Container c)
+
+BEFORE >>>
+if (!Summoned && !NoKillAwards)
+
+INSERT >>>
+if (Invasion != null)
+{
+    Invasion.HandleKill(this, LastKiller);
+}

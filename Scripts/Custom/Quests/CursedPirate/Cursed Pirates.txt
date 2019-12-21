@@ -1,0 +1,69 @@
+Cursed Pirates and Artifacts
+
+UPDATE Feb 14, 2006
+********************
+FIXED: Issue with players losing items that were equiped while they were cursed. When uncursed, only "pirate curse" items are deleted. Any items added by player will be sent to pack in a bag named "Pirate Curse Unequiped Items". Dowload new zip and overwrite existing files (actually... the only file in package that changed is Misc\PirateCurse.cs).
+
+UPDATE Dec. 6, 2005
+********************
+FIXED: Removed an unneccesary reference to Server.Crops in CurseCommand.cs. See http://www.runuo.com/forums/showpost...0&postcount=17 for details
+
+Original Post
+********************
+I decided to take a break from winecrafting and script a few cursed pirate mobiles along with artis and an arti distribution method that will drive players crazy!
+
+This system includes three mobiles, a couple special items, seven artis, and a command for admins.
+
+Mobiles...
+Cursed Pirate - need to spawn & summoned when Cursed Pirate King is damaged - has a 1/20 chance of dropping cursed jugs of rum (see special items below)
+Cursed Pirate King - Chance for player to summon by drinking cursed jugs of rum. This guy is tough. He is similar to Dark Father, but a bit easier. He throws cursed bottles of rum which, if not destroyed, will spawn cursed pirates or skeleton pirates.
+Skeleton Pirate - Summoned when CursedPirateKing is damaged. Nothing special, just a stronger skeletal knight.
+Special Items...
+Cursed bottles of rum - thrown by Cursed Pirate King. These are carveable and if cut by a blade, there is a chance to destroy them. If not destroyed, they will spawn cursed pirates and skeleton pirates.
+Cursed Jug of Rum - 1/20 chance to drop in cursed pirate loot. These are the core to this system and where the fun (or frustration) begins!! The bottles can be consumed by players and will have a chance at one of the following effects...
+* Nothing happens (default)
+* Player is damaged (1/20 chance) - Player will receive a random amount of damage from 30 to 150... could be fatal if not careful!
+* Player is temporarily cursed with the "cursed pirate" curse (1/20 chance) - This is a curse that lasts 4 minutes and basically turns the player into a cursed pirate. See details below.
+* Player summons another cursed pirate (1/20 chance) - bonus chance to get another cursed jug of rum!
+* Player summons the cursed pirate king (1/20 chance) - Chance at the cursed pirate artis!
+Pirate Bag - A special bag that is used when the player is cursed with the pirate curse. This bag holds all the players equipment and their title and original hue. When the curse wears off, the equipment is returned and the players hue and title are restored. This bag is placed in the players bank and is not visible.
+
+Artifacts...
+CursedPirateCutlass, CursedPirateShirt, CursedPiratePants, CursePirateBoots, CursedPirateRing, CursedPirateEarrings, and CursedPirateTricorne
+All artifacts are suited to my shard. Some might think they are too strong, others will want to beef them up. Feel free to customize the attributes of each item to suit your shard.
+Commands...
+pcurse - admins can use this to curse a player with the pirate curse
+rpcurse - admins can use this to remove the pirate curse from a player.
+Details on the curse...
+The curse basically turns a player into a cursed pirate for four minutes. This involves...
+Player becomes a criminal for the duration.
+All players armor/weapons worn will be transfered to the pirate bag in their bank. 
+Player will be equipped with cursed pirate clothing. The clothing cannot be removed for the duration of the curse.
+Player will be given a title of "the Cursed Pirate".
+Player is given a cursed pirate hue.
+Player will be poisoned(greater). This can be cured.
+Even upon death, player will remain cursed until time wears the effects off.
+Players resistances, except energy, will drop by 10.
+
+Depending on how you want to implement this, you can add one line to \Spells\Chivalry\RemoveCurse.cs, to allow players to remove this curse using Remove Curse spell...
+
+Look for the following...
+
+Code:
+EvilOmenSpell.CheckEffect( m );
+StrangleSpell.RemoveCurse( m );
+CorpseSkinSpell.RemoveCurse( m );
+CurseSpell.RemoveEffect( m );and add this after...
+
+Code:
+PirateCurse.RemoveCurse ( m );
+
+**Note**
+If you would like to add cursed jugs of rum as loot on any other mobiles, simply add the following line to the mobiles OnBeforeDeath routine...
+
+Code:
+PirateCurse.CursedPirateLoot(this, 20);where 20 is the chance to get cursed jugs of rum (i.e. 20 = 1/20).
+
+To install, simply unrar the attached file into your customs directory. After you install, you can add "CursedPirates" using your spawner.
+
+Have Fun!!!

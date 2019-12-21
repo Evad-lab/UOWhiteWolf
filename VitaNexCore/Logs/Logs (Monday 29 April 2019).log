@@ -1,0 +1,242 @@
+
+***ERROR LOG [4/29/2019 12:26:49 AM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\UO\uoserver\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 12:26:49 AM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\UO\uoserver\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 1:37:15 AM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\UO\uoserver\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 1:37:15 AM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\UO\uoserver\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 3:06:28 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 3:06:28 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 5:27:00 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 5:27:00 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 5:35:27 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 5:35:27 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 5:50:26 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 5:50:26 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 8:05:14 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 8:05:14 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 8:45:09 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 8:45:09 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 9:38:08 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 9:38:08 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 9:55:11 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 9:55:11 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 9:58:28 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+
+
+***ERROR LOG [4/29/2019 9:58:28 PM]***
+Non-static method requires a target.
+System.Reflection.TargetException: Non-static method requires a target.
+   at System.Reflection.RuntimeMethodInfo.CheckConsistency(Object target)
+   at System.Reflection.RuntimeMethodInfo.InvokeArgumentsCheck(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.MethodBase.Invoke(Object obj, Object[] parameters)
+   at VitaNex.VitaNexCore.TryCatch(Delegate action, Action`1 handler) in C:\System\UO\UOServer\Scripts\Custom\Systems\VitaNex\Core\VitaNex.cs:line 623
+
+

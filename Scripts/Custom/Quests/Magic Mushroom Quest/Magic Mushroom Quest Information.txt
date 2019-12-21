@@ -1,0 +1,9 @@
+Magic Mushroom Quest
+
+The Magic Mushroom Quest is a pretty simple one. The player must find a Legendary Mycologist that the administrator placed within a house somewhere on the shard. Any location within a house is fine. This house can be either player/GM made, or one that is located within the game that is not being used by any other NPC.
+
+After talking to the Mycologist, the player must travel to Haven to find the ring of mushrooms (3560 2440 9) in Trammel. Once the player reaches the ring of mushrooms in Haven, he/she will encounter a Fungus Eating Slime. After defeating the Fungus Eating Slime, the player must take the Mushroom Spores back to the Mycologist.
+
+Once the player drops the spores onto the Mycologist, the player receives a Magic Mushroom. This magic mushroom, when double clicked, will give the player +25 dex, str, and int. This effect will last 30 minutes. Of course, when the player double clicks the Magic Mushroom, the mushroom deletes as if the player ate the mushroom. If a player tries to eat another mushroom while the player is under a mushrooms effect, they will receive a system message saying that they are already under a current effect. This will not delete the mushroom they are trying to use, nor allow the player to use two mushroom at the same time for extra bonus.
+
+No alterations to any distro scripts are needed for this quest. Unzip and drop into your custom script folder. Please feel free to alter any of the scripts in this package to best suit your shard's needs.
