@@ -37,6 +37,8 @@ namespace Server.Mobiles
 
 			Fame = 450;
 			Karma = -450;
+			
+			PackItem( new WhiteFang(10) );
 
 			VirtualArmor = 38;
 

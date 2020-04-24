@@ -49,18 +49,8 @@ namespace Server
 			"SLWarHorse",
 			"TBWarHorse",
 			"FactionWarHorse",
-			"BBC",
-			"BioCreature",
-			"BioMount",
-			"RaelisDaemon",
-			"RaelisDragon",
-			"EvoHiryu",
-			"EvoKirin",
-			"EvoLion",
-			"EvoMare",
-			"Mercenary",
-			"EvoRat",
-			"EvoWisp"
+			"Mondainsmount",		
+			"BBC"
 		};
 
 		//Creatures you always want as Female
@@ -74,8 +64,8 @@ namespace Server
 		public static string[] AlwaysMale = new string[]
 		{
 			"Bull",
-			"GreatHart",
 			"RaelisDaemon",
+			"GreatHart",
 			"RaelisDragon",
 			"EvoHiryu",
 			"EvoKirin",
@@ -83,7 +73,11 @@ namespace Server
 			"EvoMare",
 			"Mercenary",
 			"EvoRat",
-			"EvoWisp"
+			"EvoWisp",
+			"Squire",
+			"EvoFairyDragon",
+			"EvoCuSidhe",
+			"EvoFerret"
 		};
 
 		/***********************************************
@@ -114,7 +108,7 @@ namespace Server
 		public static readonly bool EnableTamingBODs = true;
 
 		// Enable Bio Shrink
-		public static readonly bool EnableBioShrink = false;
+		public static readonly bool EnableBioShrink = true;
 
 		/***********************************************
 		************************************************
@@ -126,28 +120,28 @@ namespace Server
 		***********************************************/
 
 		//Normal Creatures STR Cap
-		public static readonly int NormalSTR = 1000;
+		public static readonly int NormalSTR = 2000;
 
 		//Normal Creatures DEX Cap
-		public static readonly int NormalDEX = 250;
+		public static readonly int NormalDEX = 2000;
 
 		//Normal Creatures INT Cap
-		public static readonly int NormalINT = 750;
+		public static readonly int NormalINT = 2000;
 
 		//Normal Creatures HITS Cap
-		public static readonly int NormalHITS = 1000;
+		public static readonly int NormalHITS = 5000;
 
 		//Normal Creatures STAM Cap
-		public static readonly int NormalSTAM = 500;
+		public static readonly int NormalSTAM = 3000;
 
 		//Normal Creatures MANA Cap
-		public static readonly int NormalMANA = 1000;
+		public static readonly int NormalMANA = 3000;
 
 		//Normal Creatures Min Damage Cap
-		public static readonly int NormalMinDam = 17;
+		public static readonly int NormalMinDam = 25;
 
 		//Normal Creatures Max Damage Cap
-		public static readonly int NormalMaxDam = 25;
+		public static readonly int NormalMaxDam = 55;
 
 		//Normal Creatures PhysResist Cap
 		public static readonly int NormalPhys = 75;
@@ -177,45 +171,45 @@ namespace Server
 		***********************************************/
 
 		//Bio Creatures STR Cap
-		public static readonly int BioSTR = 800;
+		public static readonly int BioSTR = 2000;
 
 		//Bio Creatures DEX Cap
-		public static readonly int BioDEX = 150;
+		public static readonly int BioDEX = 1500;
 
 		//Bio Creatures INT Cap
-		public static readonly int BioINT = 400;
+		public static readonly int BioINT = 3000;
 
 		//Bio Creatures HITS Cap
-		public static readonly int BioHITS = 800;
+		public static readonly int BioHITS = 5000;
 
 		//Bio Creatures STAM Cap
-		public static readonly int BioSTAM = 300;
+		public static readonly int BioSTAM = 5000;
 
 		//Bio Creatures MANA Cap
-		public static readonly int BioMANA = 800;
+		public static readonly int BioMANA = 5000;
 
 		//Bio Creatures Min Damage Cap
-		public static readonly int BioMinDam = 10;
+		public static readonly int BioMinDam = 25;
 
 		//Bio Creatures Max Damage Cap
-		public static readonly int BioMaxDam = 15;
+		public static readonly int BioMaxDam = 55;
 
 		//Bio Creatures PhysResist Cap
-		public static readonly int BioPhys = 40;
+		public static readonly int BioPhys = 75;
 
 		//Bio Creatures PhysFire Cap
-		public static readonly int BioFire = 40;
+		public static readonly int BioFire = 75;
 
 		//Bio Creatures PhysCold Cap
-		public static readonly int BioCold = 40;
+		public static readonly int BioCold = 75;
 
 		//Bio Creatures PhysEnergy Cap
-		public static readonly int BioEnergy = 40;
+		public static readonly int BioEnergy = 75;
 
 		//Bio Creatures PhysPoison Cap
-		public static readonly int BioPoison = 40;
+		public static readonly int BioPoison = 75;
 
 		//Bio Creatures V Armor Cap
-		public static readonly int BioVArmor = 30;
+		public static readonly int BioVArmor = 70;
 	}
 }

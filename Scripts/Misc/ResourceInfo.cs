@@ -1462,7 +1462,11 @@ namespace Server.Items
             if (m_TypeTable == null)
                 return CraftResource.None;
 
-            object obj = m_TypeTable[resourceType];
+			object obj;
+			if (resourceType != null)
+				obj = m_TypeTable[resourceType];
+			else
+				return CraftResource.None;
 
             if (!(obj is CraftResource))
                 return CraftResource.None;

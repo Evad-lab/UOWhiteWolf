@@ -2061,9 +2061,13 @@ namespace Server.Engines.Craft
 					if (OWLTROptionsManager.IsEnabled(OWLTROptionsManager.OPTIONS_ENUM.DEDICATION_RECIPE) && !UseAllRes)
 					{
 						NewDaat99Holder dh = (NewDaat99Holder)daat99.Daat99OWLTR.TempHolders[from];
+						
+						if (dh != null)
+						{
 							++dh.ItemsCrafted;
-						if ( dh.ItemsCrafted >= 100 && dh.NextReward <= TimeSpan.Zero ) //give random recipe
-							dh.GiveDedication(from, craftSystem);
+							if ( dh.ItemsCrafted >= 100 && dh.NextReward <= TimeSpan.Zero ) //give random recipe
+								dh.GiveDedication(from, craftSystem);
+						}
 					}
 					//daat99 OWLTR end - crafting system
 

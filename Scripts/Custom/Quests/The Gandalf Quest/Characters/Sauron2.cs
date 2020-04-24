@@ -40,13 +40,13 @@ namespace Server.Mobiles
             Hue = 1152;
             BaseSoundID = 357;
 
-            SetStr(1700, 2800);//Adjust this to fit your shard.
-            SetDex(1691, 2315);//Adjust this to fit your shard.
-            SetInt(1100, 1520);//Adjust this to fit your shard.
+            SetStr(100, 800);//Adjust this to fit your shard.
+            SetDex(691, 715);//Adjust this to fit your shard.
+            SetInt(600, 820);//Adjust this to fit your shard.
 
-            SetHits(5320, 6725);//Adjust this to fit your shard.
+            SetHits(10000, 16725);//Adjust this to fit your shard.
 
-            SetDamage(45, 55);//Adjust this to fit your shard.
+            SetDamage(28, 35);//Adjust this to fit your shard.
 
             SetDamageType(ResistanceType.Physical, 100);//Adjust this to fit your shard.
 

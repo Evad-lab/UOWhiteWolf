@@ -152,7 +152,8 @@ namespace Xanthos.Evo
 	{
 		public KirinStageFive()
 		{
-			EvolutionMessage = "has evolved to its highest form and is now an Ancient Ki-Rin";
+			Title = "The Ancient Kirin";
+			EvolutionMessage = "has evolved to its highest form";
 			NextEpThreshold = 0; EpMinDivisor = 40; EpMaxDivisor = 40; DustMultiplier = 20;
 			BaseSoundID = 362; ControlSlots = 4;
 			BodyValue = 132; VirtualArmor = 100;

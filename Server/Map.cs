@@ -409,6 +409,33 @@ namespace Server
 		public static Map Tokuno { get { return m_Maps[4]; } }
 		public static Map TerMur { get { return m_Maps[5]; } }
 		public static Map Internal { get { return m_Maps[0x7F]; } }
+		
+		//UOWW: custom facets
+		//
+		//PVM
+		public static Map Felucca2 { get { return m_Maps[50]; } }
+		public static Map Trammel2 { get { return m_Maps[51]; } }
+		public static Map Ilshenar2 { get { return m_Maps[52]; } }
+		public static Map Malas2 { get { return m_Maps[53]; } }
+		public static Map Tokuno2 { get { return m_Maps[54]; } }
+		public static Map TerMur2 { get { return m_Maps[55]; } }
+		
+		//PVP
+		public static Map Felucca3 { get { return m_Maps[60]; } }
+		public static Map Trammel3 { get { return m_Maps[61]; } }
+		public static Map Ilshenar3 { get { return m_Maps[62]; } }
+		public static Map Malas3 { get { return m_Maps[63]; } }
+		public static Map Tokuno3 { get { return m_Maps[64]; } }
+		public static Map TerMur3 { get { return m_Maps[65]; } }
+
+		//PVM
+		public static Map Felucca4 { get { return m_Maps[70]; } }
+		public static Map Trammel4 { get { return m_Maps[71]; } }
+		public static Map Ilshenar4 { get { return m_Maps[72]; } }
+		public static Map Malas4 { get { return m_Maps[73]; } }
+		public static Map Tokuno4 { get { return m_Maps[74]; } }
+		public static Map TerMur4 { get { return m_Maps[75]; } }	
+		//UOWW: end
 
 		private static readonly List<Map> m_AllMaps = new List<Map>();
 

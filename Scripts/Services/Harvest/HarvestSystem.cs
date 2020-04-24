@@ -167,6 +167,8 @@ namespace Server.Engines.Harvest
 			double skillValue = from.Skills[def.Skill].Value;
 			type = GetResourceType(from, tool, def, map, loc, resource);
 			bool daatHarvesting = false;
+			if (type==null)
+				return;
 			if (daat99.OWLTROptionsManager.IsEnabled(daat99.OWLTROptionsManager.OPTIONS_ENUM.DAAT99_MINING) && (type.IsSubclassOf(typeof(BaseOre)) || type.IsSubclassOf(typeof(BaseGranite))))
 				daatHarvesting = true;
 			else if (daat99.OWLTROptionsManager.IsEnabled(daat99.OWLTROptionsManager.OPTIONS_ENUM.DAAT99_LUMBERJACKING) && type.IsSubclassOf(typeof(BaseLog)))

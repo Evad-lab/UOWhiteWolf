@@ -30,7 +30,7 @@ namespace Server.Items
 		SlayerName Slayer2 { get; set; }
 	}
 
-    public abstract class BaseWeapon : Item, IWeapon, IFactionItem, IUsesRemaining, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted, IResource, IArtifact, ICombatEquipment, IEngravable
+    public abstract class BaseWeapon : Item, IWeapon, IFactionItem, IUsesRemaining, ICraftable, ISlayer, IDurability, ISetItem, IVvVItem, IOwnerRestricted, IResource, IArtifact, ICombatEquipment, IEngravable, IQuality
     {
 		#region Damage Helpers
 		public static BaseWeapon GetDamageOutput(Mobile wielder, out int min, out int max)
@@ -808,11 +808,20 @@ namespace Server.Items
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
 		{
 			base.GetContextMenuEntries(from, list);
-
+			
 			if (BlessedFor == from && BlessedBy == from && RootParent == from)
 			{
 				list.Add(new UnBlessEntry(from, this));
 			}
+			
+			// Xml Spawner 3.26c XmlLevelItem - SOF
+            XmlLevelItem levitem = XmlAttach.FindAttachment(this, typeof(XmlLevelItem)) as XmlLevelItem;
+
+            if (levitem != null)
+            {
+                list.Add(new LevelInfoEntry(from, this, AttributeCategory.Melee));
+            }
+			// Xml Spawner 3.26c XmlLevelItem - EOF
 		}
 
 		public override void OnAfterDuped(Item newItem)
@@ -5097,10 +5106,13 @@ namespace Server.Items
 				((Mobile)Parent).CheckStatTimers();
 			}
 
-			if (m_Hits <= 0 && m_MaxHits <= 0)
-			{
-				m_Hits = m_MaxHits = Utility.RandomMinMax(InitMinHits, InitMaxHits);
-			}
+
+			//UOWW: fix durability bug
+			//
+			//if (m_Hits <= 0 && m_MaxHits <= 0)
+			//{
+			//	m_Hits = m_MaxHits = Utility.RandomMinMax(InitMinHits, InitMaxHits);
+			//}
 
 			if (version < 6)
 			{
@@ -5470,6 +5482,19 @@ namespace Server.Items
             {
                 list.Add(1153213, OwnerName);
             }
+			
+			// Xml Spawner 2.36c XmlLevelItem - SOF
+			XmlLevelItem levitem = XmlAttach.FindAttachment(this, typeof(XmlLevelItem)) as XmlLevelItem;
+
+			if (levitem != null)
+			{
+               list.Add(1060658, "Level\t{0}", levitem.Level);
+
+			   if (LevelItems.DisplayExpProp)
+				   list.Add(1060659, "Experience\t{0}", levitem.Experience);
+
+			}
+			// Xml Spawner 2.36c XmlLevelItem - EOF
 
             if (m_Crafter != null)
             {

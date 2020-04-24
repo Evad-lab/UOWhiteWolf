@@ -2019,7 +2019,7 @@ namespace Server.Engines.BulkOrders
 		
 		private static Item CreateLeatherGlovesOfLumberjacking( int type )
 		{
-			if ( type == 2 || type == 5 || type == 7 || type == 10 )
+			if ( type == 1 || type == 3 || type == 5)
 				return new LeatherGlovesOfLumberjacking( type );
 			
 			throw new InvalidOperationException();

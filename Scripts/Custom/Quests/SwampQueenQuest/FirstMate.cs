@@ -20,15 +20,15 @@ namespace Server.Mobiles
             Body = 0x190;
             Name = "Tristan Irons";
 
-            {
+            
 
-                AddItem(new FancyShirt(Utility.RandomNeutralHue()));
-                AddItem(new ShortPants());
-                AddItem(new ThighBoots());
-                AddItem(new TricorneHat());
-                AddItem(new Cutlass());
+			AddItem(new FancyShirt(Utility.RandomNeutralHue()));
+			AddItem(new ShortPants());
+			AddItem(new ThighBoots());
+			AddItem(new TricorneHat());
+			AddItem(new Cutlass());
 
-            }
+            
 
             SetStr(96, 105);
             SetDex(91, 100);
@@ -55,12 +55,6 @@ namespace Server.Mobiles
 
             Fame = 2000;
             Karma = -2000;
-
-            switch (Utility.Random(3))
-            {
-                case 0: AddItem(new Cutlass()); break;
-                case 1: AddItem(new Dagger()); break;
-            }
         }
 
 		public override bool AlwaysMurderer{ get{ return true; } }

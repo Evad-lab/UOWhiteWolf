@@ -9,7 +9,7 @@ namespace Server.Mobiles
               {
                                  [Constructable]
                   public TheEx()
-                      : base(AIType.AI_Melee, FightMode.Aggressor, 14, 1, 0.8, 1.6)
+                      : base(AIType.AI_Melee, FightMode.Closest, 14, 1, 0.8, 1.6)
                             {
                                         SpeechHue = Utility.RandomDyedHue();
                                         
@@ -51,8 +51,8 @@ namespace Server.Mobiles
                                                Skills[SkillName.MagicResist].Base = 120.0;
                                                Skills[SkillName.DetectHidden].Base = 100.0;
                                                
-                                               Fame = 7000;
-                                               Karma = 7000;
+                                               Fame = 50000;
+                                               Karma = -50000;
 											   
 											   PackItem( new WhiteFang(40) );
 
@@ -82,7 +82,7 @@ namespace Server.Mobiles
 public TheEx( Serial serial ) : base( serial )
                       {
                       }
-
+public override bool AlwaysMurderer { get { return true; } }
 public override void Serialize( GenericWriter writer )
                       {
                                         base.Serialize( writer );

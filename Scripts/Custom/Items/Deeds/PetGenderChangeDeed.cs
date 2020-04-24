@@ -9,6 +9,8 @@ using Server.Targeting;
 using Server.Targets;
 using Server.Engines.XmlSpawner2;
 
+using Xanthos.Evo;
+
 namespace Server.Items
 {
 	public class PetGenderChangeDeed : Item
@@ -82,21 +84,28 @@ namespace Server.Items
                     {
                         from.SendMessage("The pet must be yours to change it.");
                     }
-                    else if (pet != null && pet.ControlMaster != null && pet.ControlMaster == from)
+                    else if (pet != null && pet.ControlMaster != null && pet.ControlMaster == from  )
                     {
-						if (pet != null && pet.Female == true)
+						if (pet != null && !(pet is BaseEvo) && !(pet is BaseEvoMount) && !(pet is Squire))
 						{
-							pet.Female = false;
-							pet.InvalidateProperties();
-							from.SendMessage("Your pet's gender has changed.");
-							m_Scroll.Delete();		
+							if (pet != null && pet.Female == true)
+							{
+								pet.Female = false;
+								pet.InvalidateProperties();
+								from.SendMessage("Your pet's gender has changed.");
+								m_Scroll.Delete();		
+							}
+							else if (pet != null && pet.Female == false)
+							{
+								pet.Female = true;
+								pet.InvalidateProperties();
+								from.SendMessage("Your pet's gender has changed.");
+								m_Scroll.Delete();	
+							}
 						}
-						else if (pet != null && pet.Female == false)
+						else
 						{
-							pet.Female = true;
-							pet.InvalidateProperties();
-							from.SendMessage("Your pet's gender has changed.");
-							m_Scroll.Delete();	
+							from.SendMessage("The pet must not be an EVO or a Squire to change its gender.");
 						}
                     }
                 }

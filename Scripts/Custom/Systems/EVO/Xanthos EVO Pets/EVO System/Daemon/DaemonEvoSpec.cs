@@ -193,7 +193,7 @@ namespace Xanthos.Evo
 		public RaelisDaemonStageSeven()
 		{
 			Title = "The Ancient Daemon";
-			EvolutionMessage = "has evolved to its highest form and is now an Ancient Daemon";
+			EvolutionMessage = "has evolved to its highest form";
 			NextEpThreshold = 0; EpMinDivisor = 740; EpMaxDivisor = 660; DustMultiplier = 20;
 			BaseSoundID = 0x48D;
 			BodyValue = 308; ControlSlots = 4; VirtualArmor = 270;

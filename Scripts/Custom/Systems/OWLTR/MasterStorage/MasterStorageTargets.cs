@@ -110,9 +110,19 @@ namespace daat99
 		
 		protected override void OnTarget(Mobile from, object targeted )
 		{
+			Item item;
+			if (targeted is Item)
+				if (targeted != null)
+					item = (Item)targeted;
+				else
+					return;
+			else
+				return;
+			
 			if ( !(from is PlayerMobile) )
 				return;
-			if ( targeted is Item && backpack.AddCurrency(targeted as Item) )
+			
+			if ( targeted is Item && item != null &&  item.IsChildOf(from.Backpack) && backpack.AddCurrency(item) )
 			{
 				from.SendMessage("You added the currency.");
 				MasterStorageLedgerGump.SendGump(from, backpack);

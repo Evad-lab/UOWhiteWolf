@@ -129,7 +129,7 @@ namespace Xanthos.Evo
 	{
 		public RatStageFour()
 		{
-			EvolutionMessage = "has evolved into a humanish form";
+			EvolutionMessage = "has evolved";
 			NextEpThreshold = 7750000; EpMinDivisor = 30; EpMaxDivisor = 30; DustMultiplier = 20;
 			BaseSoundID = 0x4FD;
 			BodyValue = 42; ControlSlots = 3; MinTameSkill = 119.9; VirtualArmor = 60;
@@ -152,7 +152,8 @@ namespace Xanthos.Evo
 	{
 		public RatStageFive()
 		{
-			EvolutionMessage = "has evolved to its highest form and is now an Ancient Rat";
+			Title = "The Ancient Rat";
+			EvolutionMessage = "has evolved to its highest form";
 			NextEpThreshold = 0; EpMinDivisor = 40; EpMaxDivisor = 40; DustMultiplier = 20;
 			BaseSoundID = 362; ControlSlots = 4;
 			BodyValue = 241; VirtualArmor = 100;

@@ -330,7 +330,7 @@ namespace Server.Engines.Craft
             AddCraft(typeof(FemalePlateChest), 1111704, 1046430, 44.1, 94.1, typeof(IronIngot), 1044036, 20, 1044037);
 			
 			#region Custom
-				index = AddCraft(typeof(armsofevolution), 1111704, "Plate Arms of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), 1044036, 200, 1044037); //BadKitty
+				index = AddCraft(typeof(armsofevolution), 1111704, "Plate Arms of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 200, "You need more Platinum Ingots"); //BadKitty
 				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
 				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
 				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
@@ -339,7 +339,7 @@ namespace Server.Engines.Craft
 				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
 				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
 				
-				index = AddCraft(typeof(chestofevolution), 1111704, "Plate Chest of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), 1044036, 250, 1044037); //BadKitty
+				index = AddCraft(typeof(chestofevolution), 1111704, "Plate Chest of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 250, "You need more Platinum Ingots"); //BadKitty
 				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
 				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
 				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
@@ -348,7 +348,7 @@ namespace Server.Engines.Craft
 				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
 				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
 				
-				index = AddCraft(typeof(femalechestofevolution), 1111704, "Female Plate Chest of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), 1044036, 250, 1044037); //BadKitty
+				index = AddCraft(typeof(femalechestofevolution), 1111704, "Female Plate Chest of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 250, "You need more Platinum Ingots"); //BadKitty
 				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
 				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
 				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
@@ -357,7 +357,7 @@ namespace Server.Engines.Craft
 				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
 				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
 				
-				index = AddCraft(typeof(glovesofevolution), 1111704, "Plate Gloves of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), 1044036, 180, 1044037); //BadKitty
+				index = AddCraft(typeof(glovesofevolution), 1111704, "Plate Gloves of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 180, "You need more Platinum Ingots"); //BadKitty
 				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
 				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
 				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
@@ -366,7 +366,7 @@ namespace Server.Engines.Craft
 				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
 				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
 				
-				index = AddCraft(typeof(gorgetofevolution), 1111704, "Plate Gorget of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), 1044036, 150, 1044037); //BadKitty
+				index = AddCraft(typeof(gorgetofevolution), 1111704, "Plate Gorget of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 150, "You need more Platinum Ingots"); //BadKitty
 				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
 				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
 				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
@@ -375,7 +375,7 @@ namespace Server.Engines.Craft
 				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
 				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
 				
-				index = AddCraft(typeof(legsofevolution), 1111704, "Plate Legs of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), 1044036, 250, 1044037); //BadKitty
+				index = AddCraft(typeof(legsofevolution), 1111704, "Plate Legs of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 250, "You need more Platinum Ingots"); //BadKitty
 				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
 				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
 				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
@@ -446,7 +446,7 @@ namespace Server.Engines.Craft
             AddCraft(typeof(NorseHelm), 1011079, 1025134, 37.9, 87.9, typeof(IronIngot), 1044036, 15, 1044037);
             AddCraft(typeof(PlateHelm), 1011079, 1025138, 62.6, 112.6, typeof(IronIngot), 1044036, 15, 1044037);
 			
-			index = AddCraft(typeof(helmofevolution), 1011079, "Plate Helm of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), 1044036, 200, 1044037); //BadKitty
+			index = AddCraft(typeof(helmofevolution), 1011079, "Plate Helm of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 200, "You need more Platinum Ingots"); //BadKitty
 				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
 				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
 				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
@@ -495,7 +495,7 @@ namespace Server.Engines.Craft
             AddCraft(typeof(MetalKiteShield), 1011080, 1027028, 4.6, 54.6, typeof(IronIngot), 1044036, 16, 1044037);
             AddCraft(typeof(WoodenKiteShield), 1011080, 1027032, -15.2, 34.8, typeof(IronIngot), 1044036, 8, 1044037);
 			
-			index = AddCraft(typeof(evolutionshield), 1011080, "Shield of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), 1044036, 150, 1044037); //BadKitty
+			index = AddCraft(typeof(evolutionshield), 1011080, "Shield of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 150, "You need more Platinum Ingots"); //BadKitty
 				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
 				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
 				AddSkill(index, SkillName.Cooking, 120.0, 120.0);

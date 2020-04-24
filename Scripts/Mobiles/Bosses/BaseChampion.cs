@@ -147,8 +147,9 @@ namespace Server.Mobiles
 
         public virtual void GivePowerScrolls()
         {
-            if (this.Map != Map.Felucca)
-                return;
+            //PVE Shard
+			//if (this.Map != Map.Felucca)
+            //    return;
 
             List<Mobile> toGive = new List<Mobile>();
             List<DamageStore> rights = GetLootingRights();
@@ -215,7 +216,7 @@ namespace Server.Mobiles
                     toGive[rand] = hold;
                 }
 
-                for (int i = 0; i < ChampionSystem.PowerScrollAmount; ++i)
+                for (int i = 0; i < 2; ++i)
                 {
                     Mobile m = toGive[i % toGive.Count];
 
@@ -250,8 +251,9 @@ namespace Server.Mobiles
 
         public override void OnDeath(Container c)
         {
-            if (this.Map == Map.Felucca)
-            {
+            //PVE Shard - START
+			//if (this.Map == Map.Felucca)
+            //{
                 //TODO: Confirm SE change or AoS one too?
                 List<DamageStore> rights = GetLootingRights();
                 List<Mobile> toGive = new List<Mobile>();
@@ -274,7 +276,8 @@ namespace Server.Mobiles
 
                 if(Core.SA)
                     RefinementComponent.Roll(c, 3, 0.10);
-            }
+            //}
+			//PVE Shard - END
 
             base.OnDeath(c);
         }

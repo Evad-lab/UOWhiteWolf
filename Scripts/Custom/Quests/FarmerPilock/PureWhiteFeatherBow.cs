@@ -11,9 +11,9 @@ namespace Server.Items
 		public override Type AmmoType{ get{ return typeof( Arrow ); } }
 		public override Item Ammo{ get{ return new Arrow(); } }
 
-		public override WeaponAbility PrimaryAbility{ get{ return WeaponAbility.Dismount; } }
+		public override WeaponAbility PrimaryAbility{ get{ return WeaponAbility.ParalyzingBlow; } }
 
-		public override WeaponAbility SecondaryAbility{ get{ return WeaponAbility.MovingShot; } }
+		public override WeaponAbility SecondaryAbility{ get{ return WeaponAbility.MortalStrike; } }
 
 		public override int InitMinHits{ get{ return 300; } }
 		public override int InitMaxHits{ get{ return 300; } }

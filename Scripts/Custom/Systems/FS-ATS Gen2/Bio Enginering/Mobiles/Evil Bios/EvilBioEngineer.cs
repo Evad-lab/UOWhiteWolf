@@ -58,6 +58,8 @@ namespace Server.Mobiles
 
 			Fame = 5000;
 			Karma = -5000;
+			
+			PackItem( new WhiteFang(10) );
 
 			AddItem( new Boots() );
 

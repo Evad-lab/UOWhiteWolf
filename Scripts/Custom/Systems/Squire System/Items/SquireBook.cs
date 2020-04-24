@@ -322,10 +322,15 @@ namespace Server.Items
 					"use SquireName and this:",
 					"Confidence, LightningStrike,",
 					"Evasion, CounterAttack, ",
-					"MomentumStrike, HonorableExecution",
+					"MomentumStrike",
+					"HonorableExecution",
 					"Also Necro Spells: PainSpike",
-					"WraithForm, PoisonStrike",
-					"Wither, Lichform, VampiricEmbrace",
+					"WraithForm, PoisonStrike"
+				),
+				new BookPageInfo  // Red Kitty Added
+				(
+					"Wither, Lichform,",
+					"VampiricEmbrace",
 					"CurseWeapon"
 				)
 			);

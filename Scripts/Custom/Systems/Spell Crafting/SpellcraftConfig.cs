@@ -28,8 +28,8 @@ namespace Server.SpellCrafting
 		public static bool	BraceletsRingsOnly = false;
 		public static int	MaxPropsAllowed = 5;
 		public static double ScPenaltyChance = 0.35;
-		public static double ExplodeChance = 0.10;
-		public static double DestroyChance = 0.10;
+		public static double ExplodeChance = 0.15;
+		public static double DestroyChance = 0.15;
 		public static int	ExplodeMinDmg = 20;
 		public static int	ExplodeMaxDmg = 40;
 		public static double CraftersMarkChance = 0.25;

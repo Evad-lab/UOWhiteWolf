@@ -89,7 +89,7 @@ namespace Server.Items
 			this.AddTextEntry(411, 156, 50, 20, 1359, 2, "50");
 			this.AddButton(405, 221, 238, 240, 4, GumpButtonType.Reply, 0);
 			this.AddLabel(114, 200, 1152, "* Stat totals should equal ");
-			this.AddLabel(282, 200, 1152, "300" );
+			this.AddLabel(282, 200, 1152, "450" );
 			this.AddLabel(313, 200, 1152, "*");
 
 
@@ -135,7 +135,7 @@ namespace Server.Items
 			{
 //	Uncomment the line line below, and add a comment to the line under it to use a defined number instead of the standard Stat Cap
 //				if ( ( ( str + dex + intel ) > Cap ) || ( ( str + dex + intel ) < Cap ) || ( str < 10 ) || ( dex < 10 ) || ( intel < 10 ) )
-				if ( ( ( str + dex + intel ) > 300 ) || ( ( str + dex + intel ) < 300 ) || ( str < 10 ) || ( dex < 10 ) || ( intel < 10 ) || ( str > 110 ) || ( dex > 110 ) || ( intel > 110 ) )
+				if ( ( ( str + dex + intel ) > 450 ) || ( ( str + dex + intel ) < 450 ) || ( str < 10 ) || ( dex < 10 ) || ( intel < 10 ) || ( str > 200 ) || ( dex > 200 ) || ( intel > 200 ) )
 					m_From.SendMessage( "Your choice totals are invalid.  Please try again!" );
 					
 				else

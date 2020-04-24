@@ -2781,6 +2781,13 @@ namespace Server.Mobiles
                 Timer.DelayCall(TimeSpan.FromSeconds(10), ((PlayerMobile)@from).RecoverAmmo);
             }
 			
+			// Xml Spawner 2.36c XmlLevelItem - SOF
+            if (!Summoned && willKill && from != null)
+            {
+                LevelItemManager.CheckItems(from, this);
+            }
+            // Xml Spawner 2.36c XmlLevelItem - EOF
+			
 			if (Invasion != null)
 			{
 				Invasion.HandleDamage(this, from, amount);
@@ -6919,7 +6926,8 @@ namespace Server.Mobiles
                 {
 					if (m_Paragon && Paragon.ChestChance > Utility.RandomDouble())
 					{
-						PackItem( new ParagonChest( this.Name, treasureLevel ) );
+						//UOWW: ParagonChest temporary fix
+						//PackItem( new ParagonChest( this.Name, treasureLevel ) );
 					}
                     else if (TreasureMapChance >= Utility.RandomDouble())
                     {
@@ -7400,8 +7408,11 @@ namespace Server.Mobiles
 						//daat99 OWLTR start - add tokens on death
 						if (OWLTROptionsManager.IsEnabled(OWLTROptionsManager.OPTIONS_ENUM.MONSTER_GIVE_TOKENS))
 							//daat99 Tokens start - add tokens on death
+							if (this is TrainingVorpalBunny)
+								continue;
+							
 							GiveTokens.CalculateTokens(ds.m_Mobile, this);
-						//daat99 OWLTR/Tokens end - add tokens on death
+							//daat99 OWLTR/Tokens end - add tokens on death
 
                         if (GivesFameAndKarmaAward)
                         {
@@ -9075,7 +9086,7 @@ namespace Server.Mobiles
 		// allow equipped blessed items to drop into corpses  
 		public override DeathMoveResult GetParentMoveResultFor(Item item)
 		{
-			if (item.LootType == LootType.Blessed && !(this is Mercenary))
+			if (item.LootType == LootType.Blessed && !(this is Mercenary) && !(this is Squire))
 				return DeathMoveResult.MoveToCorpse;
 			
 			return item.OnParentDeath(this);
@@ -9084,7 +9095,7 @@ namespace Server.Mobiles
 		// allow blessed items to drop into corpses
 		public override DeathMoveResult GetInventoryMoveResultFor(Item item)
 		{
-			if (item.LootType == LootType.Blessed && !(this is Mercenary))
+			if (item.LootType == LootType.Blessed && !(this is Mercenary) && !(this is Squire))
 				return DeathMoveResult.MoveToCorpse;
 			
 			return item.OnInventoryDeath(this);

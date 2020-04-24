@@ -29,7 +29,12 @@ namespace Server.Gumps
 			Resizable=false;
 			AddPage(0);
 			AddBackground(24, 25, 346, 289, 5120);
-			AddLabel(33, 27, 1160, bc.Name.ToString() );
+			
+			if (bc != null)
+				AddLabel(33, 27, 1160, bc.Name.ToString() );
+			else
+				AddLabel(33, 27, 1160, @"Pet" );
+			
 			AddImageTiled(27, 47, 342, 10, 5121);
 			AddLabel(35, 55, 1149, @"Exp:");
 			AddLabel(35, 75, 1149, @"Current Level:");
@@ -40,12 +45,12 @@ namespace Server.Gumps
 			AddLabel(35, 165, 1149, @"Can Mate:");
 			AddImageTiled(27, 185, 342, 10, 5121);
 			AddImageTiled(27, 275, 342, 10, 5121);
-			if ( m_From == cm && bc.AllowMating == true && FSATS.EnablePetBreeding == true )
+			if ( m_From == cm && bc != null && bc.AllowMating == true && FSATS.EnablePetBreeding == true )
 			{
 				AddButton(36, 281, 4008, 4009, 1, GumpButtonType.Reply, 0);
 				AddLabel(71, 282, 1160, @"Mate this pet with another.");
 			}
-			if ( bc.AbilityPoints != 0 && m_From == cm )
+			if ( bc != null && bc.AbilityPoints != 0 && m_From == cm )
 			{
 				AddButton(250, 281, 2474, 2473, 3, GumpButtonType.Reply, 0);
 			}
@@ -60,7 +65,7 @@ namespace Server.Gumps
 			AddLabel(129, 75, 64, bc.Level.ToString() );
 			AddLabel(125, 95, 64, bc.MaxLevel.ToString() );
 			AddLabel(156, 115, 64, nextLevel.ToString() );
-			if ( bc.Female != true )
+			if ( bc != null && bc.Female != true )
 			{
 				AddLabel(87, 145, 64, @"Male");
 			}
@@ -68,7 +73,7 @@ namespace Server.Gumps
 			{
 				AddLabel(87, 145, 64, @"Female");
 			}
-			if ( bc.AllowMating != true )
+			if ( bc != null && bc.AllowMating != true )
 			{
 				AddLabel(101, 165, 64, @"No");
 			}
@@ -77,9 +82,12 @@ namespace Server.Gumps
 				AddLabel(101, 165, 64, @"Yes");
 			}
 
-			AddLabel(125, 195, 64, bc.AbilityPoints.ToString() );
+			if (bc != null)
+				AddLabel(125, 195, 64, bc.AbilityPoints.ToString() );
+			else
+				AddLabel(125, 195, 64, @"0" );
 
-			if ( bc.Evolves != true )
+			if ( bc != null && bc.Evolves != true )
 			{
 				AddLabel(87, 215, 64, @"No");
 			}
@@ -95,7 +103,11 @@ namespace Server.Gumps
 			{
 				AddLabel(81, 235, 64, @"unowned" );
 			}
-			AddLabel(112, 255, 64, bc.Generation.ToString() );
+			
+			if (bc != null)
+				AddLabel(112, 255, 64, bc.Generation.ToString() );
+			else
+				AddLabel(112, 255, 64, @"Unknown" );
 
 		}
 		public override void OnResponse( NetState state, RelayInfo info )

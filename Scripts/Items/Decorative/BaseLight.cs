@@ -6,7 +6,7 @@ using Server.ContextMenus;
 
 namespace Server.Items
 {
-    public abstract class BaseLight : Item, ICraftable, IResource, ISecurable
+    public abstract class BaseLight : Item, ICraftable, IResource, ISecurable, IQuality
     {
         public static readonly bool Burnout = false;
         private Timer m_Timer;

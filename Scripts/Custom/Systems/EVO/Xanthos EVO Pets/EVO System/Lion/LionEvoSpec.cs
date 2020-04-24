@@ -129,7 +129,7 @@ namespace Xanthos.Evo
 	{
 		public LionStageFour()
 		{
-			EvolutionMessage = "has evolved into dark Lion";
+			EvolutionMessage = "has evolved";
 			NextEpThreshold = 7750000; EpMinDivisor = 40; EpMaxDivisor = 45; DustMultiplier = 20;
 			BaseSoundID = 0x4FD;
 			BodyValue = 251; ControlSlots = 3; MinTameSkill = 119.9; VirtualArmor = 60;
@@ -152,6 +152,7 @@ namespace Xanthos.Evo
 	{
 		public LionStageFive()
 		{
+			Title = "The Ancient Lion";
 			EvolutionMessage = "has evolved to its highest form and is now an Ancient Lion";
 			NextEpThreshold = 0; EpMinDivisor = 150; EpMaxDivisor = 180; DustMultiplier = 20;
 			BaseSoundID = 362; ControlSlots = 4;

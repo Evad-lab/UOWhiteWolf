@@ -5,6 +5,8 @@ using Server.Accounting;
 using Server.Items;
 using Server.Mobiles;
 using Server.Network;
+
+using Xanthos.Evo;
 #endregion
 
 namespace Server.Misc
@@ -66,14 +68,15 @@ namespace Server.Misc
             if (FirstCharAlreadyCreated) //this part checks to see if the account already has this tag, if it does it will add the following items
             {
                 PackItem(new Gold(1000));
-				PackItem(new BankCheck(5000));
+				PackItem(new BankCheck(20000));
 				PackItem(new SkillBall(300));
             }
-            else // if the account does not have this tag it will add these following items instead
+            else // if the account does not have this tag it will add these following items instead (then, it's the first character for this player)
             {
                 PackItem(new Gold(2000));
-				PackItem(new BankCheck(50000));
+				PackItem(new BankCheck(500000));
 				PackItem(new SkillBall(1000));
+				PackItem(new StarterBox());
 					
                 ((Account)m.Account).SetTag("FirstCharAlreadyCreated", "true"); // this part will add the tag onto the account
             }
@@ -239,7 +242,7 @@ namespace Server.Misc
 				pm.Profession = args.Profession;
 
 				if (pm.IsPlayer() && pm.Account.Young && !Siege.SiegeShard)
-					young = pm.Young = true;
+					young = pm.Young = false;
 			}
 
 			SetName(newChar, args.Name);
@@ -302,7 +305,7 @@ namespace Server.Misc
 			//new starting location for players
 			//newChar.MoveToWorld(city.Location, map);
 			//
-			var city = new CityInfo( "Welcome", "UO WhiteWolf", 1057, 519, -90, Map.Malas );
+			var city = new CityInfo( "Welcome", "UO WhiteWolf", 2168, 815, -70, Map.Malas );
 
 			newChar.MoveToWorld(city.Location, city.Map);
 

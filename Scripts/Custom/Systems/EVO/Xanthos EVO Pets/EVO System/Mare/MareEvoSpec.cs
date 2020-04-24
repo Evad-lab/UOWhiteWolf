@@ -106,7 +106,7 @@ namespace Xanthos.Evo
 	{
 		public MareStageThree()
 		{
-			EvolutionMessage = "has evolve into Super llama";
+			EvolutionMessage = "has evolved";
 			NextEpThreshold = 1250000; EpMinDivisor = 25; EpMaxDivisor = 30; DustMultiplier = 20;
 			BaseSoundID = 0x5A;
 			BodyValue = 220; VirtualArmor = 50;
@@ -130,7 +130,7 @@ namespace Xanthos.Evo
 	{
 		public MareStageFour()
 		{
-			EvolutionMessage = "has evolved into dark mare";
+			EvolutionMessage = "has evolved";
 			NextEpThreshold = 7750000; EpMinDivisor = 30; EpMaxDivisor = 30; DustMultiplier = 20;
 			BaseSoundID = 0x4FD;
 			BodyValue = 179; ControlSlots = 3; MinTameSkill = 119.9; VirtualArmor = 60;
@@ -153,7 +153,8 @@ namespace Xanthos.Evo
 	{
 		public MareStageFive()
 		{
-			EvolutionMessage = "has evolved to its highest form and is now an Ancient Mare";
+			Title = "The Ancient Mare";
+			EvolutionMessage = "has evolved to its highest form";
 			NextEpThreshold = 0; EpMinDivisor = 40; EpMaxDivisor = 40; DustMultiplier = 20;
 			BaseSoundID = 362; ControlSlots = 4;
 			BodyValue = 179; VirtualArmor = 100;

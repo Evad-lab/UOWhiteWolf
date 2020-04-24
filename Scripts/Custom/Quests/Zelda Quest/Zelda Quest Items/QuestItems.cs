@@ -113,11 +113,11 @@ namespace Server.Items
 			Hue = 2220;
 
 			WeaponAttributes.UseBestSkill = 1;
-			WeaponAttributes.HitEnergyArea = 50;
-			WeaponAttributes.HitPhysicalArea = 50;
-			WeaponAttributes.HitPoisonArea = 50;
-			WeaponAttributes.HitColdArea = 50;
-			WeaponAttributes.HitFireArea = 50;
+			//WeaponAttributes.HitEnergyArea = 25;
+			WeaponAttributes.HitPhysicalArea = 25;
+			WeaponAttributes.HitPoisonArea = 25;
+			//WeaponAttributes.HitColdArea = 50;
+			//WeaponAttributes.HitFireArea = 50;
 			Attributes.WeaponDamage = 50;
 			Attributes.BonusStr = 5;
 			Attributes.RegenHits = 5;
@@ -211,6 +211,7 @@ namespace Server.Items
 			Attributes.WeaponSpeed = 50;
 			Attributes.RegenMana = 25;
 			Attributes.WeaponDamage = 50;
+			Attributes.WeaponSpeed = 150;
 			Attributes.BonusDex = 10;
 			Attributes.BonusStr = 10;
 			Attributes.RegenHits = 5;
@@ -295,7 +296,7 @@ namespace Server.Items
 		public override int InitMaxHits{ get{ return 255; } }
 
 		[Constructable]
-		public Biggoron() : base( 0x26CF )
+		public Biggoron() : base( 0x26CE )  //Item ID changed by Red Kitty
 		{
 			Name = "Biggoron Sword";
 			Hue = 2101;

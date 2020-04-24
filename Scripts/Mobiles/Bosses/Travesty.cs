@@ -227,6 +227,12 @@ namespace Server.Mobiles
 
                             if (i != null)
                                 i.Delete();
+							
+							//UOWW: fix duped items not being deleted on FirstValid layer
+							i = FindItemOnLayer(Layer.FirstValid);
+
+                            if (i != null)
+                                i.Delete();
 
                             AddItem(Loot.Construct(item.GetType()));
                         }
@@ -415,12 +421,16 @@ namespace Server.Mobiles
 
             public override DeathMoveResult OnParentDeath(Mobile parent)
             {
-                return DeathMoveResult.RemainEquiped;
+				//UOWW : fix duping of items
+				Movable = false;
+				
+                return base.OnParentDeath(parent);
             }
 
             public override DeathMoveResult OnInventoryDeath(Mobile parent)
             {
                 Delete();
+				
                 return base.OnInventoryDeath(parent);
             }
 

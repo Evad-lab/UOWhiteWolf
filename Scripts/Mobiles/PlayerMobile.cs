@@ -2030,9 +2030,9 @@ namespace Server.Mobiles
 					strBase = Str; //Str already includes GetStatOffset/str
 					strOffs = AosAttributes.GetValue(this, AosAttribute.BonusHits);
 
-					if (Core.ML && strOffs > 25 && IsPlayer())
+					if (Core.ML && strOffs > 625 && IsPlayer())
 					{
-						strOffs = 25;
+						strOffs = 625;
 					}
 
 					if (AnimalForm.UnderTransformation(this, typeof(BakeKitsune)) ||
@@ -2053,7 +2053,7 @@ namespace Server.Mobiles
 					strBase = RawStr;
 				}
 
-				return (strBase / 2) + 50 + strOffs;
+				return (strBase / 2) + 175 + strOffs;
 			}
 		}
 
@@ -5938,7 +5938,7 @@ namespace Server.Mobiles
 		{
 			if (Young)
 			{
-                if (SkillsTotal >= 250.0 && (!Core.AOS && Skills[skill].Base >= 60.0))
+                if (SkillsTotal >= 250 && (!Core.AOS && Skills[skill].Base >= 60.0))
                 {
                     Account acc = Account as Account;
 

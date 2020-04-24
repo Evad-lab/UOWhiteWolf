@@ -382,7 +382,7 @@ namespace Server.Mobiles
 			WeaponAbility, WeaponAbilityOne, WeaponAbilityTwo,
 			CheckTithingPoints, SetTeam, Confidence, LightningStrike,
 			Evasion, CounterAttack, MomentumStrike, HonorableExecution,
-			PainSpike, PoisonStrike, WraithForm, CurseWeapon, Wither, LichForm, VampiricEmbrace,	// Added 1.9.7 + rafa Bushido + Necro
+			PainSpike, PoisonStrike, WraithForm, CurseWeapon, Wither, LichForm, VampiricEmbrace	// Added 1.9.7 + rafa Bushido + Necro
 		}
 		
 		static Squire()
@@ -422,7 +422,7 @@ namespace Server.Mobiles
 			SNickname = "Squire";
 			
 			IsBonded = true;
-			ControlSlots = 9;
+			ControlSlots = 6;
 			
 			m_AutoUseHealthPotion = true;
 			m_AutoUseCurePotion = true;
@@ -3070,7 +3070,7 @@ namespace Server.Mobiles
 			}
 			
 
-			if ( DateTime.Now > m_Delay )
+			if ( DateTime.Now > m_Delay && Backpack != null)
             {
 				Item healthPotion = Backpack.FindItemByType( typeof( BaseHealPotion ) );
 				Item curePotion = Backpack.FindItemByType( typeof( BaseCurePotion ) );

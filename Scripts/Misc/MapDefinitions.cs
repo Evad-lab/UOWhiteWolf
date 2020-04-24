@@ -31,12 +31,27 @@ namespace Server.Misc
                 RegisterMap(4, 4, 4, 1448, 1448, 1, "Tokuno", MapRules.TrammelRules);
                 RegisterMap(5, 5, 5, 1280, 4096, 1, "TerMur", MapRules.TrammelRules);
 				
-				RegisterMap(50, 0, 0, 7168, 4096, 4, "Felucca2", MapRules.FeluccaRules);
-				RegisterMap(51, 1, 1, 7168, 4096, 0, "Trammel2", MapRules.FeluccaRules);
-				RegisterMap(52, 2, 2, 2304, 1600, 1, "Ilshenar2", MapRules.FeluccaRules);
-				RegisterMap(53, 3, 3, 2560, 2048, 1, "Malas2", MapRules.FeluccaRules);
-				RegisterMap(54, 4, 4, 1448, 1448, 1, "Tokuno2", MapRules.FeluccaRules);
-				RegisterMap(55, 5, 5, 1280, 4096, 1, "TerMur2", MapRules.FeluccaRules);					
+				RegisterMap(50, 0, 0, 7168, 4096, 4, "Felucca2", MapRules.TrammelRules);
+				RegisterMap(51, 1, 1, 7168, 4096, 0, "Trammel2", MapRules.TrammelRules);
+				RegisterMap(52, 2, 2, 2304, 1600, 1, "Ilshenar2", MapRules.TrammelRules);
+				RegisterMap(53, 3, 3, 2560, 2048, 1, "Malas2", MapRules.TrammelRules);
+				RegisterMap(54, 4, 4, 1448, 1448, 1, "Tokuno2", MapRules.TrammelRules);
+				RegisterMap(55, 5, 5, 1280, 4096, 1, "TerMur2", MapRules.TrammelRules);		
+
+				
+				RegisterMap(60, 0, 0, 7168, 4096, 4, "Felucca3", MapRules.FeluccaRules);
+				RegisterMap(61, 1, 1, 7168, 4096, 0, "Trammel3", MapRules.FeluccaRules);
+				RegisterMap(62, 2, 2, 2304, 1600, 1, "Ilshenar3", MapRules.FeluccaRules);
+				RegisterMap(63, 3, 3, 2560, 2048, 1, "Malas3", MapRules.FeluccaRules);
+				RegisterMap(64, 4, 4, 1448, 1448, 1, "Tokuno3", MapRules.FeluccaRules);
+				RegisterMap(65, 5, 5, 1280, 4096, 1, "TerMur3", MapRules.FeluccaRules);		
+				
+				RegisterMap(70, 0, 0, 7168, 4096, 4, "Felucca4", MapRules.TrammelRules);
+				RegisterMap(71, 1, 1, 7168, 4096, 0, "Trammel4", MapRules.TrammelRules);
+				RegisterMap(72, 2, 2, 2304, 1600, 1, "Ilshenar4", MapRules.TrammelRules);
+				RegisterMap(73, 3, 3, 2560, 2048, 1, "Malas4", MapRules.TrammelRules);
+				RegisterMap(74, 4, 4, 1448, 1448, 1, "Tokuno4", MapRules.TrammelRules);
+				RegisterMap(75, 5, 5, 1280, 4096, 1, "TerMur4", MapRules.TrammelRules);					
             
             }
 

@@ -191,7 +191,7 @@ namespace Server.Mobiles
 		public Bellhop() : base( AIType.AI_Melee, FightMode.Closest, 10, 1, 0.4, 0.8 )
 		{
 			Name = "a bellhop";
-			Body = 795;
+			Body = 796;
 			Hue = 1172;
 
 			SetStr( 96, 120 );

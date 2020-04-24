@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Server;
-using Server.Misc;
+using Server.Accounting;
+using Server.Engines.XmlSpawner2;
 using Server.Gumps;
 using Server.Items;
 using Server.Mobiles;
-using Server.Accounting;
-
+using Server.Misc;
+using Server.Scripts.Commands;
 using Server.Voting;
 
 namespace Server.Items
@@ -69,7 +70,16 @@ namespace Server.Items
 		{ return base.OnBeforeVote(from); }
 
 		public override void OnVote(Mobile from, VoteStatus status)
-		{ base.OnVote(from, status); }
+		{ 
+			base.OnVote(from, status); 
+			
+			if( status == VoteStatus.Success )
+            {
+				from.AddToBackpack( new VoteToken( 1, 5 ) );
+				from.SendMessage("Thanks for voting ! Here's a reward for voting for us !");
+            }
+		
+		}
 
 		public override void OnAfterVote(Mobile from, VoteStatus status)
 		{ base.OnAfterVote(from, status); }

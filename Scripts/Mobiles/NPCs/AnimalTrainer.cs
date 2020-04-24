@@ -213,9 +213,11 @@ namespace Server.Mobiles
 				list.Add(new StableEntry(this, from));
 
 				if (from.Stabled.Count > 0)
-				{
 					list.Add(new ClaimAllEntry(this, from));
-				}
+
+				
+				if (SupportsTamingBulkOrders(from) && AnimalBODCore.Core.Enabled )
+					list.Add(new TamingBulkOrderInfoEntry(from, this));
 			}
 
 			base.AddCustomContextEntries(from, list);

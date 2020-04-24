@@ -537,10 +537,11 @@ namespace Server.Engines.CannedEvil
         #region Scroll of Transcendence
         private ScrollOfTranscendence CreateRandomSoT(bool felucca)
         {
-            int level = Utility.RandomMinMax(1, 5);
+            int level = Utility.RandomMinMax(1, 2);
 			
-            if (felucca)
-                level += 5;
+            //PVE Shard
+			//if (felucca)
+            //   level += 5;
 
             return ScrollOfTranscendence.CreateRandom(level, level);
         }
@@ -642,9 +643,14 @@ namespace Server.Engines.CannedEvil
                     //if (m_Altar != null)
                     {
                         m_Altar.Hue = 0x455;
-
-                        if (!Core.ML || Map == Map.Felucca)
+						
+						//PVE Shard
+                        //if (!Core.ML || Map == Map.Felucca)
+						if (!Core.ML)	
                         {
+						int rng = Utility.Random(9);
+						
+						if (rng < 3)
                             new StarRoomGate(true, m_Altar.Location, m_Altar.Map);
                         }
                     }
@@ -693,8 +699,9 @@ namespace Server.Engines.CannedEvil
                             #region Scroll of Transcendence
                             if (Core.ML)
                             {
-                                if (Map == Map.Felucca)
-                                {
+								//PVE Shard
+                                //if (Map == Map.Felucca)
+                                //{
                                     if (Utility.RandomDouble() < ChampionSystem.ScrollChance)
                                     {
                                         PlayerMobile pm = (PlayerMobile)killer;
@@ -710,17 +717,18 @@ namespace Server.Engines.CannedEvil
                                             GiveScrollTo(pm, (SpecialScroll)PS);
                                         }
                                     }
-                                }
+                                //}
 
-                                if (Map == Map.Ilshenar || Map == Map.Tokuno || Map == Map.Malas)
-                                {
+								//PVE Shard
+                                //if (Map == Map.Ilshenar || Map == Map.Tokuno || Map == Map.Malas)
+                                //{
                                     if (Utility.RandomDouble() < 0.0015)
                                     {
                                         killer.SendLocalizedMessage(1094936); // You have received a Scroll of Transcendence!
                                         ScrollOfTranscendence SoTT = CreateRandomSoT(false);
                                         killer.AddToBackpack(SoTT);
                                     }
-                                }
+                                //}
                             }
 							#endregion
 
@@ -1684,7 +1692,9 @@ namespace Server.Engines.CannedEvil
 
         public override bool OnMoveInto(Mobile m, Direction d, Point3D newLocation, Point3D oldLocation)
         {
-            if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && Map == Map.Felucca)
+			//PVE Shard
+            //if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && Map == Map.Felucca)
+			if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted))	
             {
                 return false;
             }
@@ -1696,7 +1706,9 @@ namespace Server.Engines.CannedEvil
         {
             Mobile m = e.Mobile;
 
-            if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel == AccessLevel.Player && m.Map == Map.Felucca)
+			//PVE Shard
+			//if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel == AccessLevel.Player && m.Map == Map.Felucca)
+			if (m is PlayerMobile && m.Region.IsPartOf<ChampionSpawnRegion>() && m.AccessLevel == AccessLevel.Player)	
             {
                 if (m.Alive && m.Backpack != null)
                 {
@@ -1734,7 +1746,9 @@ namespace Server.Engines.CannedEvil
         {
             Mobile m = e.Mobile;
 
-            if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && m.Region.IsPartOf<ChampionSpawnRegion>() && m.Map == Map.Felucca)
+			//PVE Shard
+            //if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && m.Region.IsPartOf<ChampionSpawnRegion>() && m.Map == Map.Felucca)
+			if (m is PlayerMobile && !m.Alive && (m.Corpse == null || m.Corpse.Deleted) && m.Region.IsPartOf<ChampionSpawnRegion>())
             {
                 Map map = m.Map;
                 Point3D loc = ExorcismSpell.GetNearestShrine(m, ref map);

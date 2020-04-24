@@ -508,7 +508,7 @@ namespace Server.Items
 
                     int lineCount = pvSrc.ReadUInt16();
 
-                    if (lineCount <= 8)
+                    if (lineCount <= 10)
                     {
                         string[] lines = new string[lineCount];
 

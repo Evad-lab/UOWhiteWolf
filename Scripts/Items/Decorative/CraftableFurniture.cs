@@ -4,7 +4,7 @@ using Server.Mobiles;
 
 namespace Server.Items
 {
-    public class CraftableFurniture : Item, IResource
+    public class CraftableFurniture : Item, IResource, IQuality
     {
         public virtual bool ShowCrafterName
         {

@@ -27,9 +27,9 @@ namespace Server.Mobiles
 			SetDamageType(ResistanceType.Fire, 50);
 			SetDamageType(ResistanceType.Energy, 50);
 
-            SetResistance(ResistanceType.Physical, 55, 75);
-            SetResistance(ResistanceType.Fire, 55, 65);
-            SetResistance(ResistanceType.Cold, 15, 25);
+            SetResistance(ResistanceType.Physical, 25, 45);
+            SetResistance(ResistanceType.Fire, 25, 45);
+            SetResistance(ResistanceType.Cold, 25, 45);
             SetResistance(ResistanceType.Poison, 99, 100);
             SetResistance(ResistanceType.Energy, 15, 25);
 

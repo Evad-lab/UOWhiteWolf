@@ -47,7 +47,7 @@ namespace Server.Mobiles
 
 			SetResistance( ResistanceType.Physical, 40, 50 );
 			SetResistance( ResistanceType.Cold, 55, 60 );
-			SetResistance( ResistanceType.Poison, 100 );
+			SetResistance( ResistanceType.Poison, 55, 60 );
 			SetResistance( ResistanceType.Energy, 15, 22 );
 
 			SetSkill( SkillName.MagicResist, 90.0 );
@@ -61,7 +61,7 @@ namespace Server.Mobiles
 			Karma = -2000;
 
 			Tamable = true;
-			ControlSlots = 1;
+			ControlSlots = 3;
 			MinTameSkill = d_MinTame;
 
 			Container pack = Backpack;

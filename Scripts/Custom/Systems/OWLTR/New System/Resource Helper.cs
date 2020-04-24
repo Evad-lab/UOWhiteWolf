@@ -65,7 +65,14 @@ namespace daat99
 				}
 			}
 			CraftResourceInfo info = CraftResources.GetInfo(resultCraftResource);
-            if (originalType.IsSubclassOf(typeof(BaseGranite)) && info != null && info.ResourceTypes.Length > 2)
+			
+			if (info == null)
+				return null;
+			
+			if (originalType == null)
+				return null;
+			
+            if (originalType.IsSubclassOf(typeof(BaseGranite)) && info.ResourceTypes.Length > 2)
                 return info.ResourceTypes[2];
 			if (info != null && info.ResourceTypes.Length > 1)
 				return info.ResourceTypes[1];

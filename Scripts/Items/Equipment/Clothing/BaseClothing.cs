@@ -15,7 +15,7 @@ namespace Server.Items
         int MaxArcaneCharges { get; set; }
     }
 
-    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, IArtifact, ICombatEquipment, IEngravable
+    public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, IArtifact, ICombatEquipment, IEngravable, IQuality
     {
         private string m_EngravedText;
 
@@ -1960,8 +1960,10 @@ namespace Server.Items
             if (version < 4)
                 m_Resource = DefaultResource;
 
-            if (m_MaxHitPoints == 0 && m_HitPoints == 0)
-                m_HitPoints = m_MaxHitPoints = Utility.RandomMinMax(InitMinHits, InitMaxHits);
+            //UOWW: fix durability bug
+			//			
+			//if (m_MaxHitPoints == 0 && m_HitPoints == 0)
+            //    m_HitPoints = m_MaxHitPoints = Utility.RandomMinMax(InitMinHits, InitMaxHits);
 
             Mobile parent = Parent as Mobile;
 

@@ -86,7 +86,7 @@ namespace Server.ACC.PG
 
 			AddPage(0);
 
-			AddBackground( 530, 100, 230, 410, 2600 );
+			AddBackground( 530, 100, 480, 590, 2600 );
 			AddLabel( 602, 120, 0, string.Format("{0} {1}", (GetFlag(Conditions.Adding) ? "Add" : "Edit"), (GetFlag(Conditions.Category) ? "Category" : "Location")) );
 
 			AddLabel( 625, 145, 0, "Name :" );
@@ -115,6 +115,8 @@ namespace Server.ACC.PG
 				AddLabel( 715, 210, 0, ": H" );
 				AddImage( 650, 210, 2443 );
 				AddTextEntry( 655, 210, 55, 20, 0, 14, Hue.ToString() );
+				
+				AddLabel( 585, 300, 0, "PVM" );			
 
 				AddLabel( 585, 315, 0, "Trammel" );
 				AddRadio( 555, 315, 208, 209, (Map == Map.Trammel ? true : false), 6 );
@@ -122,37 +124,97 @@ namespace Server.ACC.PG
 				AddLabel( 585, 340, 0, "Felucca" );
 				AddRadio( 555, 340, 208, 209, (Map == Map.Felucca ? true : false), 7 );
 
-				AddLabel( 685, 315, 0, "Malas" );
-				AddRadio( 655, 315, 208, 209, (Map == Map.Malas ? true : false), 8 );
+				AddLabel( 585, 365, 0, "Malas" );
+				AddRadio( 555, 365, 208, 209, (Map == Map.Malas ? true : false), 8 );
+				
+				AddLabel( 585, 390, 0, "Ilshenar" );
+				AddRadio( 555, 390, 208, 209, (Map == Map.Ilshenar ? true : false), 9 );
+				
+				AddLabel( 585, 415, 0, "Tokuno" );
+				AddRadio( 555, 415, 208, 209, (Map == Map.Tokuno ? true : false), 10 );
+				
+				AddLabel( 585, 445, 0, "TerMur" );
+				AddRadio( 555, 445, 208, 209, (Map == Map.TerMur ? true : false), 20 );
+				
+				AddLabel( 685, 300, 0, "PVM" );
+				
+				AddLabel( 685, 315, 0, "Trammel 2" );
+				AddRadio( 655, 315, 208, 209, (Map == Map.Trammel2 ? true : false), 21 );
+				
+				AddLabel( 685, 340, 0, "Felucca 2" );
+				AddRadio( 655, 340, 208, 209, (Map == Map.Felucca2 ? true : false), 22 );
+				
+				AddLabel( 685, 365, 0, "Malas 2" );
+				AddRadio( 655, 365, 208, 209, (Map == Map.Malas2 ? true : false), 23 );
+				
+				AddLabel( 685, 390, 0, "Ilshenar 2" );
+				AddRadio( 655, 390, 208, 209, (Map == Map.Ilshenar2 ? true : false), 24 );
+				
+				AddLabel( 685, 415, 0, "Tokuno 2" );
+				AddRadio( 655, 415, 208, 209, (Map == Map.Tokuno2 ? true : false), 25 );
+				
+				AddLabel( 685, 445, 0, "TerMur 2" );
+				AddRadio( 655, 445, 208, 209, (Map == Map.TerMur2 ? true : false), 26 );	
 
-				AddLabel( 685, 345, 0, "Ilshenar" );
-				AddRadio( 655, 340, 208, 209, (Map == Map.Ilshenar ? true : false), 9 );
+				AddLabel( 785, 300, 0, "PVP" );			
 
-				AddLabel( 585, 365, 0, "Tokuno" );
-				AddRadio( 555, 370, 208, 209, (Map == Map.Tokuno ? true : false), 10 );
+				AddLabel( 785, 315, 0, "Trammel 3" );
+				AddRadio( 755, 315, 208, 209, (Map == Map.Trammel3 ? true : false), 31 );
+				
+				AddLabel( 785, 340, 0, "Felucca 3" );
+				AddRadio( 755, 340, 208, 209, (Map == Map.Felucca3 ? true : false), 32 );
+				
+				AddLabel( 785, 365, 0, "Malas 3" );
+				AddRadio( 755, 365, 208, 209, (Map == Map.Malas3 ? true : false), 33 );
+				
+				AddLabel( 785, 390, 0, "Ilshenar 3" );
+				AddRadio( 755, 390, 208, 209, (Map == Map.Ilshenar3 ? true : false), 34 );
+				
+				AddLabel( 785, 415, 0, "Tokuno 3" );
+				AddRadio( 755, 415, 208, 209, (Map == Map.Tokuno3 ? true : false), 35 );
+				
+				AddLabel( 785, 445, 0, "TerMur 3" );
+				AddRadio( 755, 445, 208, 209, (Map == Map.TerMur3 ? true : false), 36 );
 
-				AddLabel( 685, 365, 0, "TerMur" );
-				AddRadio( 655, 370, 208, 209, (Map == Map.TerMur ? true : false), 20 );
+				AddLabel( 885, 300, 0, "PVM" );
+
+				AddLabel( 885, 315, 0, "Trammel 4" );
+				AddRadio( 855, 315, 208, 209, (Map == Map.Trammel4 ? true : false), 41 );
+				
+				AddLabel( 885, 340, 0, "Felucca 4" );
+				AddRadio( 855, 340, 208, 209, (Map == Map.Felucca4 ? true : false), 42 );
+				
+				AddLabel( 885, 365, 0, "Malas 4" );
+				AddRadio( 855, 365, 208, 209, (Map == Map.Malas4 ? true : false), 43 );
+				
+				AddLabel( 885, 390, 0, "Ilshenar 4" );
+				AddRadio( 855, 390, 208, 209, (Map == Map.Ilshenar4 ? true : false), 44 );
+				
+				AddLabel( 885, 415, 0, "Tokuno 4" );
+				AddRadio( 855, 415, 208, 209, (Map == Map.Tokuno4 ? true : false), 45 );
+				
+				AddLabel( 885, 445, 0, "TerMur 4" );
+				AddRadio( 855, 445, 208, 209, (Map == Map.TerMur4 ? true : false), 46 );					
 			}
 
 
-			AddLabel( 585, 395, 0, "Generate?" );
-			AddCheck( 555, 395, 210, 211, Gen, 11 );
+			AddLabel( 585, 465, 0, "Generate?" );
+			AddCheck( 555, 465, 210, 211, Gen, 11 );
 
-			AddLabel( 665, 395, 0, "Young?" );
-			AddCheck( 715, 395, 210, 211, Young, 16 );
+			AddLabel( 665, 465, 0, "Young?" );
+			AddCheck( 715, 465, 210, 211, Young, 16 );
 
-			AddLabel( 585, 420, 0, "Reds?" );
-			AddCheck( 555, 420, 210, 211, Reds, 13 );
+			AddLabel( 585, 490, 0, "Reds?" );
+			AddCheck( 555, 490, 210, 211, Reds, 13 );
 
-			AddLabel( 658, 420, 0, "Charge?" );
-			AddCheck( 715, 420, 210, 211, Charge, 17 );
+			AddLabel( 658, 490, 0, "Charge?" );
+			AddCheck( 715, 490, 210, 211, Charge, 17 );
 
-			AddLabel( 585, 445, 0, "Staff Only?" );
-			AddCheck( 555, 445, 210, 211, Staff, 12 );
+			AddLabel( 585, 525, 0, "Staff Only?" );
+			AddCheck( 555, 525, 210, 211, Staff, 12 );
 
-			AddButton( 700, 450, 1417, 1417, 1, GumpButtonType.Reply, 0 );
-			AddLabel( 728, 481, 69, "Apply" );
+			AddButton( 700, 550, 1417, 1417, 1, GumpButtonType.Reply, 0 );
+			AddLabel( 728, 581, 69, "Apply" );
 		}
 
 		private EntryFlag Flags;
@@ -189,8 +251,26 @@ namespace Server.ACC.PG
 					case 7:  Map = Map.Felucca;  break;
 					case 8:  Map = Map.Malas;    break;
 					case 9:  Map = Map.Ilshenar; break;
-					case 10: Map = Map.Tokuno;   break;
-                   		 	case 20: Map = Map.TerMur;   break;
+					case 14: Map = Map.Tokuno;   break;
+                   	case 20: Map = Map.TerMur;   break;
+					case 21: Map = Map.Trammel2;  break;
+					case 22: Map = Map.Felucca2;  break;
+					case 23: Map = Map.Malas2;    break;
+					case 24: Map = Map.Ilshenar2; break;
+					case 25: Map = Map.Tokuno2;   break;
+					case 26: Map = Map.TerMur2;   break;
+					case 31: Map = Map.Trammel3;  break;
+					case 32: Map = Map.Felucca3;  break;
+					case 33: Map = Map.Malas3;    break;
+					case 34: Map = Map.Ilshenar3; break;
+					case 35: Map = Map.Tokuno3;   break;
+					case 36: Map = Map.TerMur3;   break;
+					case 41: Map = Map.Trammel4;  break;
+					case 42: Map = Map.Felucca4;  break;
+					case 43: Map = Map.Malas4;    break;
+					case 44: Map = Map.Ilshenar4; break;
+					case 45: Map = Map.Tokuno4;   break;
+					case 46: Map = Map.TerMur4;   break;
 
 				}
 			}

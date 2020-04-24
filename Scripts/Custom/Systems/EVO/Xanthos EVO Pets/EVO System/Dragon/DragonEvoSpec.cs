@@ -195,7 +195,7 @@ namespace Xanthos.Evo
 		public RaelisDragonStageSeven()
 		{
 			Title = "The Ancient Dragon";
-			EvolutionMessage = "has evolved to its highest form and is now an Ancient Dragon";
+			EvolutionMessage = "has evolved to its highest form";
 			NextEpThreshold = 0; EpMinDivisor = 740; EpMaxDivisor = 660; DustMultiplier = 20;
 			BaseSoundID = 362;
 			BodyValue = 197; ControlSlots = 4; VirtualArmor = 270;

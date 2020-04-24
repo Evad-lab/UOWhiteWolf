@@ -31,31 +31,34 @@ namespace Server.Voting
 			if (from == null || from.Deleted || voteSite == null)
 			{ return; }
 
-			if (voteSite.Valid)
+			if (voteSite.Parent != null)
 			{
-				if (e.CanVote)
+				if (voteSite.Valid)
 				{
-					if (voteSite.Parent.OnBeforeVote(from))
+					if (e.CanVote)
 					{
-						voteSite.Parent.OnVote(from, VoteStatus.Success);
-						voteSite.Parent.OnAfterVote(from, VoteStatus.Success);
+						if (voteSite.Parent.OnBeforeVote(from))
+						{
+							voteSite.Parent.OnVote(from, VoteStatus.Success);
+							voteSite.Parent.OnAfterVote(from, VoteStatus.Success);
+						}
+						else
+						{
+							voteSite.Parent.OnVote(from, VoteStatus.Custom);
+							voteSite.Parent.OnAfterVote(from, VoteStatus.Custom);
+						}
 					}
 					else
 					{
-						voteSite.Parent.OnVote(from, VoteStatus.Custom);
-						voteSite.Parent.OnAfterVote(from, VoteStatus.Custom);
+						voteSite.Parent.OnVote(from, VoteStatus.TooEarly);
+						voteSite.Parent.OnAfterVote(from, VoteStatus.TooEarly);
 					}
 				}
 				else
 				{
-					voteSite.Parent.OnVote(from, VoteStatus.TooEarly);
-					voteSite.Parent.OnAfterVote(from, VoteStatus.TooEarly);
+					voteSite.Parent.OnVote(from, VoteStatus.Invalid);
+					voteSite.Parent.OnAfterVote(from, VoteStatus.Invalid);
 				}
-			}
-			else
-			{
-				voteSite.Parent.OnVote(from, VoteStatus.Invalid);
-				voteSite.Parent.OnAfterVote(from, VoteStatus.Invalid);
 			}
 		}
 

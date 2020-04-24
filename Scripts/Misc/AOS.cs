@@ -2394,7 +2394,7 @@ namespace Server
                     m_Mods = new List<SkillMod>();
 
                 SkillMod sk = new DefaultSkillMod(skill, true, bonus);
-                sk.ObeyCap = true;
+                sk.ObeyCap = false;
                 m.AddSkillMod(sk);
                 m_Mods.Add(sk);
             }

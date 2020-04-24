@@ -65,7 +65,10 @@ namespace Server.Mobiles
             c.DropItem( new ParrotItem() );
 
             if ( Paragon.ChestChance > Utility.RandomDouble() )
-            c.DropItem( new ParagonChest( Name, TreasureMapLevel ) );
+			{
+				//UOWW: ParagonChest temporary fix
+				//c.DropItem( new ParagonChest( Name, TreasureMapLevel ) );
+			}
         }
 
         public override bool GivesMLMinorArtifact

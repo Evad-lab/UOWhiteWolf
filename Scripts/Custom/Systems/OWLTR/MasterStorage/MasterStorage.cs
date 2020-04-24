@@ -287,7 +287,7 @@ namespace daat99
 				if ( item is Corpse )
 				{
 					Corpse corpse = item as Corpse;
-					if ( isCorpseLootable(player, corpse) )
+					if ( isCorpseLootable(player, corpse) &&  corpse.Name != "a training vorpal bunny")
 						corpses.Add(corpse);
 				}
 				else if ( item.Movable && item.IsAccessibleTo(player) && isItemLootable(item) )
