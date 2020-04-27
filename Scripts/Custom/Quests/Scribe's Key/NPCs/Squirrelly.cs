@@ -113,14 +113,14 @@ namespace Server.Mobiles
 		                {
 					dropped.Delete(); 
 					mobile.AddToBackpack( new ScribesKey() );
-					mobile.SendMessage( "Here's a Scribe's Key, not quite as good as my New Scribe's Key, but almost!" );
+					mobile.SendMessage( "Here's a Scribe's Key, not quite as good as my New Scribe's Key, but almost! You only get one Key!" );
                                         acct.SetTag( "TheNewScribesKeyReceived", "true" );
 
 				
          		        }
 				else //what to do if account has already been tagged
          			{
-         				mobile.SendMessage("Have some gold for your troubles.");
+         				mobile.SendMessage("I have only gold for you, I gave you the Scribe Key last time.");
          				mobile.AddToBackpack( new Gold( 5500 ) );
          				dropped.Delete();
          			}

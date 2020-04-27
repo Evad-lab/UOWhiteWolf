@@ -85,19 +85,6 @@ namespace Server.Engines.Craft
             return 0.0; // 0%
         }
 
-        private System.Collections.Generic.List<Type> _NoConsumeOnFail = new System.Collections.Generic.List<Type>
-        {
-            typeof(LeggingsOfBane), typeof(GauntletsOfNobility)
-        };
-
-        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
-        {
-            if (_NoConsumeOnFail.Contains(resourceType))
-                return false;
-
-            return base.ConsumeOnFailure(from, resourceType, craftItem);
-        }
-
         private DefBlacksmithy()
             : base(1, 1, 1.25) // base( 1, 2, 1.7 )
         {
@@ -135,7 +122,8 @@ namespace Server.Engines.Craft
                 bool isAnvil = (type.IsDefined(typeofAnvil, false) || item.ItemID == 4015 || item.ItemID == 4016 ||
                                 item.ItemID == 0x2DD5 || item.ItemID == 0x2DD6);
                 bool isForge = (type.IsDefined(typeofForge, false) || item.ItemID == 4017 ||
-                                (item.ItemID >= 6522 && item.ItemID <= 6569) || item.ItemID == 0x2DD8);
+                                (item.ItemID >= 6522 && item.ItemID <= 6569) || item.ItemID == 0x2DD8) ||
+                                item.ItemID == 0xA531 || item.ItemID == 0xA535;
 
                 if (!isAnvil && !isForge)
                 {
@@ -322,70 +310,67 @@ namespace Server.Engines.Craft
 
             #region Platemail
             AddCraft(typeof(PlateArms), 1111704, 1025136, 66.3, 116.3, typeof(IronIngot), 1044036, 18, 1044037);
-
             AddCraft(typeof(PlateGloves), 1111704, 1025140, 58.9, 108.9, typeof(IronIngot), 1044036, 12, 1044037);
             AddCraft(typeof(PlateGorget), 1111704, 1025139, 56.4, 106.4, typeof(IronIngot), 1044036, 10, 1044037);
             AddCraft(typeof(PlateLegs), 1111704, 1025137, 68.8, 118.8, typeof(IronIngot), 1044036, 20, 1044037);
             AddCraft(typeof(PlateChest), 1111704, 1046431, 75.0, 125.0, typeof(IronIngot), 1044036, 25, 1044037);
             AddCraft(typeof(FemalePlateChest), 1111704, 1046430, 44.1, 94.1, typeof(IronIngot), 1044036, 20, 1044037);
 			
+			//UOWW Additions
 			#region Custom
-				index = AddCraft(typeof(armsofevolution), 1111704, "Plate Arms of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 200, "You need more Platinum Ingots"); //BadKitty
-				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
-				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
-				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
-				AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
-				AddSkill(index, SkillName.Fletching, 120.0, 120.0);
-				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
-				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
-				
-				index = AddCraft(typeof(chestofevolution), 1111704, "Plate Chest of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 250, "You need more Platinum Ingots"); //BadKitty
-				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
-				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
-				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
-				AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
-				AddSkill(index, SkillName.Fletching, 120.0, 120.0);
-				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
-				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
-				
-				index = AddCraft(typeof(femalechestofevolution), 1111704, "Female Plate Chest of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 250, "You need more Platinum Ingots"); //BadKitty
-				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
-				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
-				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
-				AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
-				AddSkill(index, SkillName.Fletching, 120.0, 120.0);
-				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
-				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
-				
-				index = AddCraft(typeof(glovesofevolution), 1111704, "Plate Gloves of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 180, "You need more Platinum Ingots"); //BadKitty
-				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
-				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
-				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
-				AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
-				AddSkill(index, SkillName.Fletching, 120.0, 120.0);
-				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
-				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
-				
-				index = AddCraft(typeof(gorgetofevolution), 1111704, "Plate Gorget of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 150, "You need more Platinum Ingots"); //BadKitty
-				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
-				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
-				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
-				AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
-				AddSkill(index, SkillName.Fletching, 120.0, 120.0);
-				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
-				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
-				
-				index = AddCraft(typeof(legsofevolution), 1111704, "Plate Legs of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 250, "You need more Platinum Ingots"); //BadKitty
-				AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
-				AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
-				AddSkill(index, SkillName.Cooking, 120.0, 120.0);
-				AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
-				AddSkill(index, SkillName.Fletching, 120.0, 120.0);
-				AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
-				AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
-				
-				
-
+			index = AddCraft(typeof(armsofevolution), 1111704, "Plate Arms of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 200, "You need more Platinum Ingots"); //BadKitty
+			AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
+			AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
+			AddSkill(index, SkillName.Cooking, 120.0, 120.0);
+			AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
+			AddSkill(index, SkillName.Fletching, 120.0, 120.0);
+			AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
+			AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
+			
+			index = AddCraft(typeof(chestofevolution), 1111704, "Plate Chest of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 250, "You need more Platinum Ingots"); //BadKitty
+			AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
+			AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
+			AddSkill(index, SkillName.Cooking, 120.0, 120.0);
+			AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
+			AddSkill(index, SkillName.Fletching, 120.0, 120.0);
+			AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
+			AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
+			
+			index = AddCraft(typeof(femalechestofevolution), 1111704, "Female Plate Chest of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 250, "You need more Platinum Ingots"); //BadKitty
+			AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
+			AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
+			AddSkill(index, SkillName.Cooking, 120.0, 120.0);
+			AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
+			AddSkill(index, SkillName.Fletching, 120.0, 120.0);
+			AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
+			AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
+			
+			index = AddCraft(typeof(glovesofevolution), 1111704, "Plate Gloves of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 180, "You need more Platinum Ingots"); //BadKitty
+			AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
+			AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
+			AddSkill(index, SkillName.Cooking, 120.0, 120.0);
+			AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
+			AddSkill(index, SkillName.Fletching, 120.0, 120.0);
+			AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
+			AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
+			
+			index = AddCraft(typeof(gorgetofevolution), 1111704, "Plate Gorget of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 150, "You need more Platinum Ingots"); //BadKitty
+			AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
+			AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
+			AddSkill(index, SkillName.Cooking, 120.0, 120.0);
+			AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
+			AddSkill(index, SkillName.Fletching, 120.0, 120.0);
+			AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
+			AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
+			
+			index = AddCraft(typeof(legsofevolution), 1111704, "Plate Legs of the Wolf", 120.0, 120.0, typeof(PlatinumIngot), "Platinum Ingots", 250, "You need more Platinum Ingots"); //BadKitty
+			AddSkill(index, SkillName.Alchemy, 120.0, 120.0);
+			AddSkill(index, SkillName.Inscribe, 120.0, 120.0);
+			AddSkill(index, SkillName.Cooking, 120.0, 120.0);
+			AddSkill(index, SkillName.Tailoring, 120.0, 120.0);
+			AddSkill(index, SkillName.Fletching, 120.0, 120.0);
+			AddSkill(index, SkillName.Carpentry, 120.0, 120.0);
+			AddSkill(index, SkillName.Tinkering, 120.0, 120.0);
 			#endregion
 
             if (Core.AOS) // exact pre-aos functionality unknown
@@ -584,7 +569,7 @@ namespace Server.Engines.Craft
 
                     index = AddCraft(typeof(RuneCarvingKnife), 1011081, 1072915, 70.0, 120.0, typeof(IronIngot), 1044036, 9, 1044037);
                     AddRes(index, typeof(DreadHornMane), 1032682, 1, 1053098);
-                    AddRes(index, typeof(Putrefication), 1032678, 10, 1053098);
+                    AddRes(index, typeof(Putrefaction), 1032678, 10, 1053098);
                     AddRes(index, typeof(Muculent), 1032680, 10, 1053098);
                     AddRecipe(index, (int)SmithRecipes.RuneCarvingKnife);
                     ForceNonExceptional(index);
@@ -606,7 +591,7 @@ namespace Server.Engines.Craft
                     index = AddCraft(typeof(LuminousRuneBlade), 1011081, 1072922, 70.0, 120.0, typeof(IronIngot), 1044036, 15, 1044037);
                     AddRes(index, typeof(GrizzledBones), 1032684, 1, 1053098);
                     AddRes(index, typeof(Corruption), 1032676, 10, 1053098);
-                    AddRes(index, typeof(Putrefication), 1032678, 10, 1053098);
+                    AddRes(index, typeof(Putrefaction), 1032678, 10, 1053098);
                     AddRecipe(index, (int)SmithRecipes.LuminousRuneBlade);
                     ForceNonExceptional(index);
 
@@ -930,15 +915,31 @@ namespace Server.Engines.Craft
 
             if (Core.HS)
             {
-                index = AddCraft(typeof(LightCannonball), 1116354, 1116266, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                if (Core.EJ)
+                {
+                    index = AddCraft(typeof(Cannonball), 1116354, 1116029, 10.0, 60.0, typeof(IronIngot), 1044036, 12, 1044037);
+                    SetUseAllRes(index, true);
+                }
+                else
+                {
+                    AddCraft(typeof(LightCannonball), 1116354, 1116266, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                    AddCraft(typeof(HeavyCannonball), 1116354, 1116267, 10.0, 60.0, typeof(IronIngot), 1044036, 12, 1044037);
+                }
 
-                index = AddCraft(typeof(HeavyCannonball), 1116354, 1116267, 10.0, 60.0, typeof(IronIngot), 1044036, 12, 1044037);
+                if (Core.EJ)
+                {
+                    index = AddCraft(typeof(Grapeshot), 1116354, 1116030, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
+                    AddRes(index, typeof(Cloth), 1044286, 2, 1044287);
+                    SetUseAllRes(index, true);
+                }
+                else
+                {
+                    index = AddCraft(typeof(LightGrapeshot), 1116354, 1116030, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
+                    AddRes(index, typeof(Cloth), 1044286, 1, 1044287);
 
-                index = AddCraft(typeof(LightGrapeshot), 1116354, 1116030, 0.0, 50.0, typeof(IronIngot), 1044036, 6, 1044037);
-                AddRes(index, typeof(Cloth), 1044286, 1, 1044287);
-
-                index = AddCraft(typeof(HeavyGrapeshot), 1116354, 1116166, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
-                AddRes(index, typeof(Cloth), 1044286, 2, 1044287);
+                    index = AddCraft(typeof(HeavyGrapeshot), 1116354, 1116166, 15.0, 70.0, typeof(IronIngot), 1044036, 12, 1044037);
+                    AddRes(index, typeof(Cloth), 1044286, 2, 1044287);
+                }
 
                 index = AddCraft(typeof(LightShipCannonDeed), 1116354, 1095790, 65.0, 120.0, typeof(IronIngot), 1044036, 900, 1044037);
                 AddRes(index, typeof(Board), 1044041, 50, 1044351);

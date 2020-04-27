@@ -4,10 +4,10 @@ using Server.Items;
 namespace Server.Mobiles
 {
     [CorpseName("a gargoyle corpse")]
-    public class Gargoyle : BaseCreature 
+    public class Gargoyle : BaseCreature
     {
         [Constructable]
-        public Gargoyle()  
+        public Gargoyle()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             this.Name = "a gargoyle";
@@ -50,7 +50,7 @@ namespace Server.Mobiles
 
         }
 
-        public Gargoyle(Serial serial) 
+        public Gargoyle(Serial serial)
             : base(serial)
         {
         }

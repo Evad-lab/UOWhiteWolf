@@ -216,6 +216,10 @@ namespace Server.Mobiles
                 {
                     if (FindItemOnLayer(item.Layer) == null)
                     {
+						/*
+						*
+						*UOWW: temp fix duping bow and Xbows
+						*
                         if (item is BaseRanged)
                         {
                             Item i = FindItemOnLayer(Layer.TwoHanded);
@@ -237,9 +241,9 @@ namespace Server.Mobiles
                             AddItem(Loot.Construct(item.GetType()));
                         }
                         else
-                        {
+                        {*/
                             AddItem(new ClonedItem(item));
-                        }
+                        //}
                     }
                 }
             }
@@ -421,10 +425,7 @@ namespace Server.Mobiles
 
             public override DeathMoveResult OnParentDeath(Mobile parent)
             {
-				//UOWW : fix duping of items
-				Movable = false;
-				
-                return base.OnParentDeath(parent);
+				return DeathMoveResult.RemainEquiped;
             }
 
             public override DeathMoveResult OnInventoryDeath(Mobile parent)

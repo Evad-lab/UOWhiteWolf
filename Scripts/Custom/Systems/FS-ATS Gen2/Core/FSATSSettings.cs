@@ -64,20 +64,9 @@ namespace Server
 		public static string[] AlwaysMale = new string[]
 		{
 			"Bull",
-			"RaelisDaemon",
 			"GreatHart",
-			"RaelisDragon",
-			"EvoHiryu",
-			"EvoKirin",
-			"EvoLion",
-			"EvoMare",
 			"Mercenary",
-			"EvoRat",
-			"EvoWisp",
-			"Squire",
-			"EvoFairyDragon",
-			"EvoCuSidhe",
-			"EvoFerret"
+			"Squire"
 		};
 
 		/***********************************************

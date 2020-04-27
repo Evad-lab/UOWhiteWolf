@@ -112,15 +112,15 @@ namespace Server.Mobiles
                                 if ( !NewSewingBasketKeyReceived ) //added account tag check
 		                {
 					dropped.Delete(); 
-					mobile.AddToBackpack( new IngotKey() );
-					mobile.SendMessage( "Thank you for your help!" );
+					mobile.AddToBackpack( new TailorKey() );
+					mobile.SendMessage( "Thank you for your help! Take care of this Tailor Key, you only get one." );
                                         acct.SetTag( "NewSewingBasketKeyReceived", "true" );
 
 				
          		        }
 				else //what to do if account has already been tagged
          			{
-         				mobile.SendMessage("Have some gold for your troubles.");
+         				mobile.SendMessage("I have only gold for you, I gave you the Tailor Key last time.");
          				mobile.AddToBackpack( new Gold( 8500 ) );
          				dropped.Delete();
          			}

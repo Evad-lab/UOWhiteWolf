@@ -251,7 +251,7 @@ namespace Server.ACC.PG
 					case 7:  Map = Map.Felucca;  break;
 					case 8:  Map = Map.Malas;    break;
 					case 9:  Map = Map.Ilshenar; break;
-					case 14: Map = Map.Tokuno;   break;
+					case 10: Map = Map.Tokuno;   break;
                    	case 20: Map = Map.TerMur;   break;
 					case 21: Map = Map.Trammel2;  break;
 					case 22: Map = Map.Felucca2;  break;

@@ -69,10 +69,7 @@ namespace Server.Mobiles
             c.DropItem( new DisintegratingThesisNotes() );
 
             if ( Paragon.ChestChance > Utility.RandomDouble() )
-			{
-				//UOWW: ParagonChest temporary fix
-				//c.DropItem( new ParagonChest( Name, TreasureMapLevel ) );
-			}
+            c.DropItem( new ParagonChest( Name, 5 ) );
         }
 
         /*public override bool GivesMLMinorArtifact
@@ -88,14 +85,7 @@ namespace Server.Mobiles
             {
                 return true;
             }
-        }
-        public override int TreasureMapLevel
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        }       
         public override void GenerateLoot()
         {
             AddLoot(LootPack.UltraRich, 3);

@@ -428,7 +428,7 @@ namespace Server
             {
                 if (context.Type == typeof(WraithFormSpell))
                 {
-                    int manaLeech = AOS.Scale(damageGiven, Math.Min(target.Mana, (5 + (int)((15 * from.Skills.SpiritSpeak.Value) / 100)))); // Wraith form gives 5-20% mana leech
+                    int manaLeech = AOS.Scale(damageGiven, Math.Min(target.Mana, (int)from.Skills.SpiritSpeak.Value / 5)); // Wraith form gives 5-20% mana leech
 
                     if (manaLeech != 0)
                     {
@@ -477,9 +477,9 @@ namespace Server
                 case 13: return Math.Min(4, AosAttributes.GetValue(from, AosAttribute.CastSpeed));
                 case 14: return Math.Min(40, AosAttributes.GetValue(from, AosAttribute.LowerManaCost)) + BaseArmor.GetInherentLowerManaCost(from);
                 
-                case 15: return RegenRates.HitPointRegen(from); // HP   REGEN
-                case 16: return RegenRates.StamRegen(from); // Stam REGEN
-                case 17: return RegenRates.ManaRegen(from); // MANA REGEN
+                case 15: return (int)RegenRates.HitPointRegen(from); // HP   REGEN
+                case 16: return (int)RegenRates.StamRegen(from); // Stam REGEN
+                case 17: return (int)RegenRates.ManaRegen(from); // MANA REGEN
                 case 18: return Math.Min(105, AosAttributes.GetValue(from, AosAttribute.ReflectPhysical)); // reflect phys
                 case 19: return Math.Min(50, AosAttributes.GetValue(from, AosAttribute.EnhancePotions)); // enhance pots
 
@@ -571,7 +571,6 @@ namespace Server
                 return 0;
             }
 
-            List<Item> items = m.Items;
             int value = 0;
 
             if (attribute == AosAttribute.Luck || attribute == AosAttribute.RegenMana || attribute == AosAttribute.DefendChance || attribute == AosAttribute.EnhancePotions)
@@ -581,9 +580,9 @@ namespace Server
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                Item obj = items[i];
+                Item obj = m.Items[i];
 
                 AosAttributes attrs = RunicReforging.GetAosAttributes(obj);
 
@@ -1405,16 +1404,15 @@ namespace Server
                 return 0;
             }
 
-            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                AosWeaponAttributes attrs = RunicReforging.GetAosWeaponAttributes(items[i]);
+                AosWeaponAttributes attrs = RunicReforging.GetAosWeaponAttributes(m.Items[i]);
 
                 if (attrs != null)
                     value += attrs[attribute];
@@ -1488,7 +1486,7 @@ namespace Server
 
             if (HitLeechHits > 0)
             {
-                double postcap = (double)HitLeechHits / (double)Imbuing.GetPropRange(wep, AosWeaponAttribute.HitLeechHits)[1];
+                double postcap = (double)HitLeechHits / (double)ItemPropertyInfo.GetMaxIntensity(wep, AosWeaponAttribute.HitLeechHits);
                 if (postcap < 1.0) postcap = 1.0;
 
                 int newhits = (int)((wep.MlSpeed * 2500 / (100 + weaponSpeed)) * postcap);
@@ -1502,7 +1500,7 @@ namespace Server
 
             if (HitLeechMana > 0)
             {
-                double postcap = (double)HitLeechMana / (double)Imbuing.GetPropRange(wep, AosWeaponAttribute.HitLeechMana)[1];
+                double postcap = (double)HitLeechMana / (double)ItemPropertyInfo.GetMaxIntensity(wep, AosWeaponAttribute.HitLeechMana);
                 if (postcap < 1.0) postcap = 1.0;
 
                 int newmana = (int)((wep.MlSpeed * 2500 / (100 + weaponSpeed)) * postcap);
@@ -1948,7 +1946,8 @@ namespace Server
         Bane            = 0x00000008,
         MysticWeapon    = 0x00000010,
         AssassinHoned   = 0x00000020,
-        Focus            = 0x00000040,
+        Focus           = 0x00000040,
+        HitExplosion    = 0x00000080
     }
 
     public sealed class ExtendedWeaponAttributes : BaseAttributes
@@ -1968,25 +1967,24 @@ namespace Server
         {
         }
 
-        public static int GetValue(Mobile m, AosWeaponAttribute attribute)
+        public static int GetValue(Mobile m, ExtendedWeaponAttribute attribute)
         {
             if (!Core.AOS)
                 return 0;
 
-            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                Item obj = items[i];
+                Item obj = m.Items[i];
 
                 if (obj is BaseWeapon)
                 {
-                    AosWeaponAttributes attrs = ((BaseWeapon)obj).WeaponAttributes;
+                    ExtendedWeaponAttributes attrs = ((BaseWeapon)obj).ExtendedWeaponAttributes;
 
                     if (attrs != null)
                         value += attrs[attribute];
@@ -2103,6 +2101,19 @@ namespace Server
                 this[ExtendedWeaponAttribute.Focus] = value;
             }
         }
+
+        [CommandProperty(AccessLevel.GameMaster)]
+        public int HitExplosion
+        {
+            get
+            {
+                return this[ExtendedWeaponAttribute.HitExplosion];
+            }
+            set
+            {
+                this[ExtendedWeaponAttribute.HitExplosion] = value;
+            }
+        }
     }
 
     [Flags]
@@ -2157,12 +2168,11 @@ namespace Server
                 return 0;
             }
 
-            List<Item> items = m.Items;
             int value = 0;
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
-                AosArmorAttributes attrs = RunicReforging.GetAosArmorAttributes(items[i]);
+                AosArmorAttributes attrs = RunicReforging.GetAosArmorAttributes(m.Items[i]);
 
                 if (attrs != null)
                     value += attrs[attribute];
@@ -2764,14 +2774,13 @@ namespace Server
                 return 0;
             }
 
-            List<Item> items = m.Items;
             int value = 0;
 
             #region Enhancement
             value += Enhancement.GetValue(m, attribute);
             #endregion
 
-            for (int i = 0; i < items.Count; ++i)
+            for (int i = 0; i < m.Items.Count; ++i)
             {
                 SAAbsorptionAttributes attrs = RunicReforging.GetSAAbsorptionAttributes(m.Items[i]);
 

@@ -21,7 +21,7 @@ namespace Server.Mobiles
             SetInt(21, 40);
 
             SetDamage(13, 24);
-            SetHits(746, 844);
+            SetHits(737, 854);
 
             SetDamageType(ResistanceType.Physical, 50);
             SetDamageType(ResistanceType.Poison, 50);
@@ -49,6 +49,7 @@ namespace Server.Mobiles
         public override Poison HitPoison { get { return Poison.Lethal; } }
         public override Poison PoisonImmune { get { return Poison.Lethal; } }
         public override bool CanAngerOnTame { get { return true; } }
+        public override int TreasureMapLevel { get { return 2; } }
 
         public override void GenerateLoot()
         {

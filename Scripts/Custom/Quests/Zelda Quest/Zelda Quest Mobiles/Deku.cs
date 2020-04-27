@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+
 using Server;
 using Server.Items;
 
@@ -47,6 +50,8 @@ namespace Server.Mobiles
 
 			PackItem( new DekuShield() );
 			PackNecroReg( 50, 80 );
+			
+			SetSpecialAbility(SpecialAbility.LifeDrain);
 		}
 
 		public override void GenerateLoot()
@@ -55,10 +60,12 @@ namespace Server.Mobiles
 			AddLoot( LootPack.MedScrolls, 2 );
 		}
 
-                public override bool DrainsLife { get { return true; } }
-                public override bool AutoDispel{ get{ return true; } }
-	        public override bool BardImmune{ get{ return true; } }
-                public override bool AlwaysMurderer { get { return true; } }
+        //UOWW: commented out for compatilibity with the new Core
+		//
+		//public override bool DrainsLife { get { return true; } }
+        public override bool AutoDispel{ get{ return true; } }
+	    public override bool BardImmune{ get{ return true; } }
+        public override bool AlwaysMurderer { get { return true; } }
 		public override bool CanRummageCorpses{ get{ return true; } }
 		public override Poison PoisonImmune{ get{ return Poison.Lethal; } }
 		public override int TreasureMapLevel{ get{ return 4; } }
@@ -66,6 +73,52 @@ namespace Server.Mobiles
 		public Deku( Serial serial ) : base( serial )
 		{
 		}
+		
+		//UOWW: DrainsLife compatibility with the new Core
+		//
+		public override void OnDrainLife(Mobile victim)
+        {
+            if (Map == null)
+                return;
+
+            ArrayList list = new ArrayList();
+            int count = 0;
+            IPooledEnumerable eable = GetMobilesInRange(20);
+
+            foreach (Mobile m in eable)
+            {
+                if (m == this || !CanBeHarmful(m))
+                {
+                    if (m is DarkWisp) { count++; }
+                    continue;
+                }
+
+                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
+                    list.Add(m);
+                else if (m.Player)
+                    list.Add(m);
+            }
+
+            eable.Free();
+
+            foreach (Mobile m in list)
+            {
+                (new DarkWisp()).MoveToWorld(new Point3D(Location), Map);
+                int teleportchance = Hits / HitsMax;
+
+                if (teleportchance < Utility.RandomDouble() && m.Alive)
+                {
+                    switch (Utility.Random(6))
+                    {
+                        case 0: m.MoveToWorld(new Point3D(6431, 1664, 0), Map); break;
+                        case 1: m.MoveToWorld(new Point3D(6432, 1634, 0), Map); break;
+                        case 2: m.MoveToWorld(new Point3D(6401, 1657, 0), Map); break;
+                        case 3: m.MoveToWorld(new Point3D(6401, 1637, 0), Map); break;
+                        default: m.MoveToWorld(new Point3D(Location), Map); break;
+                    }
+                }
+            }
+        }	
 
 		public override void Serialize( GenericWriter writer )
 		{

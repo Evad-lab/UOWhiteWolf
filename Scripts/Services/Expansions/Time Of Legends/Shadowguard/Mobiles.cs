@@ -32,13 +32,9 @@ namespace Server.Engines.Shadowguard
             SetResistance(ResistanceType.Energy, 10, 20);
 
             SetSkill(SkillName.Anatomy, 125.0);
-            SetSkill(SkillName.Fencing, 46.0, 77.5);
-            SetSkill(SkillName.Macing, 35.0, 57.5);
-            SetSkill(SkillName.Poisoning, 60.0, 82.5);
             SetSkill(SkillName.MagicResist, 83.5, 92.5);
-            SetSkill(SkillName.Swords, 125.0);
+            SetSkill(SkillName.Wrestling, 125.0);
             SetSkill(SkillName.Tactics, 125.0);
-            SetSkill(SkillName.Lumberjacking, 125.0);
 
             Fame = 1000;
             Karma = -1000;
@@ -58,10 +54,27 @@ namespace Server.Engines.Shadowguard
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 3);
+            AddLoot(LootPack.Rich, 3);
         }
 
         public override bool AlwaysMurderer { get { return true; } }
+        public bool BlockReflect { get; set; }
+
+        public override int Damage(int amount, Mobile from, bool informMount, bool checkDisrupt)
+        {
+            int dam = base.Damage(amount, from, informMount, checkDisrupt);
+
+            if (!BlockReflect && from != null && dam > 0)
+            {
+                BlockReflect = true;
+                AOS.Damage(from, this, Math.Max(1, (int)((double)dam * .37)), 0, 0, 0, 0, 0, 0, 100);
+                BlockReflect = false;
+                
+                from.PlaySound(0x1F1);
+            }
+
+            return dam;
+        }
 
         public ShadowguardPirate(Serial serial) : base(serial)
         {
@@ -98,11 +111,13 @@ namespace Server.Engines.Shadowguard
 
             Fame = 15000;
             Karma = -15000;
+
+            BlockReflect = true;
         }
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.FilthyRich, 3);
         }
 
         public ShantyThePirate(Serial serial) : base(serial)
@@ -119,6 +134,8 @@ namespace Server.Engines.Shadowguard
         {
             base.Deserialize(reader);
             int version = reader.ReadInt();
+
+            BlockReflect = true;
         }
     }
 
@@ -138,12 +155,12 @@ namespace Server.Engines.Shadowguard
 
         public override bool OnBeforeDeath()
         {
-            FountainEncounter encounter = ShadowguardController.GetEncounter(this.Location, this.Map) as FountainEncounter;
+            FountainEncounter encounter = ShadowguardController.GetEncounter(Location, Map) as FountainEncounter;
 
             if (encounter != null)
             {
                 var canal = new ShadowguardCanal();
-                canal.MoveToWorld(this.Location, this.Map);
+                canal.MoveToWorld(Location, Map);
                 encounter.AddShadowguardCanal(canal);
             }
 
@@ -269,7 +286,7 @@ namespace Server.Engines.Shadowguard
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 3);
+            AddLoot(LootPack.Rich, 3);
         }
 
         public VileTreefellow(Serial serial) : base(serial)
@@ -379,7 +396,7 @@ namespace Server.Engines.Shadowguard
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 3);
+            AddLoot(LootPack.Rich, 3);
         }
 
         public EnsorcelledArmor(Serial serial) : base(serial)
@@ -435,7 +452,7 @@ namespace Server.Engines.Shadowguard
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.Rich, 3);
+            AddLoot(LootPack.Rich, 3);
         }
 
         public VileDrake(Serial serial) : base(serial)
@@ -482,30 +499,30 @@ namespace Server.Engines.Shadowguard
         {
             base.OnThink();
 
-            BelfryEncounter encounter = ShadowguardController.GetEncounter(this.Location, this.Map) as BelfryEncounter;
+            BelfryEncounter encounter = ShadowguardController.GetEncounter(Location, Map) as BelfryEncounter;
 
-            if (encounter != null && this.Z == -20)
+            if (encounter != null && Z == -20)
             {
                 Point3D p = encounter.SpawnPoints[0];
                 encounter.ConvertOffset(ref p);
 
-                this.MoveToWorld(p, this.Map);
+                MoveToWorld(p, Map);
             }
         }
 
         protected override bool OnMove(Direction d)
         {
-            if (ShadowguardController.GetEncounter(this.Location, this.Map) != null)
+            if (ShadowguardController.GetEncounter(Location, Map) != null)
             {
-                int x = this.X;
-                int y = this.Y;
+                int x = X;
+                int y = Y;
 
                 Movement.Movement.Offset(d, ref x, ref y);
 
-                Point3D p = new Point3D(x, y, this.Map.GetAverageZ(x, y));
+                Point3D p = new Point3D(x, y, Map.GetAverageZ(x, y));
                 int z = p.Z;
 
-                IPooledEnumerable eable = this.Map.GetItemsInRange(p, 0);
+                IPooledEnumerable eable = Map.GetItemsInRange(p, 0);
 
                 foreach (Item item in eable)
                 {
@@ -515,7 +532,7 @@ namespace Server.Engines.Shadowguard
                     }
                 }
 
-                StaticTile[] staticTiles = this.Map.Tiles.GetStaticTiles(x, y, true);
+                StaticTile[] staticTiles = Map.Tiles.GetStaticTiles(x, y, true);
 
                 foreach (StaticTile tile in staticTiles)
                 {
@@ -527,7 +544,7 @@ namespace Server.Engines.Shadowguard
 
                 eable.Free();
 
-                if (z < this.Z)
+                if (z < Z)
                     return false;
             }
 
@@ -536,7 +553,7 @@ namespace Server.Engines.Shadowguard
 
         public override int Damage(int amount, Mobile from, bool informmount, bool checkfizzle)
         {
-            if (from == null || (ShadowguardController.GetEncounter(this.Location, this.Map) != null && this.Z == from.Z))
+            if (from == null || (ShadowguardController.GetEncounter(Location, Map) != null && Z == from.Z))
             {
                 return base.Damage(amount, from, informmount, checkfizzle);
             }
@@ -546,7 +563,7 @@ namespace Server.Engines.Shadowguard
 
         public override void GenerateLoot()
         {
-            this.AddLoot(LootPack.FilthyRich, 3);
+            AddLoot(LootPack.FilthyRich, 3);
             AddLoot(LootPack.Gems, 8);
         }
 
@@ -554,7 +571,7 @@ namespace Server.Engines.Shadowguard
         {
             base.OnGaveMeleeAttack(defender);
 
-            if (this.Map != null && 0.25 > Utility.RandomDouble())
+            if (Map != null && 0.5 > Utility.RandomDouble())
             {
                 int pushRange = Utility.RandomMinMax(2, 4);
 
@@ -567,9 +584,9 @@ namespace Server.Engines.Shadowguard
                     Movement.Movement.Offset(d, ref x, ref y);
                 }
 
-                int z = this.Map.GetAverageZ(x, y);
+                int z = Map.GetAverageZ(x, y);
 
-                IPooledEnumerable eable = this.Map.GetItemsInRange(new Point3D(x, y, z), 0);
+                IPooledEnumerable eable = Map.GetItemsInRange(new Point3D(x, y, z), 0);
 
                 foreach (Item item in eable)
                 {
@@ -581,7 +598,7 @@ namespace Server.Engines.Shadowguard
 
                 eable.Free();
 
-                StaticTile[] staticTiles = this.Map.Tiles.GetStaticTiles(x, y, true);
+                StaticTile[] staticTiles = Map.Tiles.GetStaticTiles(x, y, true);
 
                 foreach (StaticTile tile in staticTiles)
                 {
@@ -591,7 +608,7 @@ namespace Server.Engines.Shadowguard
                         z = tile.Z + itemData.CalcHeight;
                 }
 
-                defender.MoveToWorld(new Point3D(x, y, Z), this.Map);
+                defender.MoveToWorld(new Point3D(x, y, Z), Map);
             }
         }
 
@@ -663,24 +680,24 @@ namespace Server.Engines.Shadowguard
 
         protected override bool OnMove(Direction d)
         {
-            RoofEncounter encounter = ShadowguardController.GetEncounter(this.Location, this.Map) as RoofEncounter;
+            RoofEncounter encounter = ShadowguardController.GetEncounter(Location, Map) as RoofEncounter;
 
             if (encounter != null)
             {
                 Point3D spawn = encounter.SpawnPoints[0];
 
-                int x = this.X;
-                int y = this.Y;
+                int x = X;
+                int y = Y;
 
                 Movement.Movement.Offset(d, ref x, ref y);
 
-                Point3D p = new Point3D(x, y, this.Map.GetAverageZ(x, y));
+                Point3D p = new Point3D(x, y, Map.GetAverageZ(x, y));
                 int z = p.Z;
 
                 if (p.Y < spawn.Y - 5 || p.Y > spawn.Y + 4 || p.X > spawn.X + 4 || p.X < spawn.X - 5)
                     return false;
 
-                IPooledEnumerable eable = this.Map.GetItemsInRange(p, 0);
+                IPooledEnumerable eable = Map.GetItemsInRange(p, 0);
                 Item i = null;
 
                 foreach (Item item in eable)
@@ -692,7 +709,7 @@ namespace Server.Engines.Shadowguard
                     }
                 }
 
-                StaticTile[] staticTiles = this.Map.Tiles.GetStaticTiles(x, y, true);
+                StaticTile[] staticTiles = Map.Tiles.GetStaticTiles(x, y, true);
 
                 foreach (StaticTile tile in staticTiles)
                 {
@@ -704,7 +721,7 @@ namespace Server.Engines.Shadowguard
 
                 eable.Free();
 
-                if (z < this.Z)
+                if (z < Z)
                     return false;
             }
 
@@ -715,24 +732,24 @@ namespace Server.Engines.Shadowguard
         {
             base.OnThink();
 
-            RoofEncounter encounter = ShadowguardController.GetEncounter(this.Location, this.Map) as RoofEncounter;
+            RoofEncounter encounter = ShadowguardController.GetEncounter(Location, Map) as RoofEncounter;
 
             if (encounter != null)
             {
                 Point3D spawn = encounter.SpawnPoints[0];
-                Point3D p = this.Location;
+                Point3D p = Location;
                 encounter.ConvertOffset(ref spawn);
 
-                if (this.Z < 30 || p.Y < spawn.Y - 5 || p.Y > spawn.Y + 4 || p.X > spawn.X + 4 || p.X < spawn.X - 5)
+                if (Z < 30 || p.Y < spawn.Y - 5 || p.Y > spawn.Y + 4 || p.X > spawn.X + 4 || p.X < spawn.X - 5)
                 {
-                    this.MoveToWorld(spawn, Map.TerMur);
+                    MoveToWorld(spawn, Map.TerMur);
                 }
             }
         }
 
         public override int Damage(int amount, Mobile from, bool informMount, bool checkfizzle)
         {
-            RoofEncounter encounter = ShadowguardController.GetEncounter(this.Location, this.Map) as RoofEncounter;
+            RoofEncounter encounter = ShadowguardController.GetEncounter(Location, Map) as RoofEncounter;
 
             if (encounter != null && from != null)
             {

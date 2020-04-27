@@ -16,7 +16,7 @@ using Server.Spells.Necromancy;
 namespace Server.Engines.CannedEvil
 {
     public class ChampionSpawn : Item
-    {		
+    {
         public static readonly int MaxStrayDistance = 250;
 
 		private static int GatheredGold; //daat99 OWLTR - gathered gold
@@ -537,11 +537,11 @@ namespace Server.Engines.CannedEvil
         #region Scroll of Transcendence
         private ScrollOfTranscendence CreateRandomSoT(bool felucca)
         {
-            int level = Utility.RandomMinMax(1, 2);
+            int level = Utility.RandomMinMax(1, 7);
 			
             //PVE Shard
 			//if (felucca)
-            //   level += 5;
+            //level += 5;
 
             return ScrollOfTranscendence.CreateRandom(level, level);
         }
@@ -635,25 +635,28 @@ namespace Server.Engines.CannedEvil
                     m_DamageEntries.Clear();
 
 					//daat99 OWLTR start - no gate for MotA
-                    if (m_Type != ChampionSpawnType.Crafter && m_Altar != null)
+                    if (m_Type != ChampionSpawnType.Crafter)
                     //daat99 OWLTR end - no gate for MotA
 					//
 					//original code below
 					//
-                    //if (m_Altar != null)
-                    {
-                        m_Altar.Hue = 0x455;
-						
-						//PVE Shard
-                        //if (!Core.ML || Map == Map.Felucca)
-						if (!Core.ML)	
-                        {
-						int rng = Utility.Random(9);
-						
-						if (rng < 3)
-                            new StarRoomGate(true, m_Altar.Location, m_Altar.Map);
-                        }
-                    }
+					{
+	                    if (m_Altar != null)
+	                    {
+	                        m_Altar.Hue = 0x455;
+	
+							//PVE Shard
+	                        //if (!Core.ML || Map == Map.Felucca)
+							if (!Core.ML)	
+	                        {
+	                        	//PVE Shard
+								int rng = Utility.Random(9);
+								
+								if (rng < 2)	
+	                            	new StarRoomGate(true, m_Altar.Location, m_Altar.Map);
+	                        }
+	                    }
+	             	}
 
                     m_Champion = null;
                     Stop();
@@ -702,6 +705,7 @@ namespace Server.Engines.CannedEvil
 								//PVE Shard
                                 //if (Map == Map.Felucca)
                                 //{
+
                                     if (Utility.RandomDouble() < ChampionSystem.ScrollChance)
                                     {
                                         PlayerMobile pm = (PlayerMobile)killer;

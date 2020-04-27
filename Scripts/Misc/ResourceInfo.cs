@@ -56,8 +56,9 @@ namespace Server.Items
         YewWood,
         Heartwood,
         Bloodwood,
-		//daat99 OWLTR start - custom wood
-        Frostwood,
+        Frostwood
+        //daat99 OWLTR start - custom wood
+        ,
         Ebony,
         Bamboo,
         PurpleHeart,
@@ -1462,6 +1463,7 @@ namespace Server.Items
             if (m_TypeTable == null)
                 return CraftResource.None;
 
+			//Crash fix : null check on resourceType
 			object obj;
 			if (resourceType != null)
 				obj = m_TypeTable[resourceType];

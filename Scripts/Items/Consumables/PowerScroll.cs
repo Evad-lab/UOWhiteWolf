@@ -18,10 +18,6 @@ namespace Server.Items
             SkillName.Tactics,
             SkillName.Anatomy,
             SkillName.Healing,
-			SkillName.Begging,
-			SkillName.Fishing,
-			SkillName.Lockpicking,
-			SkillName.Poisoning,
             SkillName.Magery,
             SkillName.Meditation,
             SkillName.EvalInt,
@@ -32,8 +28,7 @@ namespace Server.Items
             SkillName.Musicianship,
             SkillName.Provocation,
             SkillName.Discordance,
-            SkillName.Peacemaking,
-			SkillName.ArmsLore
+            SkillName.Peacemaking
         };
         private static readonly SkillName[] m_AOSSkills = new SkillName[]
         {

@@ -59,7 +59,10 @@ namespace Server.Engines.Shadowguard
 							{
                                 if (pirate.Alive)
                                 {
+                                    // this is gay, but can't figure out a better way to do!
+                                    pirate.BlockReflect = true;
                                     AOS.Damage(pirate, m, 300, 0, 0, 0, 0, 0, 0, 100);
+                                    pirate.BlockReflect = false;
                                     pirate.FixedParticles(0x3728, 20, 10, 5044, EffectLayer.Head);
 
                                     pirate.PlaySound(Utility.Random(0x3E, 3));
@@ -124,11 +127,13 @@ namespace Server.Engines.Shadowguard
 		public ShadowguardCypress Tree { get; set; }
 	
 		[CommandProperty(AccessLevel.GameMaster)]
-		public ShadowguardEncounter Encounter { get; set; }
-		
-		public override int Lifespan { get { return 60; } }
+		public OrchardEncounter Encounter { get; set; }
+
+        public bool _Thrown;
+
+		public override int Lifespan { get { return 30; } }
 	
-		public ShadowguardApple(ShadowguardEncounter encounter, ShadowguardCypress tree) : base(0x9D0)
+		public ShadowguardApple(OrchardEncounter encounter, ShadowguardCypress tree) : base(0x9D0)
 		{
 			Encounter = encounter;
 			Tree = tree;
@@ -147,6 +152,8 @@ namespace Server.Engines.Shadowguard
 				m.SendLocalizedMessage(1010086); // What do you want to use this on?
 				m.BeginTarget(10, false, Server.Targeting.TargetFlags.None, (from, targeted) =>
 				{
+                    _Thrown = true;
+
                     if (targeted is ShadowguardCypress || targeted is ShadowguardCypress.ShadowguardCypressFoilage)
                     {
                         ShadowguardCypress tree = null;
@@ -187,31 +194,36 @@ namespace Server.Engines.Shadowguard
                                         tree.Encounter.CheckEncounter();
                                         Delete();
                                     }
-                                    else
+                                    else if (Encounter != null)
                                     {
-                                        p = m.Location;
-                                        var creature = new VileTreefellow();
-
-                                        for (int i = 0; i < 10; i++)
+                                        foreach (var pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
                                         {
-                                            int x = Utility.RandomMinMax(p.X - 1, p.X + 1);
-                                            int y = Utility.RandomMinMax(p.Y - 1, p.Y + 1);
-                                            int z = p.Z;
+                                            if (!pm.Alive)
+                                                continue;
 
-                                            if (map.CanSpawnMobile(x, y, z))
+                                            p = pm.Location;
+                                            var creature = new VileTreefellow();
+
+                                            for (int i = 0; i < 10; i++)
                                             {
-                                                p = new Point3D(x, y, z);
-                                                break;
+                                                int x = Utility.RandomMinMax(p.X - 1, p.X + 1);
+                                                int y = Utility.RandomMinMax(p.Y - 1, p.Y + 1);
+                                                int z = p.Z;
+
+                                                if (map.CanSpawnMobile(x, y, z))
+                                                {
+                                                    p = new Point3D(x, y, z);
+                                                    break;
+                                                }
                                             }
+
+                                            creature.MoveToWorld(p, map);
+                                            Timer.DelayCall(() => creature.Combatant = pm);
+
+                                            Encounter.AddSpawn(creature);
                                         }
 
-                                        creature.MoveToWorld(p, map);
-                                        creature.Combatant = m;
                                         m.PrivateOverheadMessage(MessageType.Regular, 0x3B2, 1156212, m.NetState); // *Your throw seems to have summoned an ambush!*
-
-                                        if (Encounter is OrchardEncounter)
-                                            ((OrchardEncounter)Encounter).AddSpawn(creature);
-
                                         Delete();
                                     }
                                 });
@@ -220,7 +232,53 @@ namespace Server.Engines.Shadowguard
 				});
 			}
 		}
-		
+
+        public override void OnDelete()
+        {
+            base.OnDelete();
+
+            if (!_Thrown && Encounter != null)
+            {
+                foreach (var pm in Encounter.Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+                {
+                    if (!pm.Alive)
+                        continue;
+
+                    var p = pm.Location;
+                    var map = pm.Map;
+                    var creature = new VileTreefellow();
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        int x = Utility.RandomMinMax(p.X - 1, p.X + 1);
+                        int y = Utility.RandomMinMax(p.Y - 1, p.Y + 1);
+                        int z = p.Z;
+
+                        if (map.CanSpawnMobile(x, y, z))
+                        {
+                            p = new Point3D(x, y, z);
+                            break;
+                        }
+                    }
+
+                    creature.MoveToWorld(p, map);
+                    Timer.DelayCall(() => creature.Combatant = pm);
+
+                    Encounter.AddSpawn(creature);
+                }
+            }
+        }
+
+        public override void Delete()
+        {
+            base.Delete();
+
+            if (Encounter != null)
+            {
+                Encounter.OnAppleDeleted();
+            }
+        }
+
 		public ShadowguardApple(Serial serial) : base(serial)
 		{
 		}
@@ -245,20 +303,23 @@ namespace Server.Engines.Shadowguard
 	public class ShadowguardCypress : Item
 	{
 		[CommandProperty(AccessLevel.GameMaster)]
-		public ShadowguardEncounter Encounter { get; set; }
+		public OrchardEncounter Encounter { get; set; }
 		
 		[CommandProperty(AccessLevel.GameMaster)]
 		public VirtueType VirtueType { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public ShadowguardCypressFoilage Foilage { get; set; }
-		
-		public ShadowguardCypress(ShadowguardEncounter encounter, VirtueType type) : base(Utility.RandomList(3320, 3323, 3326, 3329))
+
+        // 0xD96, 0xD9A, 
+
+        public ShadowguardCypress(OrchardEncounter encounter, VirtueType type)
+            : base(3329)
 		{
 			VirtueType = type;
 			Encounter = encounter;
 
-            Foilage = new ShadowguardCypressFoilage(Utility.RandomMinMax(this.ItemID + 1, this.ItemID + 2), this);
+            Foilage = new ShadowguardCypressFoilage(Utility.RandomBool() ? 0xD96 : 0xD9A, this);
 
 			Movable = false;
 		}
@@ -268,7 +329,7 @@ namespace Server.Engines.Shadowguard
             base.OnLocationChange(oldLocation);
 
             if (Foilage != null)
-                Foilage.Location = this.Location;
+                Foilage.Location = new Point3D(X, Y, Z + 6);
         }
 
         public override void OnMapChange()
@@ -281,12 +342,13 @@ namespace Server.Engines.Shadowguard
 		{
 			if(from.Backpack != null && from.InRange(this.Location, 3))
 			{
-				foreach(Item item in from.Backpack.Items.Where(i => i is ShadowguardApple && ((ShadowguardApple)i).Tree == this))
-				{
-					return;
-				}
-				
-				from.Backpack.DropItem(new ShadowguardApple(Encounter, this));
+                if (Encounter.Apple == null || Encounter.Apple.Deleted)
+                {
+                    Encounter.Apple = new ShadowguardApple(Encounter, this);
+                    from.Backpack.DropItem(Encounter.Apple);
+
+                    Encounter.OnApplePicked();
+                }
 			}
 		}
 		
@@ -372,16 +434,18 @@ namespace Server.Engines.Shadowguard
 
             writer.Write(Foilage);
 		}
-		
-		public override void Deserialize(GenericReader reader)
-		{
-			base.Deserialize(reader);
-			int version = reader.ReadInt();
+
+        public override void Deserialize(GenericReader reader)
+        {
+            base.Deserialize(reader);
+            int version = reader.ReadInt();
 
             Foilage = reader.ReadItem() as ShadowguardCypressFoilage;
 
             if (Foilage != null)
+            {
                 Foilage.Tree = this;
+            }
 		}
 	}
 	

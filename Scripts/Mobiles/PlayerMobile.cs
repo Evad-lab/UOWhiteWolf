@@ -46,6 +46,7 @@ using Server.Engines.VendorSearching;
 using Server.Targeting;
 
 using RankDefinition = Server.Guilds.RankDefinition;
+using Server.Engines.Fellowship;
 #endregion
 
 namespace Server.Mobiles
@@ -53,7 +54,7 @@ namespace Server.Mobiles
 
 	#region Enums
 	[Flags]
-	public enum PlayerFlag : ulong // First 16 bits are reserved for default-distro use, start custom flags at 0x00010000
+	public enum PlayerFlag
 	{
 		None = 0x00000000,
 		Glassblowing = 0x00000001,
@@ -86,7 +87,6 @@ namespace Server.Mobiles
         ToggleCutTopiaries = 0x10000000,
         HasValiantStatReward = 0x20000000,
         RefuseTrades = 0x40000000,		
-        DisabledPvpWarning = 0x80000000,
     }
 
     [Flags]
@@ -96,6 +96,7 @@ namespace Server.Mobiles
         ToggleStoneOnly             = 0x00000002,
         CanBuyCarpets               = 0x00000004,
         VoidPool                    = 0x00000008,
+        DisabledPvpWarning          = 0x00000010,
     }
 
 	public enum NpcGuild
@@ -568,8 +569,8 @@ namespace Server.Mobiles
         [CommandProperty(AccessLevel.GameMaster)]
         public bool DisabledPvpWarning
         {
-            get { return GetFlag(PlayerFlag.DisabledPvpWarning); }
-            set { SetFlag(PlayerFlag.DisabledPvpWarning, value); }
+            get { return GetFlag(ExtendedPlayerFlag.DisabledPvpWarning); }
+            set { SetFlag(ExtendedPlayerFlag.DisabledPvpWarning, value); }
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
@@ -698,10 +699,10 @@ namespace Server.Mobiles
 		public DateTime AnkhNextUse { get { return m_AnkhNextUse; } set { m_AnkhNextUse = value; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-		public DateTime NextGemOfSalvationUse { get; set; }
+        public DateTime NextGemOfSalvationUse { get; set; }
 
-		#region Mondain's Legacy
-		[CommandProperty(AccessLevel.GameMaster)]
+        #region Mondain's Legacy
+        [CommandProperty(AccessLevel.GameMaster)]
 		public bool Bedlam { get { return GetFlag(PlayerFlag.Bedlam); } set { SetFlag(PlayerFlag.Bedlam, value); } }
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -1338,7 +1339,7 @@ namespace Server.Mobiles
                 from.Map = Map.Felucca;
             }
 
-            if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
+            if (((from.Map == Map.Trammel && from.Region.IsPartOf("Blackthorn Castle")) || PointsSystem.FellowshipData.Enabled && from.Region.IsPartOf("BlackthornDungeon") || from.Region.IsPartOf("Ver Lor Reg")) && from.Player && from.AccessLevel == AccessLevel.Player && from.CharacterOut)
             {
                 StormLevelGump menu = new StormLevelGump(from);
                 menu.BeginClose();
@@ -1356,6 +1357,8 @@ namespace Server.Mobiles
                 }, 
                 (EtherealMount)from.Mount);
             }
+
+            from.CheckStatTimers();
         }
 
 		private bool m_NoDeltaRecursion;
@@ -2030,9 +2033,9 @@ namespace Server.Mobiles
 					strBase = Str; //Str already includes GetStatOffset/str
 					strOffs = AosAttributes.GetValue(this, AosAttribute.BonusHits);
 
-					if (Core.ML && strOffs > 625 && IsPlayer())
+					if (Core.ML && strOffs > 725 && IsPlayer())
 					{
-						strOffs = 625;
+						strOffs = 725;
 					}
 
 					if (AnimalForm.UnderTransformation(this, typeof(BakeKitsune)) ||
@@ -2257,8 +2260,9 @@ namespace Server.Mobiles
                 return;
 
             BestialSetHelper.OnHeal(this, from, ref amount);
-
-            if (Core.SA && amount > 0 && from != null && from != this)
+                     
+			// Removed until we can figure out the endless loop, or do a complete refactor
+            /*if (Core.SA && amount > 0 && from != null && from != this)
             {
                 for (int i = Aggressed.Count - 1; i >= 0; i--)
                 {
@@ -2266,7 +2270,7 @@ namespace Server.Mobiles
 
                     if (info.Defender.InRange(Location, Core.GlobalMaxUpdateRange) && info.Defender.DamageEntries.Any(de => de.Damager == this))
                     {
-                        info.Defender.RegisterDamage(amount / 2, from);
+                        info.Defender.RegisterDamage(amount, from);
                     }
 
                     if (info.Defender.Player && from.CanBeHarmful(info.Defender, false))
@@ -2281,7 +2285,7 @@ namespace Server.Mobiles
 
                     if (info.Attacker.InRange(Location, Core.GlobalMaxUpdateRange) && info.Attacker.DamageEntries.Any(de => de.Damager == this))
                     {
-                        info.Attacker.RegisterDamage(amount / 2, from);
+                        info.Attacker.RegisterDamage(amount, from);
                     }
 
                     if (info.Attacker.Player && from.CanBeHarmful(info.Attacker, false))
@@ -2289,7 +2293,7 @@ namespace Server.Mobiles
                         from.DoHarmful(info.Attacker, true);
                     }
                 }
-            }
+            }*/
         }
 
 		public override bool AllowItemUse(Item item)
@@ -2388,9 +2392,11 @@ namespace Server.Mobiles
 
 		public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
 		{
-			base.GetContextMenuEntries(from, list);
+            //base.GetContextMenuEntries(from, list);
 
-			if (from == this)
+            list.Add(new PaperdollEntry(this));
+
+            if (from == this)
 			{
                 if (Core.HS && Alive)
                 {
@@ -2410,58 +2416,55 @@ namespace Server.Mobiles
                 if (Core.SA)
                 {
                     list.Add(new TitlesMenuEntry(this));
-
-					if (Alive)
-					{
-						QuestHelper.GetContextMenuEntries(list);
-					}
 				}
-                else if (Core.ML)
-                {
-                    #region Mondains Legacy
-                    if (Alive)
-                    {
-                        QuestHelper.GetContextMenuEntries(list);
 
-						if (m_RewardTitles.Count > 0)
-						{
-							list.Add(new CallbackEntry(6229, ShowChangeTitle));
-						}
-					}
-                    #endregion
+                if (Alive && Core.SA)
+                {
+                    list.Add(new Engines.Points.LoyaltyRating(this));
+                }
+
+                list.Add(new OpenBackpackEntry(this));
+
+                if (Alive && InsuranceEnabled)
+                {
+                    if (Core.SA)
+                    {
+                        list.Add(new CallbackEntry(1114299, OpenItemInsuranceMenu));
+                    }
+
+                    list.Add(new CallbackEntry(6201, ToggleItemInsurance));
+
+                    if (!Core.SA)
+                    {
+                        if (AutoRenewInsurance)
+                        {
+                            list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
+                        }
+                        else
+                        {
+                            list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
+                        }
+                    }
+                }
+                else if (Siege.SiegeShard)
+                {
+                    list.Add(new CallbackEntry(3006168, SiegeBlessItem));
+                }
+
+                if (Core.ML && Alive)
+                {
+                    QuestHelper.GetContextMenuEntries(list);
+
+                    if (!Core.SA && m_RewardTitles.Count > 0)
+                    {
+                        list.Add(new CallbackEntry(6229, ShowChangeTitle));
+                    }
                 }
 
                 if (m_Quest != null)
                 {
                     m_Quest.GetContextMenuEntries(list);
                 }
-
-			    if (Alive && Core.SA)
-			    {
-                    list.Add(new Engines.Points.LoyaltyRating(this));
-			    }
-
-				if (Alive && InsuranceEnabled)
-				{
-					list.Add(new CallbackEntry(6201, ToggleItemInsurance));
-
-					if (Core.SA)
-					{
-						list.Add(new CallbackEntry(1114299, OpenItemInsuranceMenu));
-					}
-					else if (AutoRenewInsurance)
-					{
-						list.Add(new CallbackEntry(6202, CancelRenewInventoryInsurance));
-					}
-					else
-					{
-						list.Add(new CallbackEntry(6200, AutoRenewInventoryInsurance));
-					}
-				}
-				else if (Siege.SiegeShard)
-				{
-					list.Add(new CallbackEntry(3006168, SiegeBlessItem));
-				}
 
 				if (house != null)
                 {
@@ -2522,7 +2525,15 @@ namespace Server.Mobiles
 			}
 			else
 			{
-				if (Alive && Core.AOS)
+                if (Core.HS)
+                {
+                    BaseGalleon galleon = BaseGalleon.FindGalleonAt(from.Location, from.Map);
+
+                    if (galleon != null && galleon.IsOwner(from))
+                        list.Add(new ShipAccessEntry(this, from, galleon));
+                }
+
+                if (Alive && Core.AOS)
 				{
 					Party theirParty = from.Party as Party;
 					Party ourParty = Party as Party;
@@ -2704,7 +2715,7 @@ namespace Server.Mobiles
 
         public int GetInsuranceCost(Item item)
         {
-            var imbueWeight = Imbuing.GetTotalWeight(item);
+            var imbueWeight = Imbuing.GetTotalWeight(item, -1, false, false);
             int cost = 600; // this handles old items, set items, etc
 
             if (item.GetType().IsAssignableFrom(typeof(Factions.FactionItem)))
@@ -3704,7 +3715,7 @@ namespace Server.Mobiles
 					deathRobe.Delete();
 				}
 
-                if (NetState != null && NetState.IsEnhancedClient)
+                if (NetState != null /*&& NetState.IsEnhancedClient*/)
                 {
                     Waypoints.RemoveHealers(this, Map);
                 }
@@ -3959,7 +3970,7 @@ namespace Server.Mobiles
             daat99.MasterStorageUtils.MoveItemsOnDeath(this, c);
             //daat99 Master Looter end - keep/drop items on death
 			
-            if (NetState != null && NetState.IsEnhancedClient)
+            if (NetState != null /*&& NetState.IsEnhancedClient*/)
             {
                 Waypoints.OnDeath(this);
             }
@@ -3995,8 +4006,10 @@ namespace Server.Mobiles
             ClumsySpell.RemoveEffects(this);
             FeeblemindSpell.RemoveEffects(this);
             CurseSpell.RemoveEffect(this);
+            Spells.Second.ProtectionSpell.EndProtection(this);
 
-			EndAction(typeof(PolymorphSpell));
+
+            EndAction(typeof(PolymorphSpell));
 			EndAction(typeof(IncognitoSpell));
 
 			MeerMage.StopEffect(this, false);
@@ -4254,8 +4267,8 @@ namespace Server.Mobiles
 			m_AutoStabled = new List<Mobile>();
 
 			#region Mondain's Legacy
-			m_Quests = new List<BaseQuest>();
-			m_Chains = new Dictionary<QuestChain, BaseChain>();
+			//m_Quests = new List<BaseQuest>();
+			//m_Chains = new Dictionary<QuestChain, BaseChain>();
 			m_DoneQuests = new List<QuestRestartInfo>();
 			m_Collections = new Dictionary<Collection, int>();
 			m_RewardTitles = new List<object>();
@@ -4387,7 +4400,7 @@ namespace Server.Mobiles
 
         public override ApplyPoisonResult ApplyPoison(Mobile from, Poison poison)
 		{
-			if (!Alive)
+			if (!Alive || poison == null)
 			{
 				return ApplyPoisonResult.Immune;
 			}
@@ -4468,7 +4481,7 @@ namespace Server.Mobiles
 		{ 
             get
             {
-                int facetBonus = !Siege.SiegeShard && this.Map == Map.Felucca ? RandomItemGenerator.FeluccaLuckBonus : 250;
+                int facetBonus = !Siege.SiegeShard && this.Map == Map.Felucca ? RandomItemGenerator.FeluccaLuckBonus : 0;
 
                 return Luck + FountainOfFortune.GetLuckBonus(this) + facetBonus;
             }
@@ -4583,8 +4596,11 @@ namespace Server.Mobiles
 
 			switch (version)
 			{
+				//UOWW: Case added for compatibility with the new Core
+                case 9903: 
+                		
 				//FS:ATS start
-				case 9902: 
+                case 9902: 
 				{
 					m_TamingBOBFilter = new Engines.BulkOrders.TamingBOBFilter( reader );
 					goto case 9901;
@@ -4593,12 +4609,16 @@ namespace Server.Mobiles
 				{
 					m_Bioenginer = reader.ReadBool();
 					NextTamingBulkOrder = reader.ReadTimeSpan();
-					goto case 38;
+					goto case 40;
 				}
 				//FS:ATS end
+				
+				
+				case 40: // Version 40, moved gauntlet points, virtua artys and TOT turn ins to PointsSystem
+                case 39: // Version 39, removed ML quest save/load
                 case 38:
                     NextGemOfSalvationUse = reader.ReadDateTime();
-                    goto case 37;					
+                    goto case 37;
                 case 37:
                     m_ExtendedFlags = (ExtendedPlayerFlag)reader.ReadInt();
 				    goto case 36;
@@ -4612,7 +4632,7 @@ namespace Server.Mobiles
                 case 34:
                 case 33:
                     {
-                        m_ExploringTheDeepQuest = (ExploringTheDeepQuestChain)reader.ReadInt();
+                        ExploringTheDeepQuest = (ExploringTheDeepQuestChain)reader.ReadInt();
                         goto case 31;
                     }
                 case 32:
@@ -4631,7 +4651,10 @@ namespace Server.Mobiles
                 case 30: goto case 29;
 				case 29:
 					{
-						m_GauntletPoints = reader.ReadDouble();
+                        if (version == 9902)
+                        {
+                            PointsSystem.DoomGauntlet.SetPoints(this, reader.ReadDouble());
+                        }
 
 						m_SSNextSeed = reader.ReadDateTime();
 						m_SSSeedExpire = reader.ReadDateTime();
@@ -4651,12 +4674,21 @@ namespace Server.Mobiles
                             reader.ReadString(); // Old m_ExpTitle
                         }
 
-                        m_VASTotalMonsterFame = reader.ReadInt();
+						//ServUO-57-CoreUpgrade : check how to deal with that one
+                        if (version == 9902)
+                        {
+                            PointsSystem.VirtueArtifacts.SetPoints(this, reader.ReadInt());
+                            List<BaseQuest> quests = QuestReader.Quests(reader, this);
+                            Dictionary<QuestChain, BaseChain> dic = QuestReader.Chains(reader);
 
-						m_Quests = QuestReader.Quests(reader, this);
-						m_Chains = QuestReader.Chains(reader);
+                            if (quests != null && quests.Count > 0)
+                                MondainQuestData.QuestData[this] = quests;
 
-						m_Collections = new Dictionary<Collection, int>();
+                            if (dic != null && dic.Count > 0)
+                                MondainQuestData.ChainData[this] = dic;
+                        }
+
+                        m_Collections = new Dictionary<Collection, int>();
 						m_RewardTitles = new List<object>();
 
 						for (int i = reader.ReadInt(); i > 0; i--)
@@ -4727,8 +4759,11 @@ namespace Server.Mobiles
 					}
 				case 21:
 					{
-						m_ToTItemsTurnedIn = reader.ReadEncodedInt();
-						m_ToTTotalMonsterFame = reader.ReadInt();
+						//ServUO-57-CoreUpgrade : check how to deal with that one
+                        if (version == 9902)
+                        {
+                            PointsSystem.TreasuresOfTokuno.Convert(this, reader.ReadEncodedInt(), reader.ReadInt());
+                        }
 						goto case 20;
 					}
 				case 20:
@@ -4926,7 +4961,7 @@ namespace Server.Mobiles
 			}
 
 			#region Mondain's Legacy
-			if (m_Quests == null)
+			/*if (m_Quests == null)
 			{
 				m_Quests = new List<BaseQuest>();
 			}
@@ -4934,7 +4969,7 @@ namespace Server.Mobiles
 			if (m_Chains == null)
 			{
 				m_Chains = new Dictionary<QuestChain, BaseChain>();
-			}
+			}*/
 
 			if (m_DoneQuests == null)
 			{
@@ -5051,7 +5086,7 @@ namespace Server.Mobiles
 			base.Serialize(writer);
 
 			//FS:ATS start
-			writer.Write(9902); // version
+			writer.Write(9903); // version
 			//
 			//
 			//original code below
@@ -5059,6 +5094,8 @@ namespace Server.Mobiles
             //writer.Write(38); // version
 			//
 			//
+			//
+			// Version 9903 UOWW: Compatilibity with the new Core
 			//
 			// Version 9902 FS:ATS
 			m_TamingBOBFilter.Serialize( writer );
@@ -5081,7 +5118,7 @@ namespace Server.Mobiles
 
             writer.Write(_BlessedItem);
 
-            writer.Write((int)m_ExploringTheDeepQuest);			
+            writer.Write((int)ExploringTheDeepQuest);
 
             // Version 31/32 Titles
             writer.Write(DisplayGuildTitle);
@@ -5094,8 +5131,8 @@ namespace Server.Mobiles
 
             // Version 30 open to take out old Queens Loyalty Info
 
-			// Version 29
-			writer.Write(m_GauntletPoints);
+			// Version 29			
+			//writer.Write(m_GauntletPoints);
 
 			#region Plant System
 			writer.Write(m_SSNextSeed);
@@ -5104,13 +5141,16 @@ namespace Server.Mobiles
 			writer.Write(m_SSSeedMap);
 			#endregion
 
-            writer.Write(m_VASTotalMonsterFame);
-
+			//UOWW: ServUO-57-CoreUpgrade
+            //writer.Write(m_VASTotalMonsterFame);
+            
 			#region Mondain's Legacy
-			QuestWriter.Quests(writer, m_Quests);
-			QuestWriter.Chains(writer, m_Chains);
+			//UOWW: ServUO-57-CoreUpgrade
+			//QuestWriter.Quests(writer, m_Quests);
+			//QuestWriter.Chains(writer, m_Chains);
 
 			if (m_Collections == null)
+
 			{
 				writer.Write(0);
 			}
@@ -5167,8 +5207,8 @@ namespace Server.Mobiles
 			ChampionTitleInfo.Serialize(writer, m_ChampionTitles);
 
 			writer.Write(m_LastValorLoss);
-			writer.WriteEncodedInt(m_ToTItemsTurnedIn);
-			writer.Write(m_ToTTotalMonsterFame); //This ain't going to be a small #.
+			//writer.WriteEncodedInt(m_ToTItemsTurnedIn);
+			//writer.Write(m_ToTTotalMonsterFame); //This ain't going to be a small #.
 
 			writer.WriteEncodedInt(m_AllianceMessageHue);
 			writer.WriteEncodedInt(m_GuildMessageHue);
@@ -5630,15 +5670,29 @@ namespace Server.Mobiles
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public SolenFriendship SolenFriendship { get { return m_SolenFriendship; } set { m_SolenFriendship = value; } }
-		#endregion
+        #endregion
 
-		#region Mondain's Legacy
-		private List<BaseQuest> m_Quests;
+        #region Mondain's Legacy
+        /*private List<BaseQuest> m_Quests;
 		private Dictionary<QuestChain, BaseChain> m_Chains;
 
 		public List<BaseQuest> Quests { get { return m_Quests; } }
+        public Dictionary<QuestChain, BaseChain> Chains { get { return m_Chains; } }*/
+        public List<BaseQuest> Quests
+        {
+            get
+            {
+                return MondainQuestData.GetQuests(this);
+            }
+        }
 
-		public Dictionary<QuestChain, BaseChain> Chains { get { return m_Chains; } }
+        public Dictionary<QuestChain, BaseChain> Chains
+        {
+            get
+            {
+                return MondainQuestData.GetChains(this);
+            }
+        }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool Peaced
@@ -5862,33 +5916,49 @@ namespace Server.Mobiles
             BaseGuild guild = Guild;
             bool vvv = Server.Engines.VvV.ViceVsVirtueSystem.IsVvV(this) && (ViceVsVirtueSystem.EnhancedRules || this.Map == Faction.Facet);
 
-            if (!vvv && m_OverheadTitle != null)
-            {
-                int loc = Utility.ToInt32(m_OverheadTitle);
-
-                if (loc > 0)
-                {
-                    if (CityLoyaltySystem.ApplyCityTitle(this, list, prefix, loc))
-                        return;
-                }
-                else if (suffix.Length > 0)
-                    suffix = String.Format("{0} {1}", suffix, m_OverheadTitle);
-                else
-                    suffix = String.Format("{0}", m_OverheadTitle);
-            }
-            else if (vvv || (guild != null && DisplayGuildAbbr))
+            if (m_OverheadTitle != null)
             {
                 if (vvv)
                 {
-                    if (guild != null && DisplayGuildAbbr)
-                        suffix = String.Format("[{0}] [VvV]", Utility.FixHtml(guild.Abbreviation));
+                    suffix = "[VvV]";
+                }
+                else
+                {
+                    int loc = Utility.ToInt32(m_OverheadTitle);
+
+                    if (loc > 0)
+                    {
+                        if (CityLoyaltySystem.ApplyCityTitle(this, list, prefix, loc))
+                            return;
+                    }
+                    else if (suffix.Length > 0)
+                    {
+                        suffix = String.Format("{0} {1}", suffix, m_OverheadTitle);
+                    }
                     else
-                        suffix = "[VvV]";
+                    {
+                        suffix = String.Format("{0}", m_OverheadTitle);
+                    }
+                }
+            }
+            else if (guild != null && DisplayGuildAbbr)
+            {
+                if (vvv)
+                {
+                    suffix = String.Format("[{0}] [VvV]", Utility.FixHtml(guild.Abbreviation));
                 }
                 else if (suffix.Length > 0)
+                {
                     suffix = String.Format("{0} [{1}]", suffix, Utility.FixHtml(guild.Abbreviation));
+                }
                 else
+                {
                     suffix = String.Format("[{0}]", Utility.FixHtml(guild.Abbreviation));
+                }
+            }
+            else if (vvv)
+            {
+                suffix = "[VvV]";
             }
 
             suffix = ApplyNameSuffix(suffix);
@@ -5914,9 +5984,17 @@ namespace Server.Mobiles
                 }
             }
         }
+
+        public override void OnAfterNameChange(string oldName, string newName)
+        {
+            if (m_FameKarmaTitle != null)
+            {
+                FameKarmaTitle = FameKarmaTitle.Replace(oldName, newName);
+            }
+        }
         #endregion
 
-		public override void OnKillsChange(int oldValue)
+        public override void OnKillsChange(int oldValue)
 		{
 			if (Young && Kills > oldValue)
 			{
@@ -6015,9 +6093,12 @@ namespace Server.Mobiles
 
 			TransformContext context = TransformationSpellHelper.GetContext(this);
 
-			if (context != null && context.Type == typeof(ReaperFormSpell))
+			if (context != null)
 			{
-				return WalkFoot;
+                if ((!Core.SA && context.Type == typeof(ReaperFormSpell)) || (!Core.HS && context.Type == typeof(Server.Spells.Mysticism.StoneFormSpell)))
+                {
+                    return WalkFoot;
+                }
 			}
 
 			bool running = ((dir & Direction.Running) != 0);
@@ -6946,12 +7027,8 @@ namespace Server.Mobiles
 		}
         #endregion
 
-        #region Exploring the Deep
-        private ExploringTheDeepQuestChain m_ExploringTheDeepQuest;
-
         [CommandProperty(AccessLevel.GameMaster)]
-        public ExploringTheDeepQuestChain ExploringTheDeepQuest { get { return m_ExploringTheDeepQuest; } set { m_ExploringTheDeepQuest = value; } }
-        #endregion
+        public ExploringTheDeepQuestChain ExploringTheDeepQuest { get; set; }
 
         public static bool PetAutoStable { get { return Core.SE; } }
 

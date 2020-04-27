@@ -42,6 +42,7 @@ namespace Server.Gumps
 "<BASEFONT COLOR=WHITE><I>* The old mage looks at you with anger in his eyes *</I><br><br>" +
 "<BASEFONT Color=YELLOW> Why are you here?! I should destroy you with my magic !!<br><br>" + 
 "<BASEFONT COLOR=YELLOW> I do not wish to fight you. What I do want is my Massive Mandrake. It was taken by a foolish mage named Al. Can you help me?<br><br>" +
+"<BASEFONT Color=YELLOW> Take care of the reward I give you, there will be only one!!<br><br>" + 
 "<BASEFONT COLOR=YELLOW> You see, I am too old to fight him, but if you can defeat him and get my mandrake back, I will give you a storage key to hold your reagents.<br><br>" +
 "<BASEFONT COLOR=YELLOW> Al lives inside the Ice Dungeon, in Felucca.<br><br>" +
 "</BODY>", false, true);

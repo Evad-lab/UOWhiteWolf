@@ -20,24 +20,16 @@ namespace Server.Engines.Harvest
             EventSink.TargetByResourceMacro += TargetByResource;
         }
 
-        private readonly List<HarvestDefinition> m_Definitions;
-
         public HarvestSystem()
         {
-            m_Definitions = new List<HarvestDefinition>();
+            Definitions = new List<HarvestDefinition>();
         }
 
-        public List<HarvestDefinition> Definitions
-        {
-            get
-            {
-                return m_Definitions;
-            }
-        }
+        public List<HarvestDefinition> Definitions { get; }
 
         public virtual bool CheckTool(Mobile from, Item tool)
         {
-            bool wornOut = (tool == null || tool.Deleted || (tool is IUsesRemaining && ((IUsesRemaining)tool).UsesRemaining <= 0));
+            bool wornOut = tool == null || tool.Deleted || (tool is IUsesRemaining && ((IUsesRemaining)tool).UsesRemaining <= 0);
 
             if (wornOut)
                 from.SendLocalizedMessage(1044038); // You have worn out your tool!
@@ -57,7 +49,7 @@ namespace Server.Engines.Harvest
 
         public virtual bool CheckRange(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
         {
-            bool inRange = (from.Map == map && from.InRange(loc, def.MaxRange));
+            bool inRange = from.Map == map && from.InRange(loc, def.MaxRange);
 
             if (!inRange)
                 def.SendMessageTo(from, timed ? def.TimedOutOfRangeMessage : def.OutOfRangeMessage);
@@ -68,7 +60,7 @@ namespace Server.Engines.Harvest
         public virtual bool CheckResources(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, bool timed)
         {
             HarvestBank bank = def.GetBank(map, loc.X, loc.Y);
-            bool available = (bank != null && bank.Current >= def.ConsumedPerHarvest);
+            bool available = bank != null && bank.Current >= def.ConsumedPerHarvest;
 
             if (!available)
                 def.SendMessageTo(from, timed ? def.DoubleHarvestMessage : def.NoResourcesMessage);
@@ -117,11 +109,7 @@ namespace Server.Engines.Harvest
             if (!CheckHarvest(from, tool))
                 return;
 
-            int tileID;
-            Map map;
-            Point3D loc;
-
-            if (!GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
+            if (!GetHarvestDetails(from, tool, toHarvest, out int tileID, out Map map, out Point3D loc))
             {
                 OnBadHarvestTarget(from, tool, toHarvest);
                 return;
@@ -131,7 +119,7 @@ namespace Server.Engines.Harvest
                 OnBadHarvestTarget(from, tool, toHarvest);
                 return;
             }
-			
+
             if (!CheckRange(from, tool, def, map, loc, true))
                 return;
             else if (!CheckResources(from, tool, def, map, loc, true))
@@ -206,37 +194,41 @@ namespace Server.Engines.Harvest
 							int amount = def.ConsumedPerHarvest;
 							int feluccaAmount = def.ConsumedPerFeluccaHarvest;
 
-							if (item is BaseGranite)
-								feluccaAmount = 3;
+            
+	                        if (item is BaseGranite)
+	                            feluccaAmount = 3;
+	
+	                        Caddellite.OnHarvest(from, tool, this, item);
+	
+	                        //The whole harvest system is kludgy and I'm sure this is just adding to it.
+	                        if (item.Stackable)
+	                        {
+	                            int racialAmount = (int)Math.Ceiling(amount * 1.1);
+	                            int feluccaRacialAmount = (int)Math.Ceiling(feluccaAmount * 1.1);
+	
+	                            bool eligableForRacialBonus = (def.RaceBonus && from.Race == Race.Human);
+	                            bool inFelucca = map == Map.Felucca && !Siege.SiegeShard;
+	
+	                            if (eligableForRacialBonus && inFelucca && bank.Current >= feluccaRacialAmount && 0.1 > Utility.RandomDouble())
+	                                item.Amount = feluccaRacialAmount;
+	                            else if (inFelucca && bank.Current >= feluccaAmount)
+	                                item.Amount = feluccaAmount;
+	                            else if (eligableForRacialBonus && bank.Current >= racialAmount && 0.1 > Utility.RandomDouble())
+	                                item.Amount = racialAmount;
+	                            else
+	                                item.Amount = amount;
+	
+	                            // Void Pool Rewards
+	                            item.Amount += WoodsmansTalisman.CheckHarvest(from, type, this);
+	                        }
 
-							//The whole harvest system is kludgy and I'm sure this is just adding to it.
-							if (item.Stackable)
-							{
-								int racialAmount = (int)Math.Ceiling(amount * 1.1);
-								int feluccaRacialAmount = (int)Math.Ceiling(feluccaAmount * 1.1);
-
-								bool eligableForRacialBonus = (def.RaceBonus && from.Race == Race.Human);
-								bool inFelucca = map == Map.Felucca && !Siege.SiegeShard;
-
-								if (eligableForRacialBonus && inFelucca && bank.Current >= feluccaRacialAmount && 0.1 > Utility.RandomDouble())
-									item.Amount = feluccaRacialAmount;
-								else if (inFelucca && bank.Current >= feluccaAmount)
-									item.Amount = feluccaAmount;
-								else if (eligableForRacialBonus && bank.Current >= racialAmount && 0.1 > Utility.RandomDouble())
-									item.Amount = racialAmount;
-								else
-									item.Amount = amount;
-
-								// Void Pool Rewards
-								item.Amount += WoodsmansTalisman.CheckHarvest(from, type, this);
-							}
-
-							if (from.AccessLevel == AccessLevel.Player)
-							{
-								bank.Consume(amount, from);
-							}
-							
-							//daat99 OWLTR start - custom harvesting
+	                        if (from.AccessLevel == AccessLevel.Player)
+	                        {
+	                            bank.Consume(amount, from);
+	                        }
+                        
+                        	//daat99 OWLTR start - custom harvesting
+                        	
 							CraftResource craftResourceFromType = CraftResources.GetFromType(type);
 							string s_Type = "UNKNOWN";
 							int i_Tokens = 1;
@@ -283,82 +275,83 @@ namespace Server.Engines.Harvest
 							{
 							//daat99 OWLTR end - custom harvesting
 
-								if (Give(from, item, def.PlaceAtFeetIfFull))
-								{
-									SendSuccessTo(from, item, resource);
-								}
-								else
-								{
-									SendPackFullTo(from, item, def, resource);
-									item.Delete();
-								}
-								
-							//daat99 OWLTR start - custom harvesting
+	                        	if (Give(from, item, def.PlaceAtFeetIfFull))
+		                        {
+		                            SendSuccessTo(from, item, resource);
+		                        }
+		                        else
+		                        {
+		                            SendPackFullTo(from, item, def, resource);
+		                            item.Delete();
+		                        }
+                        
+                        	//daat99 OWLTR start - custom harvesting
 							}
+							
 							if (from.Map == Map.Felucca)
 								i_Tokens = (int)(i_Tokens*1.5);
 							if ( OWLTROptionsManager.IsEnabled(OWLTROptionsManager.OPTIONS_ENUM.HARVEST_GIVE_TOKENS) )
 								TokenSystem.GiveTokensToPlayer(from as Server.Mobiles.PlayerMobile, i_Tokens);
 							//daat99 OWLTR end - custom harvesting
 
-							BonusHarvestResource bonus = def.GetBonusResource();
-							Item bonusItem = null;
+                        	BonusHarvestResource bonus = def.GetBonusResource();
+                        	Item bonusItem = null;
 
-							if (bonus != null && bonus.Type != null && skillBase >= bonus.ReqSkill)
-							{
+	                        if (bonus != null && bonus.Type != null && skillBase >= bonus.ReqSkill)
+	                        {
 								if (bonus.RequiredMap == null || bonus.RequiredMap == from.Map)
 								{
-									bonusItem = Construct(bonus.Type, from, tool);
-
-									if (Give(from, bonusItem, true))	//Bonuses always allow placing at feet, even if pack is full irregrdless of def
+								    bonusItem = Construct(bonus.Type, from, tool);
+	                                Caddellite.OnHarvest(from, tool, this, bonusItem);
+	
+	                                if (Give(from, bonusItem, true))	//Bonuses always allow placing at feet, even if pack is full irregrdless of def
 									{
-										bonus.SendSuccessTo(from);
+	                                    bonus.SendSuccessTo(from);
 									}
 									else
 									{
-										bonusItem.Delete();
+	                                    bonusItem.Delete();
 									}
 								}
 							}
 
-							EventSink.InvokeResourceHarvestSuccess(new ResourceHarvestSuccessEventArgs(from, tool, item, bonusItem, this));
-						}
-
-						#region High Seas
-						OnToolUsed(from, tool, item != null);
-						#endregion
-					}
-
-					// Siege rules will take into account axes and polearms used for lumberjacking
-					if (tool is IUsesRemaining && (tool is BaseHarvestTool || tool is Pickaxe || tool is SturdyPickaxe || tool is GargoylesPickaxe || Siege.SiegeShard))
-					{
-						IUsesRemaining toolWithUses = (IUsesRemaining)tool;
-
-						toolWithUses.ShowUsesRemaining = true;
-
-						if (toolWithUses.UsesRemaining > 0)
-							--toolWithUses.UsesRemaining;
-
-						if (toolWithUses.UsesRemaining < 1)
-						{
-							tool.Delete();
-							def.SendMessageTo(from, def.ToolBrokeMessage);
-						}
-					}
-				}	
-			
+	                        EventSink.InvokeResourceHarvestSuccess(new ResourceHarvestSuccessEventArgs(from, tool, item, bonusItem, this));
+	                    }
+	
+	                    #region High Seas
+	                    OnToolUsed(from, tool, item != null);
+	                    #endregion
+	                }
+	
+	                // Siege rules will take into account axes and polearms used for lumberjacking
+	                if (tool is IUsesRemaining && (tool is BaseHarvestTool || tool is Pickaxe || tool is SturdyPickaxe || tool is GargoylesPickaxe || Siege.SiegeShard))
+	                {
+	                    IUsesRemaining toolWithUses = (IUsesRemaining)tool;
+	
+	                    toolWithUses.ShowUsesRemaining = true;
+	
+	                    if (toolWithUses.UsesRemaining > 0)
+	                        --toolWithUses.UsesRemaining;
+	
+	                    if (toolWithUses.UsesRemaining < 1)
+	                    {
+	                        tool.Delete();
+	                        def.SendMessageTo(from, def.ToolBrokeMessage);
+	                    }
+	                }
+	            }
 			}
-
-            if (type == null)
-                def.SendMessageTo(from, def.FailMessage);
-
-			//daat99 OWLTR start - custom harvesting
+	
+	        if (type == null)
+	            def.SendMessageTo(from, def.FailMessage);
+	            
+	        //daat99 OWLTR start - custom harvesting
 			if (this is Lumberjacking || this is Mining)
 				OnHarvestFinished( from, tool, def, vein, bank, resource, toHarvest, type );
 			else
 			//daat99 OWLTR end - custom harvesting
-		
-				OnHarvestFinished(from, tool, def, vein, bank, resource, toHarvest);
+	
+	            OnHarvestFinished(from, tool, def, vein, bank, resource, toHarvest);
         }
 
 		//daat99 OWLTR start - custom resources
@@ -366,7 +359,6 @@ namespace Server.Engines.Harvest
 		{
 		}
 		//daat99 OWLTR end - custom resources
-		
         public virtual bool CheckHarvestSkill(Map map, Point3D loc, Mobile from, HarvestResource resource, HarvestDefinition def)
         {
             return from.Skills[def.Skill].Value >= resource.ReqSkill && from.CheckSkill(def.Skill, resource.MinSkill, resource.MaxSkill);
@@ -463,7 +455,7 @@ namespace Server.Engines.Harvest
 
         public virtual HarvestResource MutateResource(Mobile from, Item tool, HarvestDefinition def, Map map, Point3D loc, HarvestVein vein, HarvestResource primary, HarvestResource fallback)
         {
-            bool racialBonus = (def.RaceBonus && from.Race == Race.Elf);
+            bool racialBonus = def.RaceBonus && from.Race == Race.Elf;
 
             if (vein.ChanceToFallback > (Utility.RandomDouble() + (racialBonus ? .20 : 0)))
                 return fallback;
@@ -484,11 +476,7 @@ namespace Server.Engines.Harvest
                 return false;
             }
 
-            int tileID;
-            Map map;
-            Point3D loc;
-
-            if (!GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
+            if (!GetHarvestDetails(from, tool, toHarvest, out int tileID, out Map map, out Point3D loc))
             {
                 from.EndAction(locked);
                 OnBadHarvestTarget(from, tool, toHarvest);
@@ -555,9 +543,9 @@ namespace Server.Engines.Harvest
         {
             HarvestDefinition def = null;
 
-            for (int i = 0; def == null && i < m_Definitions.Count; ++i)
+            for (int i = 0; def == null && i < Definitions.Count; ++i)
             {
-                HarvestDefinition check = m_Definitions[i];
+                HarvestDefinition check = Definitions[i];
 
                 if (check.Validate(tileID))
                     def = check;
@@ -571,9 +559,9 @@ namespace Server.Engines.Harvest
         {
             HarvestDefinition def = null;
 
-            for (int i = 0; def == null && i < m_Definitions.Count; ++i)
+            for (int i = 0; def == null && i < Definitions.Count; ++i)
             {
-                HarvestDefinition check = m_Definitions[i];
+                HarvestDefinition check = Definitions[i];
 
                 if (check.ValidateSpecial(tileID))
                     def = check;
@@ -588,11 +576,7 @@ namespace Server.Engines.Harvest
             if (!CheckHarvest(from, tool))
                 return;
 
-            int tileID;
-            Map map;
-            Point3D loc;
-
-            if (!GetHarvestDetails(from, tool, toHarvest, out tileID, out map, out loc))
+            if (!GetHarvestDetails(from, tool, toHarvest, out int tileID, out Map map, out Point3D loc))
             {
                 OnBadHarvestTarget(from, tool, toHarvest);
                 return;
@@ -643,10 +627,8 @@ namespace Server.Engines.Harvest
                 map = from.Map;
                 loc = obj.Location;
             }
-            else if (toHarvest is LandTarget)
+            else if (toHarvest is LandTarget obj)
             {
-                LandTarget obj = (LandTarget)toHarvest;
-
                 tileID = obj.TileID;
                 map = from.Map;
                 loc = obj.Location;
@@ -659,7 +641,7 @@ namespace Server.Engines.Harvest
                 return false;
             }
 
-            return (map != null && map != Map.Internal);
+            return map != null && map != Map.Internal;
         }
 
         #region Enhanced Client
@@ -670,7 +652,6 @@ namespace Server.Engines.Harvest
 
             HarvestSystem system = null;
             HarvestDefinition def = null;
-            object toHarvest;
 
             if (tool is IHarvestTool)
             {
@@ -703,7 +684,7 @@ namespace Server.Engines.Harvest
                         break;
                 }
 
-                if (def != null && FindValidTile(m, def, out toHarvest))
+                if (def != null && FindValidTile(m, def, out object toHarvest))
                 {
                     system.StartHarvesting(m, tool, toHarvest);
                     return;
@@ -773,17 +754,13 @@ namespace Server.Engines.Harvest
 
                         if (itemID == 0xED3 || itemID == 0xEDF || itemID == 0xEE0 || itemID == 0xEE1 || itemID == 0xEE2 || itemID == 0xEE8)
                         {
-                            PlayerMobile player = m as PlayerMobile;
-
-                            if (player != null)
+                            if (m is PlayerMobile player)
                             {
                                 QuestSystem qs = player.Quest;
 
                                 if (qs is WitchApprenticeQuest)
                                 {
-                                    FindIngredientObjective obj = qs.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
-
-                                    if (obj != null && !obj.Completed && obj.Ingredient == Ingredient.Bones)
+                                    if (qs.FindObjective(typeof(FindIngredientObjective)) is FindIngredientObjective obj && !obj.Completed && obj.Ingredient == Ingredient.Bones)
                                     {
                                         player.SendLocalizedMessage(1055037); // You finish your grim work, finding some of the specific bones listed in the Hag's recipe.
                                         obj.Complete();
@@ -819,17 +796,13 @@ namespace Server.Engines.Harvest
 
                         if (itemID == 0xD15 || itemID == 0xD16)
                         {
-                            PlayerMobile player = m as PlayerMobile;
-
-                            if (player != null)
+                            if (m is PlayerMobile player)
                             {
                                 QuestSystem qs = player.Quest;
 
                                 if (qs is WitchApprenticeQuest)
                                 {
-                                    FindIngredientObjective obj = qs.FindObjective(typeof(FindIngredientObjective)) as FindIngredientObjective;
-
-                                    if (obj != null && !obj.Completed && obj.Ingredient == Ingredient.RedMushrooms)
+                                    if (qs.FindObjective(typeof(FindIngredientObjective)) is FindIngredientObjective obj && !obj.Completed && obj.Ingredient == Ingredient.RedMushrooms)
                                     {
                                         player.SendLocalizedMessage(1055036); // You slice a red cap mushroom from its stem.
                                         obj.Complete();

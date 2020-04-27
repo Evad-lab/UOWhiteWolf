@@ -485,7 +485,7 @@ namespace Server.Engines.Harvest
                             chest.Hue = 0x481;
                         }
 
-                        TreasureMapChest.Fill(chest, from is PlayerMobile ? ((PlayerMobile)from).RealLuck : from.Luck, Math.Max(1, Math.Min(4, sos.Level)), true, from.Map);
+                        TreasureMapChest.Fill(from, chest, Math.Max(1, Math.Min(4, sos.Level)), true);
                         sos.OnSOSComplete(chest);
 
                         if (sos.IsAncient)
@@ -1068,14 +1068,10 @@ namespace Server.Engines.Harvest
 
                             if (wep != null)
                             {
-                                wep.SearingWeapon = true;
-                                wep.Attributes.Brittle = 1;
-                                wep.MaxHitPoints = 200;
-                                wep.HitPoints = 200;
+                                wep.AttachSocket(new SearingWeapon(wep));
 
-                                BaseRunicTool.ApplyAttributesTo(wep, Utility.Random(1, 4), 45, 100);
                                 from.AddToBackpack(wep);
-                                from.SendMessage("You have pulled out an item : a searing weapon!");
+                                from.SendMessage("You have pulled out an item : mysterious weapon");
                                 return typeof(BaseWeapon);
                             }
                         }

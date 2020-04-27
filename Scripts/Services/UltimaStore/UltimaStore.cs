@@ -189,6 +189,8 @@ namespace Server.Engines.UOStore
             // decorations
             cat = StoreCategory.Decorations;
             Register<DecorativeKitchenSet>(1158970, 1158971, 0, 0x9CE8, 0, 1200, cat);
+            Register<SquirrelMailbox>(1158859, 1158857, 0xA207, 0, 0, 400, cat);
+            Register<BarrelMailbox>(1158859, 1158857, 0xA1F7, 0, 0, 400, cat);
             Register<DecorativeBlackwidowDeed>(1157897, 1157898, 0, 0x9CD7, 0, 600, cat);
             Register<HildebrandtDragonRugDeed>(1157889, 1157890, 0, 0x9CD8, 0, 700, cat);
             Register<SmallWorldTreeRugAddonDeed>(1157206, 1157898, 0, 0x9CBA, 0, 300, cat);
@@ -218,8 +220,9 @@ namespace Server.Engines.UOStore
             Register<TapestryOfSosaria>(1062917, 1156961, 0x234E, 0, 0, 100, cat);
             Register<RoseOfTrinsic>(1062913, 1156960, 0x234D, 0, 0, 100, cat);
             Register<HearthOfHomeFireDeed>(1062919, 1156958, 0, 0x9C97, 0, 100, cat);
-            // TODO: Singing Ball
-            // TODO: Secret Chest
+
+            Register<StoreSingingBall>(1041245, 1156907, 0, 0x9CB8, 0, 200, cat);
+            Register<SecretChest>(1151583, 1156909, 0x9706, 0, 0, 500, cat);
 
             Register<MiniHouseDeed>(new TextDefinition[] { 1062096, 1157015 }, 1156916, 0, 0x9CB5, 0, 200, cat, ConstructMiniHouseDeed); // two story wood & plaster
             Register<MiniHouseDeed>(new TextDefinition[] { 1062096, 1011317 }, 1156916, 0x22F5, 0, 0, 200, cat, ConstructMiniHouseDeed); // small stone tower
@@ -274,7 +277,7 @@ namespace Server.Engines.UOStore
             Register<RaisedGardenDeed>(new TextDefinition[] { 1150359, 1156688 }, 1156680, 0, 0x9C8B, 0, 2000, cat, ConstructRaisedGarden);
             Register<HouseTeleporterTileBag>(new TextDefinition[] { 1156683, 1156826 }, 1156668, 0x40B9, 0, 1201, 1000, cat);
             Register<WoodworkersBenchDeed>(1026641, 1156670, 0x14F0, 0, 0, 600, cat);
-            Register<LargeGlowingLadyBug>(1026641, 1156660, 0x2CFD, 0, 0, 200, cat);
+            Register<LargeGlowingLadyBug>(1071400, 1156660, 0x2CFD, 0, 0, 200, cat);
             Register<FreshGreenLadyBug>(1071401, 1156661, 0x2D01, 0, 0, 200, cat);
             Register<WillowTreeDeed>(1071105, 1156658, 0x224A, 0, 0, 200, cat);
 
@@ -288,10 +291,12 @@ namespace Server.Engines.UOStore
 
             // mounts
             cat = StoreCategory.Mounts;
+            Register<CoconutCrabStatue>(1159165, 1159166, 0xA335, 0, 0, 1000, cat);
+            Register<SkeletalCatStatue>(1158462, 1158738, 0xA138, 0, 0, 1000, cat);
+            Register<EowmuStatue>(1158082, 1158433, 0xA0C0, 0, 0, 1000, cat);
             Register<WindrunnerStatue>(1124685, 1157373, 0x9ED5, 0, 0, 1000, cat);
             Register<LasherStatue>(1157214, 1157305, 0x9E35, 0, 0, 1000, cat);
             Register<ChargerOfTheFallen>(1075187, 1156646, 0x2D9C, 0, 0, 1000, cat);
-            Register<EowmuStatue>(1158082, 1158433, 0xA0C0, 0, 0, 1000, cat);
 
             // misc
             cat = StoreCategory.Misc;
@@ -301,6 +306,7 @@ namespace Server.Engines.UOStore
             //TODO: UndeadWeddingBundle, TotemOfChromaticFortune, 
 
             Register<PetBrandingIron>(1157314, 1157372, 0, 0x9CC3, 0, 600, cat);
+            Register<ImprovedRockHammer>(1157177, 1157306, 0, 0x9CBB, 0, 1000, cat);
             Register<PetBondingPotion>(1152921, 1156678, 0, 0x9CBC, 0, 500, cat); 
 
             Register<ForgedMetalOfArtifacts>(new TextDefinition[] { 1149868, 1156686 }, 1156674, 0, 0x9C65, 0, 1000, cat, ConstructForgedMetal);
@@ -557,9 +563,7 @@ namespace Server.Engines.UOStore
 
         public static void AddPendingItem(Mobile m, Item item)
         {
-            List<Item> list;
-
-            if (!PendingItems.TryGetValue(m, out list))
+            if (!PendingItems.TryGetValue(m, out List<Item> list))
             {
                 PendingItems[m] = list = new List<Item>();
             }
@@ -579,9 +583,7 @@ namespace Server.Engines.UOStore
 
         public static void CheckPendingItem(Mobile m)
         {
-            List<Item> list;
-
-            if (PendingItems.TryGetValue(m, out list))
+            if (PendingItems.TryGetValue(m, out List<Item> list))
             {
                 var index = list.Count;
 

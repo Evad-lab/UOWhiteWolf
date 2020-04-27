@@ -246,8 +246,7 @@ namespace Server.Engines.BulkOrders
 
             AddHtmlLocalized(540, 670, 50, 32, 1011046, LabelColor, false, false); // APPLY
             AddButton(505, 670, 4017, 4018, 0, GumpButtonType.Reply, 0);
-			
-		}
+        }
 
         public override void OnResponse(Server.Network.NetState sender, RelayInfo info)
         {

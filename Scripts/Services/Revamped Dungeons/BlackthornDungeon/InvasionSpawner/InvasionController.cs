@@ -248,7 +248,7 @@ namespace Server.Engines.Blackthorn
                         bc.Home = Defs[CurrentInvasion].BeaconLoc;
                         bc.SeeksHome = true;
                         bc.RangeHome = Utility.RandomMinMax(5, 10);
-
+                        bc.CanSwim = false;
                         bc.Tamable = false;
 
                         return true;
@@ -525,7 +525,7 @@ namespace Server.Engines.Blackthorn
 
             Timer.DelayCall(TimeSpan.FromSeconds(10), () =>
             {
-                if (Beacon != null && Beacon.Destroyed)
+                if (Beacon == null || Beacon.Destroyed)
                 {
                     Timer.DelayCall(TimeSpan.FromMinutes(2), () =>
                     {

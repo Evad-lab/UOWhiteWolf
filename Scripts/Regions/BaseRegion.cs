@@ -198,7 +198,7 @@ namespace Server.Regions
 
         public static void Configure()
         {
-            Region.DefaultRegionType = typeof(BaseRegion);
+            DefaultRegionType = typeof(BaseRegion);
         }
 
         public static string GetRuneNameFor(Region region)
@@ -466,7 +466,7 @@ namespace Server.Regions
 
                 m_SpawnBuffer1.Clear();
 
-                if (!Region.Find(new Point3D(x, y, z), map).AcceptsSpawnsFrom(this))
+                if (!Find(new Point3D(x, y, z), map).AcceptsSpawnsFrom(this))
                 {
                     m_SpawnBuffer2.Clear();
                     continue;
@@ -608,7 +608,7 @@ namespace Server.Regions
             }
         }
 
-        public virtual bool CheckTravel(Mobile traveller, Point3D p, Server.Spells.TravelCheckType type)
+        public virtual bool CheckTravel(Mobile traveller, Point3D p, Spells.TravelCheckType type)
         {
             return true;
         }

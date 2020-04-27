@@ -44,6 +44,8 @@ namespace Server.Mobiles
             this.Tamable = false;
             this.ControlSlots = 3;
             this.MinTameSkill = 93.9;
+			
+			SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public DragonTwo(Serial serial)

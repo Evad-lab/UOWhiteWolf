@@ -52,7 +52,6 @@ namespace Server.Misc
 				RegisterMap(73, 3, 3, 2560, 2048, 1, "Malas4", MapRules.TrammelRules);
 				RegisterMap(74, 4, 4, 1448, 1448, 1, "Tokuno4", MapRules.TrammelRules);
 				RegisterMap(75, 5, 5, 1280, 4096, 1, "TerMur4", MapRules.TrammelRules);					
-            
             }
 
             RegisterMap(0x7F, 0x7F, 0x7F, Map.SectorSize, Map.SectorSize, 1, "Internal", MapRules.Internal);

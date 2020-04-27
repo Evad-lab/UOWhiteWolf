@@ -54,6 +54,7 @@ namespace Server.Mobiles
 
             SetWeaponAbility(WeaponAbility.Bladeweave);
             SetWeaponAbility(WeaponAbility.TalonStrike);
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public StygianDragon(Serial serial)
@@ -78,7 +79,7 @@ namespace Server.Mobiles
             {
                 return new Type[]
                 {
-                    typeof(AxesOfFury), typeof(SummonersKilt), typeof(GiantSteps), typeof(StoneDragonsTooth),
+                    typeof(AxesOfFury), typeof(SummonersKilt), typeof(GiantSteps),
                     typeof(TokenOfHolyFavor)
                 };
             }
@@ -87,7 +88,6 @@ namespace Server.Mobiles
         public override bool AlwaysMurderer { get { return true; } }
         public override bool Unprovokable { get { return false; } }
         public override bool BardImmune { get { return false; } }
-        public override bool HasBreath { get { return true; } } // fire breath enabled
         public override bool AutoDispel { get { return !Controlled; } }
         public override int Meat { get { return 19; } }
         public override int Hides { get { return 30; } }
@@ -119,7 +119,7 @@ namespace Server.Mobiles
                     case 2: DoFireColumn(); break;
                 }
 
-                m_Delay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(45, 60));
+                m_Delay = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60));
             }
         }
 
@@ -130,10 +130,7 @@ namespace Server.Mobiles
             c.DropItem(new StygianDragonHead());
 			
 			if ( Paragon.ChestChance > Utility.RandomDouble() )
-			{
-				//UOWW: ParagonChest temporary fix
-            	//c.DropItem( new ParagonChest( Name, TreasureMapLevel ) );
-			}
+            	c.DropItem( new ParagonChest( Name, 5 ) );
         }
 
         public override void Serialize(GenericWriter writer)
@@ -216,7 +213,9 @@ namespace Server.Mobiles
 
                 finish.X = m_ShowerArea.X + Utility.Random(m_ShowerArea.Width);
                 finish.Y = m_ShowerArea.Y + Utility.Random(m_ShowerArea.Height);
-                finish.Z = m_Map.GetAverageZ(finish.X, finish.Y);
+                finish.Z = m_From.Z;
+
+                SpellHelper.AdjustField(ref finish, m_Map, 16, false);
 
                 //objects move from upper right/right to left as per OSI
                 start.X = finish.X + Utility.RandomMinMax(-4, 4);
@@ -263,6 +262,11 @@ namespace Server.Mobiles
         #region Fire Column
         public void DoFireColumn()
         {
+            var map = Map;
+
+            if (map == null)
+                return;
+
             Direction columnDir = Utility.GetDirection(this, Combatant);
 
             Packet flash = ScreenLightFlash.Instance;
@@ -281,16 +285,21 @@ namespace Server.Mobiles
             bool south = columnDir == Direction.East || columnDir == Direction.West;
 
             Movement.Movement.Offset(columnDir, ref x, ref y);
+            Point3D p = new Point3D(x, y, Z);
+            SpellHelper.AdjustField(ref p, map, 16, false);
 
-            for (int i = 0; i < 8; i++)
+            var fire = new FireField(this, Utility.RandomMinMax(25, 32), south);
+            fire.MoveToWorld(p, map);
+
+            for (int i = 0; i < 7; i++)
             {
                 Movement.Movement.Offset(columnDir, ref x, ref y);
 
-                IPoint3D p = new Point3D(x, y, Map.GetAverageZ(x, y)) as IPoint3D;
-                SpellHelper.GetSurfaceTop(ref p);
+                p = new Point3D(x, y, Z);
+                SpellHelper.AdjustField(ref p, map, 16, false);
 
-                var fire = new FireField(this, Utility.RandomMinMax(25, 32), south);
-                fire.MoveToWorld(new Point3D(p), Map);
+                fire = new FireField(this, Utility.RandomMinMax(25, 32), south);
+                fire.MoveToWorld(p, map);
             }
         }
         #endregion

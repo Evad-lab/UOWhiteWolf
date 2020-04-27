@@ -25,7 +25,6 @@
       <go x="6984" y="337" z="0" />
       <entrance x="535" y="995" />
       <music name="ElfCity" />
-	  <guards disabled="true" />
     </region>
     <region type="MondainRegion" priority="50" name="Sanctuary">
       <rect x="6157" y="4" width="242" height="251" />
@@ -256,7 +255,6 @@
       <rect x="2200" y="1160" width="86" height="86" />
       <go x="2275" y="1210" z="0" />
       <music name="Cove" />
-	  <guards disabled="true" />
     </region>
     <region type="TownRegion" priority="50" name="Britain">
       <rect x="1416" y="1498" width="324" height="279" zmin="-10" />
@@ -266,7 +264,6 @@
       <rect x="1093" y="1538" width="292" height="369" />
       <go x="1495" y="1629" z="10" />
       <music name="Britain1" />
-	  <guards disabled="true" />
       <zrange min="0" />
       <region priority="50" name="Blackthorn Castle">
         <rect x="1500" y="1408" width="46" height="90" />
@@ -379,7 +376,6 @@
       <rect x="1224" y="3592" width="309" height="473" />
       <go x="1383" y="3815" z="0" />
       <music name="Jhelom" />
-	  <guards disabled="true" />
       <region type="TownRegion" name="Jhelom">
         <rect x="1303" y="3670" width="189" height="225" />
         <rect x="1338" y="3895" width="74" height="28" />
@@ -405,7 +401,6 @@
       <rect x="2499" y="627" width="68" height="63" />
       <go x="2466" y="544" z="0" />
       <music name="Minoc" />
-	  <guards disabled="true" />
       <region>
         <rect x="2457" y="397" width="40" height="8" />
         <rect x="2465" y="405" width="8" height="8" />
@@ -424,7 +419,6 @@
       <rect x="3695" y="2699" width="66" height="13" />
       <go x="3650" y="2519" z="0" />
       <music name="Ocllo" />
-	  <guards disabled="true" />
       <region>
         <rect x="3664" y="2608" width="16" height="16" />
         <rect x="3664" y="2640" width="8" height="16" />
@@ -441,7 +435,6 @@
       <rect x="1800" y="2796" width="16" height="52" zmin="0" />
       <go x="1867" y="2780" z="0" />
       <music name="Trinsic" />
-	  <guards disabled="true" />
       <region>
         <rect x="1834" y="2728" width="22" height="16" />
         <rect x="2024" y="2784" width="16" height="20" />
@@ -459,7 +452,6 @@
       <rect x="2728" y="948" width="88" height="53" />
       <go x="2899" y="676" z="0" />
       <music name="Vesper" />
-	  <guards disabled="true" />
       <region>
         <rect x="2952" y="864" width="16" height="32" />
         <rect x="2968" y="872" width="8" height="16" />
@@ -479,7 +471,6 @@
       <rect x="718" y="874" width="38" height="22" />
       <go x="546" y="992" z="0" />
       <music name="Yew" />
-	  <guards disabled="true" />
       <zrange min="0" max="39" />
       <region>
         <rect x="600" y="808" width="24" height="24" />
@@ -541,7 +532,6 @@
       <rect x="5252" y="183" width="10" height="10" />
       <go x="5223" y="190" z="5" />
       <music name="Wind" />
-	  <guards disabled="true" />
       <region>
         <rect x="5159" y="15" width="25" height="9" />
         <rect x="5159" y="24" width="9" height="16" />
@@ -557,7 +547,6 @@
       <rect x="2868" y="3324" width="205" height="195" />
       <go x="3010" y="3371" z="15" />
       <music name="Serpents" />
-	  <guards disabled="true" />
       <zrange min="0" />
       <region>
         <rect x="2960" y="3400" width="16" height="16" />
@@ -571,7 +560,6 @@
       <rect x="538" y="2107" width="150" height="190" />
       <go x="632" y="2233" z="0" />
       <music name="Skarabra" />
-	  <guards disabled="true" />
       <region>
         <rect x="600" y="2232" width="16" height="24" />
         <rect x="592" y="2240" width="8" height="16" />
@@ -585,7 +573,6 @@
       <rect x="3475" y="1000" width="360" height="435" />
       <go x="3732" y="1279" z="0" />
       <music name="Nujelm" />
-	  <guards disabled="true" />
       <zrange min="0" />
       <region>
         <rect x="3736" y="1184" width="16" height="23" />
@@ -632,7 +619,6 @@
       <rect x="4483" y="1468" width="21" height="13" />
       <go x="4442" y="1172" z="0" />
       <music name="Moonglow" />
-	  <guards disabled="true" />
       <zrange min="0" />
       <region>
         <rect x="4384" y="1152" width="8" height="24" />
@@ -654,7 +640,6 @@
 		<rect x="3649" y="2256" width="54" height="47" />
 		<go x="3714" y="2220" z="20" />
 		<music name="Magincia" />
-		<guards disabled="true" />
 		<region>
 			<rect x="3687" y="2246" width="12" height="16" />
 			<logoutDelay active="false" />
@@ -855,7 +840,6 @@
       <rect x="5147" y="4064" width="125" height="20" />
       <rect x="5235" y="3930" width="80" height="12" />
       <go x="5228" y="3978" z="37" />
-	  <guards disabled="true" />
       <region>
         <rect x="5194" y="4053" width="10" height="20" />
         <logoutDelay active="false" />
@@ -865,7 +849,6 @@
       <rect x="5639" y="3095" width="192" height="223" />
       <rect x="5831" y="3237" width="20" height="30" />
       <go x="5769" y="3176" z="0" />
-	  <guards disabled="true" />
       <region>
         <rect x="5757" y="3150" width="24" height="24" />
         <logoutDelay active="false" />
@@ -1015,6 +998,10 @@
 	<region type="DungeonRegion" priority="50" name="Solen Hives">
       <rect x="5640" y="1776" width="295" height="263" />
       <go x="5774" y="1896" z="20" />
+    </region>
+	<region type="SeaMarketRegion" priority="50" name="Sea Market">
+      <rect x="4529" y="2296" width="45" height="112" />
+      <go x="4550" y="2317" z="-2" />
     </region>
   </Facet>
   <Facet name="Trammel">
@@ -2103,6 +2090,10 @@
       <rect x="5640" y="1776" width="295" height="263" />
       <go x="5774" y="1896" z="20" />
     </region>
+	<region type="SeaMarketRegion" priority="50" name="Sea Market">
+      <rect x="4529" y="2296" width="45" height="112" />
+      <go x="4550" y="2317" z="-2" />
+    </region>
   </Facet>
   <Facet name="Ilshenar">
     <region type="ExploringDeepCreaturesRegion" name="Djinn">
@@ -2454,10 +2445,6 @@
       <rect x="1698" y="1567" width="5" height="60" />
       <rect x="1687" y="1627" width="26" height="26" />
     </region>
-	<region priority="50" name="Gravewater Lake">
-			<rect x="1440" y="1527" width="423" height="219" />
-			<rect x="1381" y="1565" width="215" height="224" />
-	</region>
     <region type="MondainRegion" priority="50" name="Gravewater Dock">
       <rect x="1692" y="1551" width="16" height="16" />
     </region>
@@ -2660,6 +2647,10 @@
       <rect x="283" y="361" width="68" height="102" />
       <go x="320" y="408" z="32" />
       <smartNoHousing active="true" />
+    </region>
+	<region type="TokunoDocksRegion" priority="50" name="Tokuno Docks">
+      <rect x="650" y="1350" width="100" height="50" />
+      <go x="713" y="1360" z="26" />
     </region>
   </Facet>
   <Facet name="TerMur">

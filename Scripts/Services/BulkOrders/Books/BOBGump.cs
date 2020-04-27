@@ -628,13 +628,13 @@ namespace Server.Engines.BulkOrders
                                     return 1018338;
                                 case BulkMaterialType.Valorite:
                                     return 1018339;
-								//daat9 OWLTR start - custom resources
+								//daat99 OWLTR start - custom resources
 								case BulkMaterialType.Blaze: return "Blaze";
 								case BulkMaterialType.Ice: return "Ice";
 								case BulkMaterialType.Toxic: return "Toxic";
 								case BulkMaterialType.Electrum: return "Electrum";
 								case BulkMaterialType.Platinum: return "Platinum";
-								//daat9 OWLTR end - custom resources
+								//daat99 OWLTR end - custom resources
                             }
                         }
 
@@ -657,7 +657,7 @@ namespace Server.Engines.BulkOrders
                                 return 1062237;
                             case BulkMaterialType.Barbed:
                                 return 1062238;
-							//daat9 OWLTR start - custom resources
+							//daat99 OWLTR start - custom resources
                             case BulkMaterialType.Polar: return "Polar";
                             case BulkMaterialType.Synthetic: return "Synthetic";
                             case BulkMaterialType.BlazeL: return "Blaze";
@@ -665,7 +665,7 @@ namespace Server.Engines.BulkOrders
                             case BulkMaterialType.Shadow: return "Shadow";
                             case BulkMaterialType.Frost: return "Frost";
                             case BulkMaterialType.Ethereal: return "Ethereal";
-                            //daat9 OWLTR end - custom resources
+                            //daat99 OWLTR end - custom resources
                         }
 
                         break;
@@ -685,13 +685,13 @@ namespace Server.Engines.BulkOrders
                             case BulkMaterialType.Heartwood: return 1071432;
                             case BulkMaterialType.Bloodwood: return 1071431;
                             case BulkMaterialType.Frostwood: return 1071433;
-							//daat9 OWLTR start - custom resources
+							//daat99 OWLTR start - custom resources
 							case BulkMaterialType.Ebony: return "Ebony";
 							case BulkMaterialType.Bamboo: return "Bamboo";
 							case BulkMaterialType.PurpleHeart: return "PurpleHeart";
 							case BulkMaterialType.Redwood: return "Redwood";
 							case BulkMaterialType.Petrified: return "Petrified";
-							//daat9 OWLTR end - custom resources
+							//daat99 OWLTR end - custom resources
                         }
                     }
             }

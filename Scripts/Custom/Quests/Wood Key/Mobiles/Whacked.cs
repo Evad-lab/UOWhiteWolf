@@ -114,14 +114,14 @@ namespace Server.Mobiles
 		                {
 					dropped.Delete(); 
 					mobile.AddToBackpack( new WoodKey() );
-					mobile.SendMessage( "Thank you for your help!" );
+					mobile.SendMessage( "Thank you for your help! Cherish your new Wood Key, you only get one!" );
                                         acct.SetTag( "NewWoodReceived", "true" );
 
 				
          		        }
 				else //what to do if account has already been tagged
          			{
-         				mobile.SendMessage("Have some gold for your troubles.");
+         				mobile.SendMessage("I have only gold for you, I gave you the Wood Key last time.");
          				mobile.AddToBackpack( new Gold( 5500 ) );
          				dropped.Delete();
          			}

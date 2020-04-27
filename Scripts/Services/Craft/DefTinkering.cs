@@ -175,20 +175,6 @@ namespace Server.Engines.Craft
             }
         }
 
-        private System.Collections.Generic.List<Type> _NoConsumeOnFailure = new System.Collections.Generic.List<Type>
-        {
-            typeof(Silver), typeof(RingOfTheElements), typeof(HatOfTheMagi), typeof(AutomatonActuator),
-            typeof(BlackrockMoonstone)
-        };
-
-        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
-        {
-            if (_NoConsumeOnFailure.Contains(resourceType))
-                return false;
-
-            return base.ConsumeOnFailure(from, resourceType, craftItem);
-        }
-
         public void AddJewelrySet(GemType gemType, Type itemType)
         {
             int offset = (int)gemType - 1;
@@ -264,8 +250,11 @@ namespace Server.Engines.Craft
             {
                 AddCraft(typeof(Ramrod), 1044042, 1095839, 0.0, 50.0, typeof(Board), 1044041, 8, 1044253);
 
-                index = AddCraft(typeof(Swab), 1044042, 1095840, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
-                AddRes(index, typeof(Board), 1044041, 4, 1044253);
+                if (!Core.EJ)
+                {
+                    index = AddCraft(typeof(Swab), 1044042, 1095840, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
+                    AddRes(index, typeof(Board), 1044041, 4, 1044253);
+                }
             }
             
             if (Core.SA)
@@ -407,9 +396,11 @@ namespace Server.Engines.Craft
             AddCraft(typeof(Goblet), 1044048, 1022458, 10.0, 60.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(PewterMug), 1044048, 1024097, 10.0, 60.0, typeof(IronIngot), 1044036, 2, 1044037);
             AddCraft(typeof(SkinningKnife), 1044048, 1023781, 25.0, 75.0, typeof(IronIngot), 1044036, 2, 1044037);
-				index = AddCraft(typeof(GoldPan), 1044048, "Goldpan", 119.5, 119.9, typeof(GoldIngot), 1045146, 2, 1044037);
-				AddSkill(index, SkillName.Fishing, 119.5, 119.9);
-				AddSkill(index, SkillName.Begging, 119.5, 119.9);
+			
+			//UOWW additions
+			index = AddCraft(typeof(GoldPan), 1044048, "Goldpan", 119.5, 119.9, typeof(GoldIngot), 1045146, 2, 1044037);
+			AddSkill(index, SkillName.Fishing, 119.5, 119.9);
+			AddSkill(index, SkillName.Begging, 119.5, 119.9);
             
             if (Core.SA)
             {
@@ -449,8 +440,9 @@ namespace Server.Engines.Craft
             {
                 index = AddCraft(typeof(TerMurStyleCandelabra), 1044050, 1095313, 55.0, 105.0, typeof(IronIngot), 1044036, 4, 1044037);
             }
-            
-            if (Core.HS)
+
+            // Removed for Dark Tides Cannon Changes
+            if (Core.HS && !Core.EJ)
             {
                 index = AddCraft(typeof(Matches), 1044050, 1096648, 15.0, 70.0, typeof(Matchcord), 1095184, 10, 1044367);
                 AddRes(index, typeof(Board), 1044041, 4, 1044351);
@@ -652,12 +644,12 @@ namespace Server.Engines.Craft
             ForceNonExceptional(index);
             SetNeededThemePack(index, ThemePack.Gothic);
 
-            index = AddCraft(typeof(DistillerySouthAddonDeed), 1044051, 1150663, 90.0, 120.0, typeof(MetalKeg), 1150675, 2, 1044253);
+            index = AddCraft(typeof(DistillerySouthAddonDeed), 1044051, 1150663, 90.0, 110.0, typeof(MetalKeg), 1150675, 2, 1044253);
             AddRes(index, typeof(HeatingStand), 1011224, 4, 1044253);
             AddRes(index, typeof(CopperWire), 1026265, 1, 1044253);
             ForceNonExceptional(index);
 
-            index = AddCraft(typeof(DistilleryEastAddonDeed), 1044051, 1150664, 90.0, 120.0, typeof(MetalKeg), 1150675, 2, 1044253);
+            index = AddCraft(typeof(DistilleryEastAddonDeed), 1044051, 1150664, 90.0, 110.0, typeof(MetalKeg), 1150675, 2, 1044253);
             AddRes(index, typeof(HeatingStand), 1011224, 4, 1044253);
             AddRes(index, typeof(CopperWire), 1026265, 1, 1044253);
             ForceNonExceptional(index);
@@ -671,7 +663,7 @@ namespace Server.Engines.Craft
                 AddRes(index, typeof(InoperativeAutomatonHead), 1157002, 1, 1157001);
                 AddRecipe(index, (int)TinkerRecipes.KotlAutomatonHead);
 
-                index = AddCraft(typeof(PersonalTelescope), 1044051, 1125284, 100.0, 130.0, typeof(IronIngot), 1044036, 25, 1044037);
+                index = AddCraft(typeof(PersonalTelescope), 1044051, 1125284, 95.0, 196.0, typeof(IronIngot), 1044036, 25, 1044037);
                 AddRes(index, typeof(WorkableGlass), 1154170, 1, 1154171);
                 AddRes(index, typeof(SextantParts), 1044175, 1, 1044253);
                 AddRecipe(index, (int)TinkerRecipes.Telescope);
@@ -713,8 +705,7 @@ namespace Server.Engines.Craft
 
             // Faction trap removal kit
             index = AddCraft(typeof(FactionTrapRemovalKit), 1044052, 1046445, 90.0, 115.0, typeof(Silver), 1044572, 500, 1044253);
-            AddRes(index, typeof(IronIngot), 1044036, 10, 1044037);
-            #endregion
+			#endregion
 			
 			//daat99 OWLTR start - custom craftables
             #region Customs
@@ -726,7 +717,7 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(PlatinumGranite), "Platinum Granite", 20, "You need more Platinum Granite");
             AddRes(index, typeof(PetrifiedBoard), "Petrified Boards", 50, "You need more Petrified Boards");
 
-            #endregion Customs
+            #endregion
 
             #region Magic Jewlery
             if (Core.ML)

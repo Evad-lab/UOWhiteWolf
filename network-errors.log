@@ -1,8 +1,8 @@
-# 4/22/2020 6:53:18 PM
+# 4/26/2020 3:59:22 PM
 System.ObjectDisposedException: Cannot access a disposed object.
 Object name: 'System.Net.Sockets.Socket'.
    at System.Net.Sockets.Socket.BeginSend(Byte[] buffer, Int32 offset, Int32 size, SocketFlags socketFlags, SocketError& errorCode, AsyncCallback callback, Object state)
    at System.Net.Sockets.Socket.BeginSend(Byte[] buffer, Int32 offset, Int32 size, SocketFlags socketFlags, AsyncCallback callback, Object state)
-   at Server.Network.NetState.Flush() in C:\UO\UOServer\Server\Network\NetState.cs:line 1004
+   at Server.Network.NetState.Flush() in D:\UO\WW\Tests\ServUO57\20200424-ServUO-57-Core-Upgrade\Server\Network\NetState.cs:line 1004
 
 

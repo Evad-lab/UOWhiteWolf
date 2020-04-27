@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using Server.Items;
 
 namespace Server.Engines.Craft
@@ -22,10 +24,9 @@ namespace Server.Engines.Craft
         private bool m_Repair;
         private bool m_MarkOption;
         private bool m_CanEnhance;
-        #region SA
+
         private bool m_QuestOption;
 		private bool m_CanAlter;
-        #endregion
 
         private readonly CraftItemCol m_CraftItems;
         private readonly CraftGroupCol m_CraftGroups;
@@ -153,6 +154,22 @@ namespace Server.Engines.Craft
                 c.OnMade(item);
         }
 
+        public void OnRepair(Mobile m, ITool tool, Item deed, Item addon, IEntity e)
+        {
+            Item source;
+
+            if (tool is Item)
+            {
+                source = (Item)tool;
+            }
+            else
+            {
+                source = deed ?? addon;
+            }
+
+            EventSink.InvokeRepairItem(new RepairItemEventArgs(m, source, e));
+        }
+
         public bool Resmelt
         {
             get
@@ -201,7 +218,6 @@ namespace Server.Engines.Craft
             }
         }
 		
-        #region SA
         public bool QuestOption
         {
             get
@@ -225,7 +241,6 @@ namespace Server.Engines.Craft
                 m_CanAlter = value;
             }
         }
-        #endregion
 
         public CraftSystem(int minCraftEffect, int maxCraftEffect, double delay)
         {
@@ -250,9 +265,31 @@ namespace Server.Engines.Craft
             Systems.Add(system);
         }
 
+        private Type[] _GlobalNoConsume =
+        {
+            typeof(CapturedEssence), typeof(EyeOfTheTravesty), typeof(DiseasedBark),  typeof(LardOfParoxysmus), typeof(GrizzledBones), typeof(DreadHornMane),
+
+            typeof(Blight), typeof(Corruption), typeof(Muculent), typeof(Scourge), typeof(Putrefaction), typeof(Taint),
+
+            // Tailoring
+            typeof(MidnightBracers), typeof(CrimsonCincture), typeof(GargishCrimsonCincture), typeof(LeurociansMempoOfFortune),
+
+            // Blacksmithy
+            typeof(LeggingsOfBane), typeof(GauntletsOfNobility),
+
+            // Carpentry
+            typeof(StaffOfTheMagi), typeof(BlackrockMoonstone),
+
+            // Tinkering
+            typeof(Server.Factions.Silver), typeof(RingOfTheElements), typeof(HatOfTheMagi), typeof(AutomatonActuator),
+
+            // Inscription
+            typeof(AntiqueDocumentsKit)
+        };
+
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            return true;
+            return !_GlobalNoConsume.Any(t => t == resourceType);
         }
 
         public virtual bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem, ref MasterCraftsmanTalisman talisman)
@@ -384,6 +421,12 @@ namespace Server.Engines.Craft
             craftItem.NeedMaker = needMaker;
         }
 
+        public void SetNeedWater(int index, bool needWater)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.NeedWater = needWater;
+        }
+
         public void SetBeverageType(int index, BeverageType requiredBeverage)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
@@ -432,6 +475,17 @@ namespace Server.Engines.Craft
             craftItem.DisplayID = id;
         }
 
+        /// <summary>
+        /// Add a callback Action to allow mutating the crafted item. Handy when you have a single Item Type but you want to create variations of it.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="action"></param>
+        public void SetMutateAction(int index, Action<Mobile, Item, ITool> action)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.MutateAction = action;
+        }
+
         public void SetForceSuccess(int index, int success)
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
@@ -477,6 +531,12 @@ namespace Server.Engines.Craft
         {
             CraftItem craftItem = m_CraftItems.GetAt(index);
             craftItem.ForceNonExceptional = true;
+        }
+
+        public void ForceExceptional(int index)
+        {
+            CraftItem craftItem = m_CraftItems.GetAt(index);
+            craftItem.ForceExceptional = true;
         }
 
         public void SetMinSkillOffset(int index, double skillOffset)

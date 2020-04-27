@@ -19,33 +19,20 @@ namespace Server.Misc
         public static void FatigueOnDamage(Mobile m, int damage, DFAlgorithm df)
         {
             double fatigue = 0.0;
+            var hits = Math.Max(1, m.Hits);
 
             switch (m.DFA)
             {
                 case DFAlgorithm.Standard:
                     {
-                        if (Core.SA && m.Player)
-                        {
-                            fatigue = damage + Utility.RandomMinMax(-3, 3);
-                        }
-                        else
-                        {
-                            fatigue = (damage * (100.0 / m.Hits) * ((double)m.Stam / 100)) - 5.0;
-                        }
-                        break;
+                        fatigue = (damage * (m.HitsMax / hits) * ((double)m.Stam / m.StamMax)) - 5;
                     }
+                    break;
                 case DFAlgorithm.PainSpike:
                     {
-                        if (Core.SA && m.Player)
-                        {
-                            fatigue = (damage * 2) + Utility.RandomMinMax(-3, 3);
-                        }
-                        else
-                        {
-                            fatigue = (damage * ((100.0 / m.Hits) + ((50.0 + m.Stam) / 100) - 1.0)) - 5.0;
-                        }
-                        break;
+                        fatigue = (damage * ((m.HitsMax / hits) + ((50.0 + m.Stam) / m.StamMax) - 1.0)) - 5;
                     }
+                    break;
             }
 
             var reduction = BaseArmor.GetInherentStaminaLossReduction(m) + 1;
@@ -57,9 +44,10 @@ namespace Server.Misc
 
             if (fatigue > 0)
             {
-                if (m.Stam - fatigue <= 0)
+                // On EA, if follows this special rule to reduce the chances of your stamina being dropped to 0
+                if (m.Stam - fatigue <= 10)
                 {
-                    m.Stam = Utility.RandomMinMax(0, Math.Min(3, m.Stam));
+                    m.Stam -= (int)(fatigue * ((double)m.Hits / (double)m.HitsMax));
                 }
                 else
                 {

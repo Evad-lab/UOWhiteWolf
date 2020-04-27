@@ -539,20 +539,25 @@ namespace Server.Items
                 list.Add(1154937); // VvV Item
         }
 
-        public override void GetProperties(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.GetProperties(list);
-
             if (OwnerName != null)
             {
                 list.Add(1153213, OwnerName);
             }
 
             if (m_Crafter != null)
-				list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+            {
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+            }
 
             if (m_Quality == ItemQuality.Exceptional)
                 list.Add(1063341); // exceptional
+        }
+
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
 
             m_AosSkillBonuses.GetProperties(list);
 
@@ -980,6 +985,44 @@ namespace Server.Items
                         break;
                     }
             }
+
+            int strBonus = ComputeStatBonus(StatType.Str);
+            int dexBonus = ComputeStatBonus(StatType.Dex);
+            int intBonus = ComputeStatBonus(StatType.Int);
+
+            if (Parent is Mobile && (strBonus != 0 || dexBonus != 0 || intBonus != 0))
+            {
+                Mobile m = (Mobile)Parent;
+
+                string modName = Serial.ToString();
+
+                if (strBonus != 0)
+                    m.AddStatMod(new StatMod(StatType.Str, modName + "Str", strBonus, TimeSpan.Zero));
+
+                if (dexBonus != 0)
+                    m.AddStatMod(new StatMod(StatType.Dex, modName + "Dex", dexBonus, TimeSpan.Zero));
+
+                if (intBonus != 0)
+                    m.AddStatMod(new StatMod(StatType.Int, modName + "Int", intBonus, TimeSpan.Zero));
+            }
+
+            if (Parent is Mobile)
+            {
+                m_AosSkillBonuses.AddTo((Mobile)Parent);
+                ((Mobile)Parent).CheckStatTimers();
+            }
+        }
+
+        public int ComputeStatBonus(StatType type)
+        {
+            switch (type)
+            {
+                case StatType.Str: return Attributes.BonusStr;
+                case StatType.Dex: return Attributes.BonusDex;
+                case StatType.Int: return Attributes.BonusInt;
+            }
+
+            return 0;
         }
 
         public virtual void AlterBowDamage(ref int phys, ref int fire, ref int cold, ref int pois, ref int nrgy, ref int chaos, ref int direct)

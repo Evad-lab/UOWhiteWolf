@@ -38,7 +38,8 @@ namespace Server.Gumps
 			AddHtml( 107, 140, 300, 230, " < BODY > " + 
 "<BASEFONT COLOR=YELLOW>All my specialty ores have been stolen!  You might ask who would do such a thing? <BR><BR>" +
 "<BASEFONT COLOR=YELLOW>Jealousy! That's who!  Jealousy made other smiths steal my beautiful ores, and turned the thieves into monsters!<BR><BR>" +
-"<BASEFONT COLOR=YELLOW>Bring me back all of my missing ores and I will reward you.<BR><BR>" +
+"<BASEFONT COLOR=YELLOW>Bring me back all of my missing ores and I will reward you with an Ingot Storage Key.<BR><BR>" +
+"<BASEFONT COLOR=YELLOW>You will only receive one Key, do not give, sell or lose the one I give you.<BR><BR>" +
 "<BASEFONT COLOR=YELLOW>The first smith can be found in the dungeon Shame, on the first level, in Felucca.<BR><BR>" +
 "<BASEFONT COLOR=YELLOW>His name is Marcus. Please find my Shiny Iron Ingot. Be careful brave warrior.<BR><BR>" +
 "<BASEFONT COLOR=YELLOW>The next Shiny Ingot to find is the Dull Copper Ingot.  This one is held by Brady, near the Shrine of Compassion in Ilshenar.<BR><BR>" +

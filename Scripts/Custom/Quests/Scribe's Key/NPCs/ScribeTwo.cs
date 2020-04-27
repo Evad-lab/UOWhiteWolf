@@ -4,7 +4,7 @@ using Server.Items;
 
 namespace Server.Mobiles
 {
-    [CorpseName("a satyr's corpse")]
+    [CorpseName("a scribe corpse")]
     public class ScribeTwo : BaseCreature
     {
         [Constructable]
@@ -86,9 +86,11 @@ namespace Server.Mobiles
         public override bool CanPeace { get { return true; } }
         public override bool CanProvoke { get { return true; } }
 
-        public override TimeSpan DiscordInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60)); } }
-        public override TimeSpan PeaceInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60)); } }
-        public override TimeSpan ProvokeInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60)); } }
+		//UOWW: commented out due to not compatible with Core upgrade
+		//
+        //public override TimeSpan DiscordInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60)); } }
+        //public override TimeSpan PeaceInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60)); } }
+        //public override TimeSpan ProvokeInterval { get { return TimeSpan.FromSeconds(Utility.RandomMinMax(30, 60)); } }
 
         public override int Meat
         {

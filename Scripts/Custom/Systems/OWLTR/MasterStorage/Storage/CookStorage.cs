@@ -33,8 +33,8 @@ namespace daat99
 				return types;
 
 			SackFlour sack = item as SackFlour;
-			if (sack != null && sack.Quantity > 0 && types.ContainsKey(typeof(SackFlour)))
-				types[typeof(SackFlour)] = sack.Quantity;
+			if (sack != null && sack.Amount > 0 && types.ContainsKey(typeof(SackFlour)))
+				types[typeof(SackFlour)] = sack.Amount;
 			return types;
 		}
 	}

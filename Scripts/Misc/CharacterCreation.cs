@@ -16,9 +16,9 @@ namespace Server.Misc
 		private static readonly CityInfo m_NewHavenInfo = new CityInfo(
 			"New Haven",
 			"The Bountiful Harvest Inn",
-			1058,
-			520,
-			-90,
+			3503,
+			2574,
+			14,
 			Map.Trammel);
 
 		private static readonly CityInfo m_SiegeInfo = new CityInfo(
@@ -63,6 +63,7 @@ namespace Server.Misc
 				m.AddItem(pack);
 			}
 			
+			//UOWW : custom character creation welcome pack
 			bool FirstCharAlreadyCreated = Convert.ToBoolean(((Account)m.Account).GetTag("FirstCharAlreadyCreated"));
 
             if (FirstCharAlreadyCreated) //this part checks to see if the account already has this tag, if it does it will add the following items
@@ -83,6 +84,7 @@ namespace Server.Misc
 
 			PackItem(new HousePlacementTool());
 			PackItem(new RedBook("a book", m.Name, 20, true));
+			PackItem(new Gold(1000)); // Starting gold can be customized here
 			PackItem(new Candle());
 			PackItem(new StatBall());
 			PackItem(new daat99.MasterStorage());
@@ -242,7 +244,7 @@ namespace Server.Misc
 				pm.Profession = args.Profession;
 
 				if (pm.IsPlayer() && pm.Account.Young && !Siege.SiegeShard)
-					young = pm.Young = false;
+					young = pm.Young = true;
 			}
 
 			SetName(newChar, args.Name);
@@ -299,6 +301,8 @@ namespace Server.Misc
 				newChar.BankBox.DropItem(ticket);
 			}
 
+			//UOWW custom character creation starting location
+			//
 			//var city = args.City;
 			//var map = Siege.SiegeShard && city.Map == Map.Trammel ? Map.Felucca : city.Map;
 			//

@@ -44,6 +44,10 @@ namespace Server.Mobiles
 			PackItem( new WhiteFang(2) );
 
             VirtualArmor = 32;
+			
+			//UOWW: activates Breath and Aura
+            SetSpecialAbility(SpecialAbility.DragonBreath);
+            SetAreaEffect(AreaEffect.AuraDamage);			
         }
 
         public FireGargoyleTwo(Serial serial)
@@ -51,13 +55,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
         public override int TreasureMapLevel
         {
             get
@@ -80,12 +77,15 @@ namespace Server.Mobiles
             }
         }
 
-        public override bool HasAura { get { return true; } }
-        public override int AuraRange { get { return 2; } }
+		//UOWW: commented out. Moved in special abilities in the new core
+        //public override bool HasAura { get { return true; } }
+        //public override int AuraRange { get { return 2; } }
 
-        public override void AuraEffect(Mobile m)
+		public void AuraEffect(Mobile m)
+        //public override void AuraEffect(Mobile m)
         {
-            m.SendMessage("The radiating heat scorches your skin!");
+			m.SendLocalizedMessage(1008112); // The intense heat is damaging you!
+            //m.SendMessage("The radiating heat scorches your skin!");
         }
 
         public override void GenerateLoot()

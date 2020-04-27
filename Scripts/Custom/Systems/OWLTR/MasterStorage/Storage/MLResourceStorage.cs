@@ -18,7 +18,7 @@ namespace daat99
 				typeof(Blight),			typeof(LuminescentFungi),		typeof(CapturedEssence),	typeof(EyeOfTheTravesty), 
 				typeof(Corruption),		typeof(DreadHornMane),			typeof(ParasiticPlant),		typeof(Muculent), 
 				typeof(DiseasedBark),	typeof(BarkFragment),			typeof(GrizzledBones),		typeof(LardOfParoxysmus), 
-				typeof(Scourge),		typeof(Putrefication),			typeof(Taint),				typeof(PristineDreadHorn), 
+				typeof(Scourge),		typeof(Putrefaction),			typeof(Taint),				typeof(PristineDreadHorn), 
 				typeof(SwitchItem),		typeof(PerfectEmerald),			typeof(DarkSapphire),		typeof(Turquoise), 
 				typeof(EcruCitrine),	typeof(WhitePearl),				typeof(FireRuby),			typeof(BlueDiamond), 
 				typeof(BrilliantAmber) 

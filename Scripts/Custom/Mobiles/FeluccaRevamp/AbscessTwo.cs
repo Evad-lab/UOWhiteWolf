@@ -99,12 +99,8 @@ namespace Server.Mobiles
 			
             c.DropItem(new AbscessTail());			
 			
-			
             if (Paragon.ChestChance > Utility.RandomDouble())
-			{
-				//UOWW: ParagonChest temporary fix
-				//c.DropItem(new ParagonChest(this.Name, this.TreasureMapLevel));
-			}
+                c.DropItem(new ParagonChest(this.Name, this.TreasureMapLevel));
         }
 
         public override void Serialize(GenericWriter writer)

@@ -387,7 +387,7 @@ namespace daat99
 					if (item is SackFlour)
 					{
 						int add = Math.Min(amount, 20);
-						((SackFlour)item).Quantity = add;
+						((SackFlour)item).Amount = add;
 						amount -= add;
 					}
 					else if (item is IUsesRemaining)

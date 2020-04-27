@@ -262,10 +262,6 @@ namespace Server.Items
         private bool m_DImodded;
         #endregion
 
-        #region High Seas
-        private bool m_SearingWeapon;
-        #endregion
-
         #region Runic Reforging
         private ItemPower m_ItemPower;
         private ReforgedPrefix m_ReforgedPrefix;
@@ -721,8 +717,8 @@ namespace Server.Items
 
         public Mobile FocusWeilder { get; set; }
         public Mobile EnchantedWeilder { get; set; }
-		
-		public int LastParryChance { get; set; }
+
+        public int LastParryChance { get; set; }
 
         #region Stygian Abyss
         [CommandProperty(AccessLevel.GameMaster)]
@@ -771,14 +767,22 @@ namespace Server.Items
         }
         #endregion
 
-        #region High Seas
         [CommandProperty(AccessLevel.GameMaster)]
         public bool SearingWeapon
         {
-            get { return m_SearingWeapon; }
-            set { m_SearingWeapon = value; InvalidateProperties(); }
+            get { return HasSocket<SearingWeapon>(); }
+            set
+            {
+                if (!value)
+                {
+                    RemoveSocket<SearingWeapon>();
+                }
+                else if (!SearingWeapon)
+                {
+                    AttachSocket(new SearingWeapon(this));
+                }
+            }
         }
-        #endregion
 
         #region Runic Reforging
 
@@ -808,7 +812,12 @@ namespace Server.Items
         public override void GetContextMenuEntries(Mobile from, List<ContextMenuEntry> list)
 		{
 			base.GetContextMenuEntries(from, list);
-			
+
+            if (SearingWeapon && Parent == from)
+            {
+                list.Add(new SearingWeapon.ToggleExtinguishEntry(from, this));
+            }
+
 			if (BlessedFor == from && BlessedBy == from && RootParent == from)
 			{
 				list.Add(new UnBlessEntry(from, this));
@@ -991,7 +1000,8 @@ namespace Server.Items
 			protected override void OnTick()
 			{
 				m_Mobile.EndAction(typeof(BaseWeapon));
-			}
+                m_Mobile.SendLocalizedMessage(1060168); // Your confusion has passed, you may now arm a weapon!
+            }
 		}
 
 		public override bool CheckConflictingLayer(Mobile m, Item item, Layer layer)
@@ -1092,7 +1102,7 @@ namespace Server.Items
 			}
 			else if (from.Dex < DexRequirement)
 			{
-				from.SendMessage("You are not nimble enough to equip that.");
+				from.SendLocalizedMessage(1071936); // You cannot equip that.
 				return false;
 			}
 			else if (from.Str < AOS.Scale(StrRequirement, 100 - GetLowerStatReq()))
@@ -1102,12 +1112,13 @@ namespace Server.Items
 			}
 			else if (from.Int < IntRequirement)
 			{
-				from.SendMessage("You are not smart enough to equip that.");
+				from.SendLocalizedMessage(1071936); // You cannot equip that.
 				return false;
 			}
 			else if (!from.CanBeginAction(typeof(BaseWeapon)))
 			{
-				return false;
+                from.SendLocalizedMessage(3000201); // You must wait to perform another action.
+                return false;
 			}
 				#region Personal Bless Deed
 			else if (BlessedBy != null && BlessedBy != from)
@@ -1225,13 +1236,13 @@ namespace Server.Items
                 {
                     Caddellite.UpdateBuff(from);
                 }
-				
-				if (ExtendedWeaponAttributes.Focus > 0)
+
+                if (ExtendedWeaponAttributes.Focus > 0)
                 {
                     Focus.UpdateBuff(from);
                 }
-				
-				from.CheckStatTimers();
+
+                from.CheckStatTimers();
 				from.Delta(MobileDelta.WeaponDamage);
 			}
 		}
@@ -1277,7 +1288,6 @@ namespace Server.Items
                 if (FocusWeilder != null)
                     FocusWeilder = null;
 
-                //Skill Masteries
                 SkillMasterySpell.OnWeaponRemoved(m, this);
 
 				#region Mondain's Legacy Sets
@@ -1291,11 +1301,16 @@ namespace Server.Items
                 {
                     Caddellite.UpdateBuff(m);
                 }
-				
+
+                if (SearingWeapon)
+                {
+                    Server.Items.SearingWeapon.OnWeaponRemoved(this);
+                }
+
                 if (ExtendedWeaponAttributes.Focus > 0)
                 {
                     Focus.UpdateBuff(m);
-                }				
+                }
 
                 m.CheckStatTimers();
 
@@ -1303,9 +1318,9 @@ namespace Server.Items
 
                 XmlAttach.CheckOnRemoved(this, parent);
 			}
-			
-			LastParryChance = 0;
-		}
+
+            LastParryChance = 0;
+        }
 
         public void AddMysticMod(Mobile from)
         {
@@ -1637,7 +1652,7 @@ namespace Server.Items
 
 			SpecialMove move = SpecialMove.GetCurrentMove(attacker);
 
-            if (move != null && (!move.OnBeforeSwing(attacker, defender) || SkillMasterySpell.CancelSpecialMove(attacker)))
+            if (move != null && !move.OnBeforeSwing(attacker, defender))
             {
                 SpecialMove.ClearCurrentMove(attacker);
             }
@@ -1791,16 +1806,16 @@ namespace Server.Items
 					chance = chance * (20 + defender.Dex) / 100;
 				}
 
-				bool success = defender.CheckSkill(SkillName.Parry, chance);
-				
-				if (shield != null && Core.EJ && success)
+                bool success = defender.CheckSkill(SkillName.Parry, chance);
+
+                if (shield != null && Core.EJ && success)
                 {
                     shield.LastParryChance = (int)(chance * 100);
                     shield.InvalidateProperties();
                 }
 
-                return success;				
-			}
+                return success;
+            }
 			else if (!(defender.Weapon is Fists) && !(defender.Weapon is BaseRanged))
 			{
 				BaseWeapon weapon = defender.Weapon as BaseWeapon;
@@ -1840,7 +1855,7 @@ namespace Server.Items
 				}
 
                 bool success;
-				
+
 				if (chance > aosChance)
 				{
                     success = defender.CheckSkill(SkillName.Parry, chance);
@@ -1850,14 +1865,14 @@ namespace Server.Items
                     success = (aosChance > Utility.RandomDouble());
 						// Only skillcheck if wielding a shield & there's no effect from Bushido
 				}
-				
+
                 if (Core.EJ && success)
                 {
                     weapon.LastParryChance = (int)(chance * 100);
                     weapon.InvalidateProperties();
                 }
 
-                return success;				
+                return success;
 			}
 
 			return false;
@@ -1889,7 +1904,7 @@ namespace Server.Items
 					// Successful block removes the Honorable Execution penalty.
 					HonorableExecution.RemovePenalty(defender);
 
-					if (CounterAttack.IsCountering(defender))
+					if (CounterAttack.IsCountering(defender) && defender.InRange(attacker.Location, 1))
 					{
 						if (weapon != null)
 						{
@@ -2250,7 +2265,7 @@ namespace Server.Items
             bool ranged = this is BaseRanged;
             int phys, fire, cold, pois, nrgy, chaos, direct;
 
-            if (Core.TOL && a is MovingShot)
+            if ((Core.TOL && a is MovingShot) || SkillMasterySpell.HasSpell<ShieldBashSpell>(attacker))
             {
                 phys = 100;
                 fire = cold = pois = nrgy = chaos = direct = 0;
@@ -2297,6 +2312,7 @@ namespace Server.Items
             }
 
             bool splintering = false;
+
             if (m_AosWeaponAttributes.SplinteringWeapon > 0 && m_AosWeaponAttributes.SplinteringWeapon > Utility.Random(100))
             {
                 if (SplinteringWeaponContext.CheckHit(attacker, defender, a, this))
@@ -2369,6 +2385,11 @@ namespace Server.Items
 
                 WeaponAbility.ClearCurrentAbility(attacker);
                 SpecialMove.ClearCurrentMove(attacker);
+
+                if (WeaponAttributes.HitLeechHits > 0)
+                {
+                    attacker.SendLocalizedMessage(1152566); // You fail to leech life from your target!
+                }
 
                 return;
             }
@@ -2541,7 +2562,7 @@ namespace Server.Items
 				}
 			}
 			#endregion
-							
+
             percentageBonus += ForceOfNature.GetBonus(attacker, defender);
 
             if (m_ExtendedWeaponAttributes.AssassinHoned > 0 && GetOppositeDir(attacker.Direction) == defender.Direction)
@@ -2551,14 +2572,14 @@ namespace Server.Items
                     percentageBonus += (int)(146.0 / MlSpeed);
                 }
             }
-			
-			if (m_ExtendedWeaponAttributes.Focus > 0)	
+
+            if (m_ExtendedWeaponAttributes.Focus > 0)
             {
                 percentageBonus += Focus.GetBonus(attacker, defender);
-                Focus.OnHit(attacker, defender);		
-            }			
+                Focus.OnHit(attacker, defender);
+            }
 
-			percentageBonus = Math.Min(percentageBonus, 300);
+            percentageBonus = Math.Min(percentageBonus, 300);
 
             // bonus is seprate from weapon damage, ie not capped
             percentageBonus += Spells.Mysticism.StoneFormSpell.GetMaxResistBonus(attacker);
@@ -2612,7 +2633,7 @@ namespace Server.Items
 			#endregion
 
             #region SA
-            if (defender != null && m_SearingWeapon && attacker.Mana > 0)
+            if (defender != null && Server.Items.SearingWeapon.CanSear(this) && attacker.Mana > 0)
             {
                 int d = SearingWeaponContext.Damage;
 
@@ -2721,12 +2742,12 @@ namespace Server.Items
 					stamLeech += 100; // HitLeechStam% chance to leech 100% of damage as stamina
 				}
 
-				if (Core.SA) // New formulas
+				if (Core.SA)
 				{
                     lifeLeech = (int)(WeaponAttributes.HitLeechHits * propertyBonus);
                     manaLeech = (int)(WeaponAttributes.HitLeechMana * propertyBonus);
 				}
-				else // Old leech formulas
+				else
 				{
 					if ((int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLeechHits) * propertyBonus) >
 						Utility.Random(100))
@@ -2867,6 +2888,7 @@ namespace Server.Items
 				int fireballChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitFireball) * propertyBonus);
 				int lightningChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitLightning) * propertyBonus);
 				int dispelChance = (int)(AosWeaponAttributes.GetValue(attacker, AosWeaponAttribute.HitDispel) * propertyBonus);
+                int explosChance = (int)(ExtendedWeaponAttributes.GetValue(attacker, ExtendedWeaponAttribute.HitExplosion) * propertyBonus);
 
                 #region Mondains Legacy
                 int velocityChance = this is BaseRanged ? (int)((BaseRanged)this).Velocity : 0;
@@ -2901,6 +2923,11 @@ namespace Server.Items
 				if (dispelChance != 0 && dispelChance > Utility.Random(100))
 				{
 					DoDispel(attacker, defender);
+                }
+
+                if (explosChance != 0 && explosChance > Utility.Random(100))
+                {
+                    DoExplosion(attacker, defender);
                 }
 
                 #region Mondains Legacy
@@ -3188,6 +3215,26 @@ namespace Server.Items
 				defender.Delete();
 			}
 		}
+
+        public virtual void DoExplosion(Mobile attacker, Mobile defender)
+        {
+            if (!attacker.CanBeHarmful(defender, false))
+            {
+                return;
+            }
+
+            attacker.DoHarmful(defender);
+
+            double damage = GetAosSpellDamage(attacker, defender, 40, 1, 5);
+
+            defender.FixedParticles(0x36BD, 20, 10, 5044, EffectLayer.Head);
+            defender.PlaySound(0x307);
+
+            SpellHelper.Damage(TimeSpan.FromSeconds(1.0), defender, attacker, damage, 0, 100, 0, 0, 0);
+
+            if (ProcessingMultipleHits)
+                BlockHitEffects = true;
+        }
 
         public virtual void DoHitVelocity(Mobile attacker, IDamageable damageable)
         {
@@ -4063,8 +4110,9 @@ namespace Server.Items
 		{
 			base.Serialize(writer);
 
-			writer.Write(18); // version
+			writer.Write(19); // version
 
+            // Version 19 - Removes m_SearingWeapon as its handled as a socket now
             // Version 18 - removed VvV Item (handled in VvV System) and BlockRepair (Handled as negative attribute)
 
             writer.Write(m_UsesRemaining);
@@ -4087,15 +4135,10 @@ namespace Server.Items
             writer.Write((int)m_ItemPower);
             #endregion
 
-            #region Stygian Abyss
             writer.Write(m_DImodded);
-            writer.Write(m_SearingWeapon);
 
 			// Version 11
 			writer.Write(m_TimesImbued);
-
-            #endregion
-
             // Version 10
 			writer.Write(m_BlessedBy); // Bless Deed
 
@@ -4466,6 +4509,7 @@ namespace Server.Items
 
 			switch (version)
 			{
+                case 19: // Removed SearingWeapon
                 case 18:
                 case 17:
                     {
@@ -4507,7 +4551,17 @@ namespace Server.Items
 
                         #region Stygian Abyss
                         m_DImodded = reader.ReadBool();
-                        m_SearingWeapon = reader.ReadBool();
+
+                        if (version == 18)
+                        {
+                            if (reader.ReadBool())
+                            {
+                                Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+                                {
+                                    AttachSocket(new SearingWeapon(this));
+                                });
+                            }
+                        }
                         goto case 11;
                     }
 				case 11:
@@ -5106,7 +5160,6 @@ namespace Server.Items
 				((Mobile)Parent).CheckStatTimers();
 			}
 
-
 			//UOWW: fix durability bug
 			//
 			//if (m_Hits <= 0 && m_MaxHits <= 0)
@@ -5376,7 +5429,7 @@ namespace Server.Items
 				list.Add(1053099, "#{0}\t{1}", oreType, GetNameString()); // ~1_oretype~ ~2_armortype~
             }
             #region High Seas
-            else if (m_SearingWeapon)
+            else if (SearingWeapon)
             {
                 list.Add(1151318, String.Format("#{0}", LabelNumber));
             }
@@ -5388,7 +5441,8 @@ namespace Server.Items
             else
             {
                 list.Add(Name);
-            }
+            }*/
+			//daat99 end commenting lines
 
 			/*
             * Want to move this to the engraving tool, let the non-harmful
@@ -5407,9 +5461,6 @@ namespace Server.Items
 			{
                 list.Add(1062613, Utility.FixHtml(m_EngravedText));
 			}
-			/* list.Add( 1062613, Utility.FixHtml( m_EngravedText ) );
-			// list.Add(1062613, m_EngravedText);			
-			*/
 		}
 
 		public override bool AllowEquipedCast(Mobile from)
@@ -5461,27 +5512,12 @@ namespace Server.Items
 			return attrInfo.WeaponLuck;
 		}
 
-        public override void AddWeightProperty(ObjectPropertyList list)
+        public override void AddCraftedProperties(ObjectPropertyList list)
         {
-            base.AddWeightProperty(list);
-
-            if (IsVvVItem)
-                list.Add(1154937); // VvV Item
-        }
-
-        public override void AddNameProperties(ObjectPropertyList list)
-        {
-            base.AddNameProperties(list);
-
-            if (this is IUsesRemaining && ((IUsesRemaining)this).ShowUsesRemaining)
-            {
-                list.Add(1060584, ((IUsesRemaining)this).UsesRemaining.ToString()); // uses remaining: ~1_val~
-            }
-
             if (OwnerName != null)
             {
                 list.Add(1153213, OwnerName);
-            }
+			}
 			
 			// Xml Spawner 2.36c XmlLevelItem - SOF
 			XmlLevelItem levitem = XmlAttach.FindAttachment(this, typeof(XmlLevelItem)) as XmlLevelItem;
@@ -5496,6 +5532,7 @@ namespace Server.Items
 			}
 			// Xml Spawner 2.36c XmlLevelItem - EOF
 
+
             if (m_Crafter != null)
             {
                 list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
@@ -5507,12 +5544,35 @@ namespace Server.Items
             }
 
             if (IsImbued)
-			{
-				list.Add(1080418); // (Imbued)
-			}			
+            {
+                list.Add(1080418); // (Imbued)
+            }
 
             if (m_Altered)
+            {
                 list.Add(1111880); // Altered
+            }
+        }
+
+        public override void AddWeightProperty(ObjectPropertyList list)
+        {
+            base.AddWeightProperty(list);
+
+            if (IsVvVItem)
+                list.Add(1154937); // VvV Item
+        }
+
+        public override void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
+            if (ShowUsesRemaining)
+            {
+                list.Add(1060584, UsesRemaining.ToString()); // uses remaining: ~1_val~
+            }
+        }
+
+        public override void AddNameProperties(ObjectPropertyList list)
+        {
+            base.AddNameProperties(list);
 
             #region Factions
             FactionEquipment.AddFactionProperties(this, list);
@@ -5535,12 +5595,12 @@ namespace Server.Items
 					GetSetProperties(list);
 				}
 			}
-			#endregion
-			
+            #endregion
+
             if (m_ExtendedWeaponAttributes.Focus > 0)
             {
                 list.Add(1150018); // Focus
-            }				
+            }
 
             if (m_NegativeAttributes.Brittle == 0 && m_AosAttributes.Brittle != 0)
             {
@@ -5659,6 +5719,11 @@ namespace Server.Items
             int prop;
             double fprop;
 
+            if ((prop = m_AosWeaponAttributes.DurabilityBonus) != 0)
+            {
+                list.Add(1151780, prop.ToString()); // durability +~1_VAL~%
+            }
+
             if (Core.TOL)
             {
                 if (m_ExtendedWeaponAttributes.Bane > 0)
@@ -5728,7 +5793,12 @@ namespace Server.Items
                 list.Add(1060421, ((int)(enchantBonus * focusBonus)).ToString()); // hit harm ~1_val~%
             }
 
-            if (m_SearingWeapon)
+            if ((fprop = (double)m_ExtendedWeaponAttributes.HitExplosion * focusBonus) != 0)
+            {
+                list.Add(1158922, ((int)fprop).ToString()); // hit explosion ~1_val~%
+            }
+
+            if (SearingWeapon)
             {
                 list.Add(1151183); // Searing Weapon
             }
@@ -6172,11 +6242,11 @@ namespace Server.Items
 				list.Add(1072378); // <br>Only when full set is present:
 				GetSetProperties(list);
 			}
-			
+
             if (Core.EJ && LastParryChance > 0)
             {
                 list.Add(1158861, LastParryChance.ToString()); // Last Parry Chance: ~1_val~%
-            }				
+            }
         }
 
         public override void AddItemPowerProperties(ObjectPropertyList list)

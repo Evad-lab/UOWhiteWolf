@@ -96,13 +96,13 @@ namespace Server.Items
 
     public class Granite : BaseGranite
     {
-		[Constructable]
+        [Constructable]
         public Granite()
             : this(1)
         {
         }
-		
-		[Constructable]
+
+        [Constructable]
         public Granite(int amount)
             : base(CraftResource.Iron)
         {
@@ -138,17 +138,17 @@ namespace Server.Items
 
     public class DullCopperGranite : BaseGranite
     {
-		[Constructable]
+        [Constructable]
         public DullCopperGranite()
             : this(1)
         {
         }
-		
+
         [Constructable]
         public DullCopperGranite(int amount)
             : base(CraftResource.DullCopper)
         {
-			if (Stackable)
+            if (Stackable)
                 Amount = amount;
             else
                 Amount = 1;
@@ -180,17 +180,17 @@ namespace Server.Items
 
     public class ShadowIronGranite : BaseGranite
     {
-		[Constructable]
+        [Constructable]
         public ShadowIronGranite()
             : this(1)
         {
         }
-		
+
         [Constructable]
         public ShadowIronGranite(int amount)
             : base(CraftResource.ShadowIron)
         {
-			if (Stackable)
+            if (Stackable)
                 Amount = amount;
             else
                 Amount = 1;
@@ -222,17 +222,17 @@ namespace Server.Items
 
     public class CopperGranite : BaseGranite
     {
-		[Constructable]
+        [Constructable]
         public CopperGranite()
             : this(1)
         {
         }
-		
+
         [Constructable]
         public CopperGranite(int amount)
             : base(CraftResource.Copper)
         {
-			if (Stackable)
+            if (Stackable)
                 Amount = amount;
             else
                 Amount = 1;
@@ -264,17 +264,17 @@ namespace Server.Items
 
     public class BronzeGranite : BaseGranite
     {
-		[Constructable]
+        [Constructable]
         public BronzeGranite()
             : this(1)
         {
         }
-		
+
         [Constructable]
         public BronzeGranite(int amount)
             : base(CraftResource.Bronze)
         {
-			if (Stackable)
+            if (Stackable)
                 Amount = amount;
             else
                 Amount = 1;
@@ -306,17 +306,17 @@ namespace Server.Items
 
     public class GoldGranite : BaseGranite
     {
-		[Constructable]
+        [Constructable]
         public GoldGranite()
             : this(1)
         {
         }
-		
+
         [Constructable]
         public GoldGranite(int amount)
             : base(CraftResource.Gold)
         {
-			if (Stackable)
+            if (Stackable)
                 Amount = amount;
             else
                 Amount = 1;
@@ -348,17 +348,17 @@ namespace Server.Items
 
     public class AgapiteGranite : BaseGranite
     {
-		[Constructable]
+        [Constructable]
         public AgapiteGranite()
             : this(1)
         {
         }
-		
+
         [Constructable]
         public AgapiteGranite(int amount)
             : base(CraftResource.Agapite)
         {
-			if (Stackable)
+            if (Stackable)
                 Amount = amount;
             else
                 Amount = 1;
@@ -390,17 +390,17 @@ namespace Server.Items
 
     public class VeriteGranite : BaseGranite
     {
-		[Constructable]
+        [Constructable]
         public VeriteGranite()
             : this(1)
         {
         }
-		
+
         [Constructable]
         public VeriteGranite(int amount)
             : base(CraftResource.Verite)
         {
-			if (Stackable)
+            if (Stackable)
                 Amount = amount;
             else
                 Amount = 1;
@@ -432,17 +432,17 @@ namespace Server.Items
 
     public class ValoriteGranite : BaseGranite
     {
-		[Constructable]
+        [Constructable]
         public ValoriteGranite()
             : this(1)
         {
         }
-		
+
         [Constructable]
         public ValoriteGranite(int amount)
             : base(CraftResource.Valorite)
         {
-			if (Stackable)
+            if (Stackable)
                 Amount = amount;
             else
                 Amount = 1;

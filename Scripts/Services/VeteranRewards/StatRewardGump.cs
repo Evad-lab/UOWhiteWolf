@@ -37,7 +37,7 @@ namespace Server.Engines.VeteranRewards
             if (!User.HasStatReward && info.ButtonID == 1)
             {
                 User.HasStatReward = true;
-                User.StatCap += 50;
+                User.StatCap += 5;
 
                 User.SendLocalizedMessage(1062312); // Your stat cap has been increased.
             }

@@ -71,9 +71,9 @@ namespace Server.Mobiles
 		}
 
 		public override bool HasBreath{ get{ return true; } }
-		public override int BreathFireDamage{ get{ return 0; } }
-		public override int BreathEnergyDamage{ get{ return 100; } }
-		public override int BreathEffectHue{ get{ return 1154; } }
+		//public override int BreathFireDamage{ get{ return 0; } }
+		//public override int BreathEnergyDamage{ get{ return 100; } }
+		//public override int BreathEffectHue{ get{ return 1154; } }
 		public override bool AutoDispel{ get{ return true; } }
 		public override bool BardImmune{ get{ return true; } }
 		public override bool Unprovokable{ get{ return true; } }

@@ -211,6 +211,7 @@ namespace Server.Engines.Shadowguard
         public List<BaseCreature> Spawn { get; set; }
 
         public Item Bones { get; set; }
+        public ShadowguardApple Apple { get; set; }
 
         public override Type AddonType { get { return typeof(OrchardAddon); } }
 
@@ -316,6 +317,11 @@ namespace Server.Engines.Shadowguard
 		{
             ClearSpawn();
 
+            if (Apple != null)
+            {
+                Apple.Delete();
+            }
+
             if (Trees != null)
             {
                 List<ShadowguardCypress> list = new List<ShadowguardCypress>(Trees.Where(t => t != null && !t.Deleted));
@@ -335,6 +341,34 @@ namespace Server.Engines.Shadowguard
                 Bones = null;
             }
 		}
+
+        public void OnApplePicked()
+        {
+            if (Trees == null)
+                return;
+
+            foreach (var tree in Trees.Where(t => t != null && !t.Deleted))
+            {
+                if (tree.Foilage != null)
+                {
+                    tree.Foilage.ItemID--;
+                }
+            }
+        }
+
+        public void OnAppleDeleted()
+        {
+            if (Trees == null)
+                return;
+
+            foreach (var tree in Trees.Where(t => t != null && !t.Deleted))
+            {
+                if (tree.Foilage != null)
+                {
+                    tree.Foilage.ItemID++;
+                }
+            }
+        }
 
         public override void Serialize(GenericWriter writer)
         {
@@ -1364,7 +1398,10 @@ namespace Server.Engines.Shadowguard
 	
 	public class RoofEncounter : ShadowguardEncounter
 	{
+        [CommandProperty(AccessLevel.GameMaster)]
 		public ShadowguardBoss CurrentBoss { get; set; }
+
+        [CommandProperty(AccessLevel.GameMaster)]
         public LadyMinax Minax { get; set; }
 		
 		public List<Type> Bosses { get; set; }
@@ -1421,7 +1458,10 @@ namespace Server.Engines.Shadowguard
         {
             base.CompleteEncounter();
 
-            Controller.CompleteRoof(PartyLeader);
+            foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
+            {
+                Controller.CompleteRoof(pm);
+            }
         }
 
 		public override void OnCreatureKilled(BaseCreature bc)
@@ -1449,18 +1489,10 @@ namespace Server.Engines.Shadowguard
             if (m == null)
                 return;
 
-            Party p = Party.Get(m);
-
-            if (p != null)
+            foreach (var pm in Region.GetEnumeratedMobiles().OfType<PlayerMobile>())
             {
-                foreach (PartyMemberInfo info in p.Members)
-                {
-                    if (info.Mobile is PlayerMobile && info.Mobile.Region.IsPartOf<ShadowguardRegion>())
-                        ((PlayerMobile)info.Mobile).AddRewardTitle(1156318); // Destroyer of the Time Rift
-                }
+                pm.AddRewardTitle(1156318); // Destroyer of the Time Rift
             }
-            else if (m is PlayerMobile)
-                ((PlayerMobile)m).AddRewardTitle(1156318); // Destroyer of the Time Rift
         }
 		
 		public override void ClearItems()
@@ -1547,8 +1579,10 @@ namespace Server.Engines.Shadowguard
                     Bosses.Add(boss);
             }
 
-            if (CurrentBoss == null)
-                Reset();
+            if (CurrentBoss == null && !Completed)
+            {
+                Completed = true;
+            }
         }
 	}
 }

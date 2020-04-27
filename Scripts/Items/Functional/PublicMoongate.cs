@@ -116,7 +116,7 @@ namespace Server.Items
 			}
 		}
 		
-		public override string DefaultName { get { return "Moongate"; } }
+		public override int LabelNumber {get {return 1023952;} } // Blue Moongate
 
 		public override bool HandlesOnMovement { get { return true; } }
 		public override bool ForceShowProperties { get { return true; } }
@@ -153,7 +153,10 @@ namespace Server.Items
 
 		public override void OnDoubleClick(Mobile m)
 		{
-			UseGate(m);
+            if (m.InRange(GetWorldLocation(), 1))
+            {
+                UseGate(m);
+            }
 		}
 
 		public override bool OnMoveOver(Mobile m)
@@ -219,7 +222,7 @@ namespace Server.Items
 			{
 				return false;
 			}
-
+            
 			m.CloseGump(typeof(MoongateGump));
 			m.SendGump(new MoongateGump(m, this));
 

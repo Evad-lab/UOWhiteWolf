@@ -51,6 +51,8 @@ namespace Server.Mobiles
             MinTameSkill = 104.7;
 
             SetWeaponAbility(WeaponAbility.BleedAttack);
+			
+			SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public GreaterWWwolf(Serial serial)
@@ -171,7 +173,7 @@ namespace Server.Mobiles
 					break;
 				case 0:
 					Server.SkillHandlers.AnimalTaming.ScaleStats(this, 0.50);
-					Server.SkillHandlers.AnimalTaming.ScaleSkills(this, 0.80, 0.90); // 90% * 80% = 72% of original skills trainable to 90%
+					Server.SkillHandlers.AnimalTaming.ScaleSkills(this, 0.80, 0.90, false); // 90% * 80% = 72% of original skills trainable to 90%
 					Skills[SkillName.Magery].Base = Skills[SkillName.Magery].Cap; // Greater dragons have a 90% cap reduction and 90% skill reduction on magery
 					SetStam(0);
 					break;

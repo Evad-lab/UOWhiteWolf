@@ -7,6 +7,8 @@ using Server;
 using Server.Items;
 using Server.Gumps;
 using System.Collections.Generic;
+using Server.Spells;
+using Server.Accounting;
 
 namespace Server.Mobiles
 {
@@ -16,7 +18,7 @@ namespace Server.Mobiles
 		[Constructable]
 		public OldManMage()
 		{
-			Name = "Old Man Mage";
+		Name = "Old Man Mage [?]";
 			Body = 401;
             CantWalk = true;
             Blessed = true;
@@ -107,31 +109,41 @@ namespace Server.Mobiles
 		{          		
          	        Mobile m = from;
 			PlayerMobile mobile = m as PlayerMobile;
+                        Account acct=(Account)from.Account;
+			bool MassiveMandrakeReceived = Convert.ToBoolean( acct.GetTag("MassiveMandrakeReceived") );
 
 			if ( mobile != null)
 			{
 				if( dropped is MassiveMandrake )
+            
          		{
-         			
+         			if(dropped.Amount!=1)
+         			{
+					this.PrivateOverheadMessage( MessageType.Regular, 1153, false, "Oh my stars, you have brought back my Mandrake!!!", mobile.NetState );
+         				return false;
+         			}
+                                if ( !MassiveMandrakeReceived ) //added account tag check
+		                {
+					dropped.Delete(); 
+					mobile.AddToBackpack( new ReagentKey() );
+					mobile.SendMessage( "Thank you for your help! Take good care of this, you only get one!" );
+                                        acct.SetTag( "MassiveMandrakeReceived", "true" );
 
-					dropped.Delete();
- 
-				mobile.SendMessage( "Thank you for returning my mandrake!." );
-				mobile.AddToBackpack( new ReagentKey () );
-					
-					return true;
-
-         		}
 				
+         		        }
+				else //what to do if account has already been tagged
+         			{
+         				mobile.SendMessage("I have only gold for you, I gave you the Reagent Key last time.");
+         				mobile.AddToBackpack( new Gold( 5500 ) );
+         				dropped.Delete();
+         			}
+         		}
          		else
          		{
-					SayTo( from, "That's not my mandrake." );
+					this.PrivateOverheadMessage( MessageType.Regular, 1153, false, "Why on earth would I want to have that?", mobile.NetState );
      			}
 			}
 			return false;
-
-		
 		}
-
 	}
 }

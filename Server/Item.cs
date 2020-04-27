@@ -761,12 +761,6 @@ namespace Server
         private DateTime m_LastMovedTime;
         private Direction m_Direction;
         private LightType m_Light;
-        //private bool m_HonestyItem;
-        //private string m_HonestyRegion;
-        //private Mobile m_HonestyOwner;
-        //private Timer m_HonestyTimer;
-        //private DateTime m_HonestyPickup;
-        //private Boolean m_HonestyTimerTicking;
         #endregion
 
         private ItemDelta m_DeltaFlags;
@@ -1266,17 +1260,20 @@ namespace Server
         /// </summary>
         public virtual void AddLootTypeProperty(ObjectPropertyList list)
         {
-            if (m_LootType == LootType.Blessed)
-            {
-                list.Add(1038021); // blessed
-            }
-            else if (m_LootType == LootType.Cursed)
-            {
-                list.Add(1049643); // cursed
-            }
-            else if (Insured)
-            {
-                list.Add(1061682); // <b>insured</b>
+            if (DisplayLootType)
+            {               
+                if (m_LootType == LootType.Blessed)
+                {
+                    list.Add(1038021); // blessed
+                }
+                else if (m_LootType == LootType.Cursed)
+                {
+                    list.Add(1049643); // cursed
+                }
+                else if (Insured)
+                {
+                    list.Add(1061682); // <b>insured</b>
+                }
             }
         }
 
@@ -1343,26 +1340,6 @@ namespace Server
         }
 
         /// <summary>
-        ///     Overridable. Displays cliloc 1072788-1072789.
-        /// </summary>
-        public virtual void AddWeightProperty(ObjectPropertyList list)
-        {
-            if (Weight == 0)
-                return;
-
-            int weight = PileWeight + TotalWeight;
-
-            if (weight == 1)
-            {
-                list.Add(1072788, weight.ToString()); //Weight: ~1_WEIGHT~ stone
-            }
-            else
-            {
-                list.Add(1072789, weight.ToString()); //Weight: ~1_WEIGHT~ stones
-            }
-        }
-
-        /// <summary>
         ///     Overridable. Adds header properties. By default, this invokes <see cref="AddNameProperty" />,
         ///     <see
         ///         cref="AddBlessedForProperty" />
@@ -1384,26 +1361,52 @@ namespace Server
                 AddLockedDownProperty(list);
             }
 
-            Mobile blessedFor = BlessedFor;
+            AddCraftedProperties(list);
+            AddLootTypeProperty(list);
+            AddUsesRemainingProperties(list);
+            AddWeightProperty(list);
 
-            if (blessedFor != null && !blessedFor.Deleted)
-            {
-                AddBlessedForProperty(list, blessedFor);
-            }
-
-            if (DisplayLootType)
-            {
-                AddLootTypeProperty(list);
-            }
-
-            if (DisplayWeight)
-            {
-                AddWeightProperty(list);
-            }
+            AppendChildNameProperties(list);
 
             if (QuestItem)
             {
                 AddQuestItemProperty(list);
+            }
+        }
+
+        /// <summary>
+        /// Overrideable, used to add crafted by, excpetional, etc properties to items
+        /// </summary>
+        /// <param name="list"></param>
+        public virtual void AddCraftedProperties(ObjectPropertyList list)
+        {
+        }
+
+        /// <summary>
+        /// Overrideable, used for IUsesRemaining UsesRemaining property
+        /// </summary>
+        /// <param name="list"></param>
+        public virtual void AddUsesRemainingProperties(ObjectPropertyList list)
+        {
+        }
+
+        /// <summary>
+        ///     Overridable. Displays cliloc 1072788-1072789.
+        /// </summary>
+        public virtual void AddWeightProperty(ObjectPropertyList list)
+        {
+            if (DisplayWeight && Weight > 0)
+            {
+                int weight = PileWeight + TotalWeight;
+
+                if (weight == 1)
+                {
+                    list.Add(1072788, weight.ToString()); //Weight: ~1_WEIGHT~ stone
+                }
+                else
+                {
+                    list.Add(1072789, weight.ToString()); //Weight: ~1_WEIGHT~ stones
+                }
             }
         }
 
@@ -1438,20 +1441,6 @@ namespace Server
         {
             list.Add(1062203, "{0}", m.Name); // Blessed for ~1_NAME~
         }
-
-        /*public virtual void AddHonestyProperty(ObjectPropertyList list)
-        {
-            if (HonestyItem)
-            {
-                if (m_HonestyPickup != DateTime.MinValue)
-                {
-                    int minutes = (int)(m_HonestyPickup + TimeSpan.FromHours(3) - DateTime.UtcNow).TotalMinutes;
-                    list.Add(1151914, minutes.ToString()); // Minutes remaining for credit: ~1_val~
-                }
-
-                list.Add(1151520); // lost item (Return to gain Honesty)
-            }
-        }*/
 
         public virtual void AddItemSocketProperties(ObjectPropertyList list)
         {
@@ -1491,8 +1480,6 @@ namespace Server
             }
 
             AddItemPowerProperties(list);
-
-            AppendChildNameProperties(list);
         }
 
         /// <summary>
@@ -4385,6 +4372,13 @@ namespace Server
                 Spawner.Remove(this);
                 Spawner = null;
             }
+
+            var region = Region.Find(GetWorldLocation(), Map);
+
+            if (region != null)
+            {
+                region.OnDelete(this);
+            }
         }
 
         public virtual void OnParentDeleted(object parent)
@@ -6273,6 +6267,19 @@ namespace Server
 			InvalidateProperties();
 		}
 
+        public bool RemoveSocket<T>()
+        {
+            var socket = GetSocket(typeof(T));
+
+            if (socket != null)
+            {
+                RemoveItemSocket(socket);
+                return true;
+            }
+
+            return false;
+        }
+
         public void RemoveItemSocket(ItemSocket socket)
         {
             if (Sockets == null)
@@ -6281,6 +6288,7 @@ namespace Server
             }
 
             Sockets.Remove(socket);
+            socket.OnRemoved();
 
             if (Sockets.Count == 0)
             {
@@ -6399,8 +6407,6 @@ namespace Server
 			EndTimer();
 			
 			Owner.RemoveItemSocket(this);
-			
-			OnRemoved();
 		}
 		
 		public virtual void OnRemoved()

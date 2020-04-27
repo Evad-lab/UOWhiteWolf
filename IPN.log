@@ -2,17 +2,7 @@
 
 REQUEST:
 
-cmd=_notify-validate&mc_gross=13.00&protection_eligibility=Ineligible&payer_id=787B379ABWQBJ&payment_date=07%3A06%3A14+Apr+22%2C+2020+PDT&payment_status=Completed&charset=windows-1252&first_name=Mitchell&mc_fee=1.00&notify_version=3.9&custom=iStealth&payer_status=unverified&business=info%40open-teck.com&quantity=1&verify_sign=AcsmMaxpxTrHcceNq8ZcujVELuGuAkJcCvn2FHX1saKTzDiNsE58lYhD&payer_email=mitchaguirre12%40gmail.com&txn_id=4H834369DT6639432&payment_type=instant&last_name=Aguirre&receiver_email=info%40open-teck.com&payment_fee=1.00&shipping_discount=0.00&receiver_id=ECF9TYU4NRGLS&insurance_amount=0.00&txn_type=web_accept&item_name=Donation+Tokens&discount=0.00&mc_currency=USD&item_number=DonationToken&residence_country=US&receipt_id=2129-9647-6777-1321&shipping_method=Default&transaction_subject=iStealth&payment_gross=13.00&ipn_track_id=3697ca3fd3df4
-
-
-RESPONSE:
-
-VERIFIED
-
-
-REQUEST:
-
-cmd=_notify-validate&mc_gross=20.00&protection_eligibility=Eligible&payer_id=FELKZHALD2VMC&payment_date=10%3A47%3A22+Apr+22%2C+2020+PDT&payment_status=Completed&charset=windows-1252&first_name=Marvin&mc_fee=1.38&notify_version=3.9&custom=CattAppolt&payer_status=unverified&business=info%40open-teck.com&quantity=1&verify_sign=AWOxO3gj01NbyLVXRfVGrDWGA9VwAHo8n8FfYrUMheigDjocDycfzNyO&payer_email=marvin_peterson2002%40yahoo.com&txn_id=8WL821207B729023X&payment_type=instant&last_name=Peterson&receiver_email=info%40open-teck.com&payment_fee=1.38&shipping_discount=0.00&receiver_id=ECF9TYU4NRGLS&insurance_amount=0.00&txn_type=web_accept&item_name=Donation+Tokens&discount=0.00&mc_currency=USD&item_number=DonationToken&residence_country=US&shipping_method=Default&transaction_subject=CattAppolt&payment_gross=20.00&ipn_track_id=f956ef64e6eb5
+cmd=_notify-validate&mc_gross=50.00&protection_eligibility=Eligible&payer_id=ZGKN7KVCHUQJW&payment_date=18%3A55%3A47+Apr+25%2C+2020+PDT&payment_status=Completed&charset=windows-1252&first_name=Leigh&mc_fee=3.00&notify_version=3.9&custom=jaymus&payer_status=verified&business=regnak%40uowhitewolf.com&quantity=1&verify_sign=AXscvDtBJWVWGXbjo8gtfy9ASeVUAi8zR54ByTewQWiLXlE0E25iVF0V&payer_email=leigh.patrick%40ymail.com&txn_id=39L89408M5932072J&payment_type=instant&last_name=Patrick&receiver_email=regnak%40uowhitewolf.com&payment_fee=3.00&shipping_discount=0.00&receiver_id=ECF9TYU4NRGLS&insurance_amount=0.00&txn_type=web_accept&item_name=Donation+Tokens&discount=0.00&mc_currency=USD&item_number=DonationToken&residence_country=US&shipping_method=Default&transaction_subject=jaymus&payment_gross=50.00&ipn_track_id=9d4ee2c4371f8
 
 
 RESPONSE:

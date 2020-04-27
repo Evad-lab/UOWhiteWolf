@@ -343,8 +343,9 @@ namespace Server.Items
                 double chance = ((healing - 68.0) / 50.0) - (m_Slips * 0.02);
 
                 if (((checkSkills = (healing >= 80.0 && anatomy >= 80.0)) && chance > Utility.RandomDouble()) ||
-                    (Core.SE && petPatient is FactionWarHorse && petPatient.ControlMaster == m_Healer) ||
-                    (Server.Engines.VvV.ViceVsVirtueSystem.Enabled && petPatient is Server.Engines.VvV.VvVMount && petPatient.ControlMaster == m_Healer))
+                    //(Core.SE && petPatient is FactionWarHorse && petPatient.ControlMaster == m_Healer) ||
+                    //(Server.Engines.VvV.ViceVsVirtueSystem.Enabled && petPatient is Server.Engines.VvV.VvVMount && petPatient.ControlMaster == m_Healer))
+					(Engines.VvV.ViceVsVirtueSystem.Enabled && petPatient is Engines.VvV.VvVMount && petPatient.ControlMaster == m_Healer))
                 //TODO: Dbl check doesn't check for faction of the horse here?
                 {
                     if (m_Patient.Map == null || !m_Patient.Map.CanFit(m_Patient.Location, 16, false, false))
@@ -380,7 +381,7 @@ namespace Server.Items
                             }
                             else if (master != null && master.InRange(petPatient, 3))
                             {
-                                healerNumber = 503255; // You are able to resurrect the creature.
+                                healerNumber = 1049658; // The owner has been asked to sanctify the resurrection.
 
                                 master.CloseGump(typeof(PetResurrectGump));
                                 master.SendGump(new PetResurrectGump(m_Healer, petPatient));
@@ -397,7 +398,7 @@ namespace Server.Items
 
                                     if (friend.InRange(petPatient, 3))
                                     {
-                                        healerNumber = 503255; // You are able to resurrect the creature.
+                                        healerNumber = 1049658; // The owner has been asked to sanctify the resurrection.
 
                                         friend.CloseGump(typeof(PetResurrectGump));
                                         friend.SendGump(new PetResurrectGump(m_Healer, petPatient));
@@ -409,7 +410,7 @@ namespace Server.Items
 
                                 if (!found)
                                 {
-                                    healerNumber = 1049670; // The pet's owner must be nearby to attempt resurrection.
+                                    healerNumber = 1049659; // Neither the owner or friends of the pet are nearby to sanctify the resurrection.
                                 }
                             }
                         }
@@ -536,7 +537,8 @@ namespace Server.Items
                     }
 
                     #region City Loyalty
-                    if (Server.Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(m_Healer, Server.Engines.CityLoyalty.TradeDeal.GuildOfHealers))
+					if (Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(m_Healer, Engines.CityLoyalty.TradeDeal.GuildOfHealers))
+                    //if (Server.Engines.CityLoyalty.CityLoyaltySystem.HasTradeDeal(m_Healer, Server.Engines.CityLoyalty.TradeDeal.GuildOfHealers))
                         toHeal += (int)Math.Ceiling(toHeal * 0.05);
                     #endregion
 

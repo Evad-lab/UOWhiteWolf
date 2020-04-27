@@ -32,12 +32,15 @@ namespace Xanthos.Evo
 
 		public override bool HasBreath { get{ return true; } }
 		
-		public override bool CanHealOwner { get { return true; } }
+		//UOWW = commented out on core upgrade for compatilibty with BaseCreature.cs
+		//
+		//public override bool CanHealOwner { get { return true; } }
 		
 		public override double HealChance { get { return 1.0; } }
 
 		public EvoCuSidhe( string name ) : base( name, 277, 0x3E91 )
 		{
+			SetSpecialAbility(SpecialAbility.Heal);
 		}
 
 		public EvoCuSidhe( Serial serial ) : base( serial )

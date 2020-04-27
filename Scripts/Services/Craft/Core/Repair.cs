@@ -7,7 +7,6 @@ using Server.Mobiles;
 using Server.Targeting;
 using Server.Factions;
 
-
 namespace Server.Engines.Craft
 {
     public interface IRepairable
@@ -200,6 +199,8 @@ namespace Server.Engines.Craft
                     if (TryRepairMobile(from, (IRepairableMobile)targeted, usingDeed, out toDelete))
                     {
                         number = 1044279; // You repair the item.
+
+                        m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, (IRepairableMobile)targeted);
                     }
                     else
                     {
@@ -298,10 +299,11 @@ namespace Server.Engines.Craft
                                     number = 1044279; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     weapon.HitPoints = weapon.MaxHitPoints;
-									//daat99 OWLTR start - tokens on repairs
+                                    //daat99 OWLTR start - tokens on repairs
 									if (OWLTROptionsManager.IsEnabled(OWLTROptionsManager.OPTIONS_ENUM.CRAFT_GIVE_TOKENS))
 										TokenSystem.GiveTokensToPlayer(from as PlayerMobile, Utility.Random(5));
 									//daat99 OWLTR end - tokens on repairs
+                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, weapon);
                                 }
                                 else
                                 {
@@ -367,13 +369,11 @@ namespace Server.Engines.Craft
                                     number = 1044279; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     armor.HitPoints = armor.MaxHitPoints;
-									//daat99 OWLTR start - tokens on repairs
-									//
-									//this mod wasn't included in original OWLTR code. But why would weapon repairs give token and not armor repairs ?
-									//
+                                    //daat99 OWLTR start - tokens on repairs
 									if (OWLTROptionsManager.IsEnabled(OWLTROptionsManager.OPTIONS_ENUM.CRAFT_GIVE_TOKENS))
 										TokenSystem.GiveTokensToPlayer(from as PlayerMobile, Utility.Random(5));
 									//daat99 OWLTR end - tokens on repairs
+                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, armor);
                                 }
                                 else
                                 {
@@ -439,6 +439,8 @@ namespace Server.Engines.Craft
                                     number = 1044279; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     jewel.HitPoints = jewel.MaxHitPoints;
+
+                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, jewel);
                                 }
                                 else
                                 {
@@ -504,6 +506,8 @@ namespace Server.Engines.Craft
                                     number = 1044279; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     clothing.HitPoints = clothing.MaxHitPoints;
+
+                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, clothing);
                                 }
                                 else
                                 {
@@ -569,6 +573,8 @@ namespace Server.Engines.Craft
                                     number = 1044279; // You repair the item.
                                     m_CraftSystem.PlayCraftEffect(from);
                                     talisman.HitPoints = talisman.MaxHitPoints;
+
+                                    m_CraftSystem.OnRepair(from, m_Tool, m_Deed, m_Addon, talisman);
                                 }
                                 else
                                 {

@@ -15,7 +15,7 @@ namespace Server.Items
             new StealableEntry(Map.Malas, new Point3D(378, 372, 0), 72, 108, typeof(DamagedBooksArtifact)),
             // Doom - Artifact rarity 2
             new StealableEntry(Map.Malas, new Point3D(432, 16, -1), 144, 216, typeof(StretchedHideArtifact)),
-            new StealableEntry(Map.Malas, new Point3D(489, 9, 0), 144, 216, typeof(BrazierArtifact)),
+            new StealableEntry(Map.Malas, Core.TOL ? new Point3D(462, 17, -1) : new Point3D(489, 9, 0), 144, 216, typeof(BrazierArtifact)),
             // Doom - Artifact rarity 3
             new StealableEntry(Map.Malas, new Point3D(471, 96, -1), 288, 432, typeof(LampPostArtifact), GetLampPostHue()),
             new StealableEntry(Map.Malas, new Point3D(421, 198, 2), 288, 432, typeof(BooksNorthArtifact)),
@@ -29,8 +29,10 @@ namespace Server.Items
             new StealableEntry(Map.Malas, new Point3D(381, 375, 11), 1152, 1728, typeof(BloodyWaterArtifact)),
             new StealableEntry(Map.Malas, new Point3D(489, 369, 2), 1152, 1728, typeof(TarotCardsArtifact)),
             new StealableEntry(Map.Malas, new Point3D(497, 369, 5), 1152, 1728, typeof(BackpackArtifact)),
+            // Doom - Artifact rarity 6
+            new StealableEntry(Map.Malas, new Point3D(499,372, -1), 2304, 3456, typeof(BambooStoolArtifact)),
             // Doom - Artifact rarity 7
-            new StealableEntry(Map.Malas, new Point3D(475, 23, 4), 4608, 6912, typeof(StuddedTunicArtifact)),
+            new StealableEntry(Map.Malas, Core.TOL ? new Point3D(485, 8, 6) : new Point3D(475, 23, 4), 4608, 6912, typeof(StuddedTunicArtifact)),
             new StealableEntry(Map.Malas, new Point3D(423, 28, 0), 4608, 6912, typeof(CocoonArtifact)),
             // Doom - Artifact rarity 8
             new StealableEntry(Map.Malas, new Point3D(354, 36, -1), 9216, 13824, typeof(SkinnedDeerArtifact)),
@@ -47,14 +49,14 @@ namespace Server.Items
             new StealableEntry(Map.Malas, new Point3D(487, 364, -1), 18432, 27648, typeof(ArcaneTable)),
 			#endregion
             // Doom - Artifact rarity 10
-            new StealableEntry(Map.Malas, new Point3D(257, 70, -2), 36864, 55296, typeof(ZyronicClaw)),
-            new StealableEntry(Map.Malas, new Point3D(354, 176, 7), 36864, 55296, typeof(TitansHammer)),
+            new StealableEntry(Map.Malas, Core.TOL ? new Point3D(396, 8, 4) : new Point3D(257, 70, -2), 36864, 55296, typeof(ZyronicClaw)),
+            new StealableEntry(Map.Malas, Core.TOL ? new Point3D(261, 97, -1) : new Point3D(354, 176, 7), 36864, 55296, typeof(TitansHammer)),
             new StealableEntry(Map.Malas, new Point3D(369, 389, -1), 36864, 55296, typeof(BladeOfTheRighteous)),
             new StealableEntry(Map.Malas, new Point3D(467, 92, 4), 36864, 55296, typeof(InquisitorsResolution)),
             // Doom - Artifact rarity 12
             new StealableEntry(Map.Malas, new Point3D(487, 364, -1), 147456, 221184, typeof(RuinedPaintingArtifact)),
             #region New Doom Artifacts
-			new StealableEntry(Map.Malas, new Point3D(365, 7, -1), 147456, 221184, typeof(IncenseBurner)),
+			new StealableEntry(Map.Malas, Core.TOL ? new Point3D(263, 28, 0) : new Point3D(365, 7, -1), 147456, 221184, typeof(IncenseBurner)),
 			#endregion
 
             // Yomotsu Mines - Artifact rarity 1
@@ -181,9 +183,17 @@ namespace Server.Items
 	        new StealableEntry(Map.TerMur, new Point3D(1131, 1128, -42), 18432, 27648, typeof(BlockAndTackleArtifact)),
 
             //Ararat Stealables (Exploring the Deep) - Artifact rarity 8
-            new StealableEntry(Map.Trammel, new Point3D(6430, 1637, 0), 9216, 13824, typeof(SternAnchorOfBmvArarat)),
-            new StealableEntry(Map.Trammel, new Point3D(6423, 1658, 0), 9216, 13824, typeof(ShipsBellOfBmvArarat)),
-            new StealableEntry(Map.Trammel, new Point3D(6405, 1640, 0), 9216, 13824, typeof(FigureheadOfBmvArarat)),
+            new StealableEntry(Map.Trammel, new Point3D(6303, 1664, 11), 9216, 13824, typeof(SternAnchorOfBmvArarat)),
+            new StealableEntry(Map.Trammel, new Point3D(6303, 1756, 20), 9216, 13824, typeof(ShipsBellOfBmvArarat)),
+            new StealableEntry(Map.Trammel, new Point3D(6313, 1753, -14), 9216, 13824, typeof(FigureheadOfBmvArarat)),
+
+            // Castle Blackthorne Stealables - Rarity 8 - does not show rarity on items
+            new StealableEntry(Map.Trammel, new Point3D(6436, 2606, 11), 9216, 13824, typeof(KingsGildedStatue)),
+            new StealableEntry(Map.Trammel, new Point3D(6298, 2673, 0), 9216, 13824, typeof(KingsPainting1)),
+            new StealableEntry(Map.Trammel, new Point3D(6455, 2700, 0), 9216, 13824, typeof(KingsPainting2)),
+            new StealableEntry(Map.Felucca, new Point3D(6436, 2606, 11), 9216, 13824, typeof(KingsGildedStatue)),
+            new StealableEntry(Map.Felucca, new Point3D(6298, 2673, 0), 9216, 13824, typeof(KingsPainting1)),
+            new StealableEntry(Map.Felucca, new Point3D(6455, 2700, 0), 9216, 13824, typeof(KingsPainting2)),
 
             //TOL - Artifact rarity 11 - does not show rarity on item
             new StealableEntry(Map.TerMur, new Point3D(538, 1496, 40), 36864, 55296, typeof(StretchedDinosaurHide)),

@@ -6,39 +6,60 @@ namespace Server.Mobiles
     [CorpseName("a fire steed corpse")]
     public class FireSteed : BaseMount
     {
+		//UOWW: Compatilibity with FireRock Crafting System
+		//
 		private bool m_BardingExceptional;
         private Mobile m_BardingCrafter;
         private int m_BardingHP;
         private bool m_HasBarding;
         private CraftResource m_BardingResource;
-        public Body bodyVal;
-        public int idVal;
-		
+
 		[CommandProperty(AccessLevel.GameMaster)]
         public Mobile BardingCrafter
         {
-            get { return m_BardingCrafter; }
-            set { m_BardingCrafter = value; InvalidateProperties(); }
+            get
+            {
+                return m_BardingCrafter;
+            }
+            set
+            {
+                m_BardingCrafter = value;
+                InvalidateProperties();
+            }
         }
-
         [CommandProperty(AccessLevel.GameMaster)]
         public bool BardingExceptional
         {
-            get { return m_BardingExceptional; }
-            set { m_BardingExceptional = value; InvalidateProperties(); }
+            get
+            {
+                return m_BardingExceptional;
+            }
+            set
+            {
+                m_BardingExceptional = value;
+                InvalidateProperties();
+            }
         }
-
         [CommandProperty(AccessLevel.GameMaster)]
         public int BardingHP
         {
-            get { return m_BardingHP; }
-            set { m_BardingHP = value; InvalidateProperties(); }
+            get
+            {
+                return m_BardingHP;
+            }
+            set
+            {
+                m_BardingHP = value;
+                InvalidateProperties();
+            }
         }
-
         [CommandProperty(AccessLevel.GameMaster)]
         public bool HasBarding
         {
-            get { return m_HasBarding; }
+            get
+            {
+                return m_HasBarding;
+            }
             set
             {
                 m_HasBarding = value;
@@ -51,19 +72,21 @@ namespace Server.Mobiles
                 }
                 else
                 {
-                    Hue = 0;
-                    BodyValue = bodyVal;
-                    ItemID = idVal;
+                    Hue = 0x851;
+                    BodyValue = 0x31A;
+                    ItemID = 0x3EBD;
                 }
 
                 InvalidateProperties();
             }
         }
-
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource BardingResource
         {
-            get { return m_BardingResource; }
+            get
+            {
+                return m_BardingResource;
+            }
             set
             {
                 m_BardingResource = value;
@@ -74,12 +97,12 @@ namespace Server.Mobiles
                 InvalidateProperties();
             }
         }
-
         [CommandProperty(AccessLevel.GameMaster)]
         public int BardingMaxHP
         {
             get { return m_BardingExceptional ? 2500 : 1000; }
         }
+		//end
 		
         [Constructable]
         public FireSteed()
@@ -124,6 +147,8 @@ namespace Server.Mobiles
 
             PackItem(new SulfurousAsh(Utility.RandomMinMax(151, 300)));
             PackItem(new Ruby(Utility.RandomMinMax(16, 30)));
+
+            SetSpecialAbility(SpecialAbility.DragonBreath);
         }
 
         public FireSteed(Serial serial)
@@ -131,14 +156,6 @@ namespace Server.Mobiles
         {
         }
 
-        public override bool HasBreath
-        {
-            get
-            {
-                return true;
-            }
-        }// fire breath enabled
-		
         public override FoodType FavoriteFood
         {
             get
@@ -146,7 +163,6 @@ namespace Server.Mobiles
                 return FoodType.Meat;
             }
         }
-		
         public override PackInstinct PackInstinct
         {
             get
@@ -161,7 +177,7 @@ namespace Server.Mobiles
 
             if (m_HasBarding && m_BardingExceptional && m_BardingCrafter != null)
                 list.Add(1060853, m_BardingCrafter.Name); // armor exceptionally crafted by ~1_val~
-        }
+        }		
 
         public override void Serialize(GenericWriter writer)
         {
@@ -181,7 +197,7 @@ namespace Server.Mobiles
             base.Deserialize(reader);
 
             int version = reader.ReadInt();
-
+			
 			switch (version)
             {
                 case 1:
@@ -194,10 +210,10 @@ namespace Server.Mobiles
 						
                         break;
                     }
-            }
+            }			
 
             if (BaseSoundID <= 0)
-                BaseSoundID = 0xA8;
+                BaseSoundID = 0xA8;			
 
             if (version < 1)
             {

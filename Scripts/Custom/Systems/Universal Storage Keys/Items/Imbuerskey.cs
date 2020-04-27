@@ -122,7 +122,7 @@ namespace Server.Items
 		entry.Add( new ColumnSeparationEntry() );
 		
 		entry.Add( new ResourceEntry( typeof(DreadHornMane), "DreadHorn Mane") );		
-        entry.Add( new ResourceEntry( typeof(Putrefication), "Putrefication") );
+        entry.Add( new ResourceEntry( typeof(Putrefaction), "Putrefaction") );
         entry.Add( new ResourceEntry( typeof(Muculent), "Muculent") );
         entry.Add( new ResourceEntry( typeof(GrizzledBones), "Grizzled Bones") );
         entry.Add( new ResourceEntry( typeof(Taint), "Taint") );

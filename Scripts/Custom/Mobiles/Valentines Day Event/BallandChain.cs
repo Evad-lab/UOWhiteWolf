@@ -44,6 +44,8 @@ namespace Server.Mobiles
 			
 
             VirtualArmor = 80;
+			
+			SetSpecialAbility(SpecialAbility.LifeDrain);
         }
 
         public BallandChain(Serial serial)
@@ -70,8 +72,56 @@ namespace Server.Mobiles
             AddLoot(LootPack.FilthyRich, 4);
             AddLoot(LootPack.MedScrolls, 2);
         }
+		
+		//UOWW: DrainsLife compatibility with the new Core
+		//
+		public override void OnDrainLife(Mobile victim)
+        {
+            if (Map == null)
+                return;
 
-        public override bool DrainsLife { get { return true; } }
+            ArrayList list = new ArrayList();
+            int count = 0;
+            IPooledEnumerable eable = GetMobilesInRange(20);
+
+            foreach (Mobile m in eable)
+            {
+                if (m == this || !CanBeHarmful(m))
+                {
+                    if (m is DarkWisp) { count++; }
+                    continue;
+                }
+
+                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
+                    list.Add(m);
+                else if (m.Player)
+                    list.Add(m);
+            }
+
+            eable.Free();
+
+            foreach (Mobile m in list)
+            {
+                (new DarkWisp()).MoveToWorld(new Point3D(Location), Map);
+                int teleportchance = Hits / HitsMax;
+
+                if (teleportchance < Utility.RandomDouble() && m.Alive)
+                {
+                    switch (Utility.Random(6))
+                    {
+                        case 0: m.MoveToWorld(new Point3D(6431, 1664, 0), Map); break;
+                        case 1: m.MoveToWorld(new Point3D(6432, 1634, 0), Map); break;
+                        case 2: m.MoveToWorld(new Point3D(6401, 1657, 0), Map); break;
+                        case 3: m.MoveToWorld(new Point3D(6401, 1637, 0), Map); break;
+                        default: m.MoveToWorld(new Point3D(Location), Map); break;
+                    }
+                }
+            }
+        }
+
+        //UOWW: commented out for compatilibty with the new Core
+		//
+		//public override bool DrainsLife { get { return true; } }
 
         public override void Serialize(GenericWriter writer)
         {

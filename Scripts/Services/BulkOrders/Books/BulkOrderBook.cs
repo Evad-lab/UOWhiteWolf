@@ -143,11 +143,11 @@ namespace Server.Engines.BulkOrders
 					
                     this.InvalidateProperties();
 					
-                    //if (this.m_Entries.Count / 5 > this.m_ItemCount)
-                    //{
-                    //   this.m_ItemCount++;
-                    //   this.InvalidateItems();
-                    //}
+                    if (this.m_Entries.Count / 5 > this.m_ItemCount)
+                    {
+                        this.m_ItemCount++;
+                        this.InvalidateItems();
+                    }
 
                     from.SendSound(0x42, this.GetWorldLocation());
                     from.SendLocalizedMessage(1062386); // Deed added to book.

@@ -78,6 +78,8 @@ namespace Server.Mobiles
             return 0x2C3;
         }
 
+        public override int TreasureMapLevel { get { return 6; } }
+
         public override void SetToChampionSpawn()
         {
             SetStr(271, 299);
@@ -86,11 +88,18 @@ namespace Server.Mobiles
 
         public override void OnAfterTame(Mobile tamer)
         {
-            int hits = HitsMax;
+            if (Owners.Count == 0)
+            {
+                int hits = HitsMax;
 
-            base.OnAfterTame(tamer);
+                base.OnAfterTame(tamer);
 
-            SetHits(hits / 4);
+                SetHits(hits / 4);
+            }
+            else
+            {
+                base.OnAfterTame(tamer);
+            }
         }
 
         public override bool CanAngerOnTame { get { return true; } }
@@ -99,9 +108,6 @@ namespace Server.Mobiles
         public override int Hides { get { return 11; } }
         public override HideType HideType { get { return HideType.Spined; } }
         public override FoodType FavoriteFood { get { return FoodType.FruitsAndVegies; } }
-
-        public override Poison HitAreaPoison { get { return Poison.Lethal; } }
-        public override int AreaPoisonDamage { get { return 50; } }
 
         public override void GenerateLoot()
         {

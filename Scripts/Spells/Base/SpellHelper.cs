@@ -232,7 +232,7 @@ namespace Server.Spells
             if (map == null)
                 return false;
 
-            for (int offset = 0; offset < 10; ++offset)
+            for (int offset = 0; offset < 25; ++offset)
             {
                 Point3D loc = new Point3D(p.X, p.Y, p.Z - offset);
 
@@ -358,8 +358,11 @@ namespace Server.Spells
             string name = String.Format("[Magic] {0} Buff", type);
 
             StatMod mod = target.GetStatMod(name);
-			if (mod != null)
-				offset = Math.Max(mod.Offset, offset);
+
+            if (mod != null)
+            {
+                offset = Math.Max(mod.Offset, offset);
+            }
 
             target.AddStatMod(new StatMod(type, name, offset, duration));
 			Timer.DelayCall(duration, RemoveStatOffsetCallback, target);
@@ -469,11 +472,11 @@ namespace Server.Spells
                 switch( type )
                 {
                     case StatType.Str:
-                        return (int)(target.RawStr * percent);
+                        return (int)Math.Ceiling(target.RawStr * percent);
                     case StatType.Dex:
-                        return (int)(target.RawDex * percent);
+                        return (int)Math.Ceiling(target.RawDex * percent);
                     case StatType.Int:
-                        return (int)(target.RawInt * percent);
+                        return (int)Math.Ceiling(target.RawInt * percent);
                 }
             }
 
@@ -628,6 +631,11 @@ namespace Server.Spells
         }
 
         public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range)
+        {
+            return AcquireIndirectTargets(caster, p, map, range, true);
+        }
+
+        public static IEnumerable<IDamageable> AcquireIndirectTargets(Mobile caster, IPoint3D p, Map map, int range, bool losCheck)
         {  
             if (map == null)
             {
@@ -643,7 +651,7 @@ namespace Server.Spells
                     continue;
                 }
 
-                if (!id.Alive || !caster.InLOS(id) || !caster.CanBeHarmful(id, false))
+                if (!id.Alive || (losCheck && !caster.InLOS(id)) || !caster.CanBeHarmful(id, false))
                 {
                     continue;
                 }
@@ -859,33 +867,36 @@ namespace Server.Spells
                 return false;
             }
 
-            if (caster != null && caster.IsPlayer())
+            if (caster != null)
             {
-				// Jail region
-				if (caster.Region.IsPartOf<Regions.Jail>())
-				{
-					caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
-					return false;
-				}
-				else if(caster.Region is Regions.GreenAcres)
-				{
-					caster.SendLocalizedMessage(502360); // You cannot teleport into that area.
-					return false;
-				}
-            }
+                if (caster.IsPlayer())
+                {
+                    // Jail region
+                    if (caster.Region.IsPartOf<Regions.Jail>())
+                    {
+                        caster.SendLocalizedMessage(1114345); // You'll need a better jailbreak plan than that!
+                        return false;
+                    }
+                    else if (caster.Region is Regions.GreenAcres)
+                    {
+                        caster.SendLocalizedMessage(502360); // You cannot teleport into that area.
+                        return false;
+                    }
+                }
 
-            // Always allow monsters to teleport
-            if (caster is BaseCreature && (type == TravelCheckType.TeleportTo || type == TravelCheckType.TeleportFrom))
-            {
-                BaseCreature bc = (BaseCreature)caster;
+                // Always allow monsters to teleport
+                if (caster is BaseCreature && (type == TravelCheckType.TeleportTo || type == TravelCheckType.TeleportFrom))
+                {
+                    BaseCreature bc = (BaseCreature) caster;
 
-                if (!bc.Controlled && !bc.Summoned)
-                    return true;
-            }
+                    if (!bc.Controlled && !bc.Summoned)
+                        return true;
+                }
 
-            if (Siege.SiegeShard && !Siege.CheckTravel(caster, loc, map, type))
-            {
-                return false;
+                if (Siege.SiegeShard && !Siege.CheckTravel(caster, loc, map, type))
+                {
+                    return false;
+                }
             }
 
             m_TravelCaster = caster;
@@ -894,30 +905,37 @@ namespace Server.Spells
             int v = (int)type;
             bool isValid = true;
 
-            BaseRegion destination = Region.Find(loc, map) as BaseRegion;
-            BaseRegion current = Region.Find(caster.Location, map) as BaseRegion;
-
-            if (destination != null && !destination.CheckTravel(caster, loc, type))
-                isValid = false;
-
-            if (isValid && current != null && !current.CheckTravel(caster, loc, type))
-                isValid = false;
-
-            #region Mondain's Legacy
-            if (m_TravelCaster != null && m_TravelCaster.Region != null)
+            if (caster != null)
             {
-                if (m_TravelCaster.Region.IsPartOf("Blighted Grove") && loc.Z < -10)
+                BaseRegion destination = Region.Find(loc, map) as BaseRegion;
+                BaseRegion current = Region.Find(caster.Location, map) as BaseRegion;
+
+                if (destination != null && !destination.CheckTravel(caster, loc, type))
                     isValid = false;
+
+                if (isValid && current != null && !current.CheckTravel(caster, loc, type))
+                    isValid = false;
+
+                #region Mondain's Legacy
+
+                if (caster.Region != null)
+                {
+                    if (caster.Region.IsPartOf("Blighted Grove") && loc.Z < -10)
+                        isValid = false;
+                }
+
+                if ((int)type <= 4 && (IsNewDungeon(caster.Map, caster.Location) || IsNewDungeon(map, loc)))
+                    isValid = false;
+                
+                #endregion
+
+                #region High Seas
+
+                if (BaseBoat.IsDriving(caster))
+                    return false;
+
+                #endregion
             }
-
-            if ((int)type <= 4 && (IsNewDungeon(caster.Map, caster.Location) || IsNewDungeon(map, loc)))
-                isValid = false;
-            #endregion
-
-            #region High Seas
-            if (BaseBoat.IsDriving(caster))
-                return false;
-            #endregion
 
             for (int i = 0; isValid && i < m_Validators.Length; ++i)
                 isValid = (m_Rules[v, i] || !m_Validators[i](map, loc));
@@ -1146,7 +1164,7 @@ namespace Server.Spells
             if (map == Map.Felucca && loc.X >= 6975 && loc.X <= 7042 && loc.Y >= 2048 && loc.Y <= 2115)
                 return true;
 
-            return map == Map.TerMur && loc.X >= 64 && loc.X <= 1087 && loc.Y >= 1344 && loc.Y <= 2495;
+            return map == Map.TerMur && loc.X >= 0 && loc.X <= 1087 && loc.Y >= 1344 && loc.Y <= 2495;
         }
 
         public static bool IsNewDungeon(Map map, Point3D loc)

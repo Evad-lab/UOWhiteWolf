@@ -906,7 +906,7 @@ namespace Server.Mobiles
 						SquireDialog.DoSquireDialog( from, m_Squire, SquireDialogTree.CantDiscord, null, null );
 					}
 				}
-				else if ( Discordance.m_Table.ContainsKey(targ) )
+				else if ( Discordance.Table.ContainsKey(targ) )
 				{
 					if( m_Squire.m_SquireBeQuiet == false )
 					{
@@ -988,7 +988,7 @@ namespace Server.Mobiles
 						Discordance.DiscordanceInfo info = new Discordance.DiscordanceInfo( m_Squire, targ, Math.Abs( effect ), mods );
 						info.m_Timer = Timer.DelayCall<Discordance.DiscordanceInfo>( TimeSpan.Zero, TimeSpan.FromSeconds( 1.25 ), new TimerStateCallback<Discordance.DiscordanceInfo>( Discordance.ProcessDiscordance ), info );
 
-						Discordance.m_Table[targ] = info;
+						Discordance.Table[targ] = info;
 					}
 					else
 					{

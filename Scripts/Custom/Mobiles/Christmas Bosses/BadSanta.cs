@@ -102,6 +102,8 @@ namespace Server.Mobiles
 
 			m_Timer = new TeleportTimer( this );
 			m_Timer.Start();
+			
+			SetSpecialAbility(SpecialAbility.LifeDrain);
 		}
 
 		public override int GetIdleSound() { return 0x667; } 
@@ -109,7 +111,53 @@ namespace Server.Mobiles
 		public override int GetHurtSound() { return 0x641; } 
 		public override int GetDeathSound() { return 0x63F; }
 		
-			        public override void OnMovement(Mobile m, Point3D oldLocation)
+		//UOWW: DrainsLife compatibility with the new Core
+		//
+		public override void OnDrainLife(Mobile victim)
+        {
+            if (Map == null)
+                return;
+
+            ArrayList list = new ArrayList();
+            int count = 0;
+            IPooledEnumerable eable = GetMobilesInRange(20);
+
+            foreach (Mobile m in eable)
+            {
+                if (m == this || !CanBeHarmful(m))
+                {
+                    if (m is DarkWisp) { count++; }
+                    continue;
+                }
+
+                if (m is BaseCreature && (((BaseCreature)m).Controlled || ((BaseCreature)m).Summoned || ((BaseCreature)m).Team != Team))
+                    list.Add(m);
+                else if (m.Player)
+                    list.Add(m);
+            }
+
+            eable.Free();
+
+            foreach (Mobile m in list)
+            {
+                (new DarkWisp()).MoveToWorld(new Point3D(Location), Map);
+                int teleportchance = Hits / HitsMax;
+
+                if (teleportchance < Utility.RandomDouble() && m.Alive)
+                {
+                    switch (Utility.Random(6))
+                    {
+                        case 0: m.MoveToWorld(new Point3D(6431, 1664, 0), Map); break;
+                        case 1: m.MoveToWorld(new Point3D(6432, 1634, 0), Map); break;
+                        case 2: m.MoveToWorld(new Point3D(6401, 1657, 0), Map); break;
+                        case 3: m.MoveToWorld(new Point3D(6401, 1637, 0), Map); break;
+                        default: m.MoveToWorld(new Point3D(Location), Map); break;
+                    }
+                }
+            }
+        }	
+		
+		public override void OnMovement(Mobile m, Point3D oldLocation)
         {
             if (DateTime.Now >= m_NextTalk && InRange(m, 4) && InLOS(m)) // check if it's time to talk & mobile in range & in los.
             {
@@ -203,11 +251,15 @@ namespace Server.Mobiles
 		}
 
 		public override bool AutoDispel{ get{ return true; } }
-	        public override bool BardImmune{ get{ return true; } }
-                public override bool AlwaysMurderer { get { return true; } }
-                public override bool DrainsLife { get { return true; } }
+	    public override bool BardImmune{ get{ return true; } }
+        public override bool AlwaysMurderer { get { return true; } }
+        
+		//UOWW: commented out for compatiblity with the new Core
+		//
+		//public override bool DrainsLife { get { return true; } }
+		
 		public override Poison PoisonImmune{ get{ return Poison.Deadly; } } 
-                public override Poison HitPoison { get { return Poison.Deadly; } }
+        public override Poison HitPoison { get { return Poison.Deadly; } }
 
 
 		private static readonly double[] m_Offsets = new double[]

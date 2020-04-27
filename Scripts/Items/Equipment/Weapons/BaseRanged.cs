@@ -4,6 +4,8 @@ using System;
 using Server.Mobiles;
 using Server.Network;
 using Server.Spells;
+
+using daat99;
 #endregion
 
 namespace Server.Items
@@ -206,6 +208,11 @@ namespace Server.Items
 					{
 						quiver.InvalidateWeight();
 					}
+					//daat99 fired arrow from MasterStorage, do nothing else
+					else if (TryFireFromMasterStorage(attacker))  // Vii add
+                    {
+                    
+                    }
 					else if (pack == null || !pack.ConsumeTotal(AmmoType, 1))
 					{
 						return false;
@@ -214,7 +221,10 @@ namespace Server.Items
 				else if (quiver.FindItemByType(AmmoType) == null && (pack == null || pack.FindItemByType(AmmoType) == null))
 				{
 					// lower ammo cost should not work when we have no ammo at all
-					return false;
+					
+					//daat99 fired arrow from MasterStorage, do nothing else
+                    if (!TryFireFromMasterStorage(attacker)) // Vii add
+                        return false;
 				}
 			}
 
@@ -222,6 +232,18 @@ namespace Server.Items
 
 			return true;
 		}
+		
+		//daat99 Vii added for firing the ammotype directly from a masterstorage bag
+        public bool TryFireFromMasterStorage(Mobile attacker)
+        {
+            MasterStorage bag = MasterStorageUtils.GetMasterStorage((PlayerMobile)attacker);
+
+            if (bag == null || !bag.TryConsume(AmmoType, 1))
+
+                return false;
+
+            return true;
+        }
 
 		public override void Serialize(GenericWriter writer)
 		{

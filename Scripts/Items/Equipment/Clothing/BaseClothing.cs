@@ -13,6 +13,7 @@ namespace Server.Items
         bool IsArcane { get; }
         int CurArcaneCharges { get; set; }
         int MaxArcaneCharges { get; set; }
+        int TempHue { get; set; }
     }
 
     public abstract class BaseClothing : Item, IDyable, IScissorable, IFactionItem, ICraftable, IWearableDurability, IResource, ISetItem, IVvVItem, IOwnerRestricted, IArtifact, ICombatEquipment, IEngravable, IQuality
@@ -83,7 +84,6 @@ namespace Server.Items
         private int m_HitPoints;
         private Mobile m_Crafter;
         private ItemQuality m_Quality;
-        private bool m_PlayerConstructed;
         protected CraftResource m_Resource;
         private int m_StrReq = -1;
 
@@ -95,18 +95,13 @@ namespace Server.Items
         private AosElementAttributes m_AosResistances;
         private SAAbsorptionAttributes m_SAAbsorptionAttributes;
         private NegativeAttributes m_NegativeAttributes;
+        private AosWeaponAttributes m_AosWeaponAttributes;
 
         #region Stygian Abyss
         private int m_TimesImbued;
         private bool m_IsImbued;
         private int m_GorgonLenseCharges;
         private LenseType m_GorgonLenseType;
-
-        private int m_PhysNonImbuing;
-        private int m_FireNonImbuing;
-        private int m_ColdNonImbuing;
-        private int m_PoisonNonImbuing;
-        private int m_EnergyNonImbuing;
         #endregion
 
         #region Runic Reforging
@@ -118,10 +113,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int MaxHitPoints
         {
-            get
-            {
-                return m_MaxHitPoints;
-            }
+            get { return m_MaxHitPoints; }
             set
             {
                 m_MaxHitPoints = value;
@@ -133,10 +125,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public int HitPoints
         {
-            get 
-            {
-                return m_HitPoints;
-            }
+            get { return m_HitPoints; }
             set 
             {
                 if (value != m_HitPoints && MaxHitPoints > 0)
@@ -156,10 +145,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile Crafter
         {
-            get
-            {
-                return m_Crafter;
-            }
+            get { return m_Crafter; }
             set
             {
                 m_Crafter = value;
@@ -189,10 +175,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public ItemQuality Quality
         {
-            get
-            {
-                return m_Quality;
-            }
+            get { return m_Quality; }
             set
             {
                 m_Quality = value;
@@ -201,17 +184,7 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public bool PlayerConstructed
-        {
-            get
-            {
-                return m_PlayerConstructed;
-            }
-            set
-            {
-                m_PlayerConstructed = value;
-            }
-        }
+        public bool PlayerConstructed { get; set; }
 
         #region Stygian Abyss
         [CommandProperty(AccessLevel.GameMaster)]
@@ -255,39 +228,19 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PhysNonImbuing
-        {
-            get { return m_PhysNonImbuing; }
-            set { m_PhysNonImbuing = value; }
-        }
+        public int PhysNonImbuing { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int FireNonImbuing
-        {
-            get { return m_FireNonImbuing; }
-            set { m_FireNonImbuing = value; }
-        }
+        public int FireNonImbuing { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int ColdNonImbuing
-        {
-            get { return m_ColdNonImbuing; }
-            set { m_ColdNonImbuing = value; }
-        }
+        public int ColdNonImbuing { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int PoisonNonImbuing
-        {
-            get { return m_PoisonNonImbuing; }
-            set { m_PoisonNonImbuing = value; }
-        }
+        public int PoisonNonImbuing { get; set; }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public int EnergyNonImbuing
-        {
-            get { return m_EnergyNonImbuing; }
-            set { m_EnergyNonImbuing = value; }
-        }
+        public int EnergyNonImbuing { get; set; }
 
         public virtual int[] BaseResists
         {
@@ -339,10 +292,7 @@ namespace Server.Items
         [CommandProperty(AccessLevel.GameMaster)]
         public Mobile BlessedBy
         {
-            get
-            {
-                return m_BlessedBy;
-            }
+            get { return m_BlessedBy; }
             set
             {
                 m_BlessedBy = value;
@@ -388,13 +338,7 @@ namespace Server.Items
         }
         #endregion
 
-        public virtual CraftResource DefaultResource
-        {
-            get
-            {
-                return CraftResource.None;
-            }
-        }
+        public virtual CraftResource DefaultResource { get { return CraftResource.None; } }
 
         [CommandProperty(AccessLevel.GameMaster)]
         public CraftResource Resource
@@ -412,112 +356,31 @@ namespace Server.Items
         }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosAttributes Attributes
-        {
-            get
-            {
-                return m_AosAttributes;
-            }
-            set
-            {
-            }
-        }
+        public AosAttributes Attributes { get { return m_AosAttributes; } set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosArmorAttributes ClothingAttributes
-        {
-            get
-            {
-                return m_AosClothingAttributes;
-            }
-            set
-            {
-            }
-        }
+        public AosArmorAttributes ClothingAttributes { get { return m_AosClothingAttributes; } set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosSkillBonuses SkillBonuses
-        {
-            get
-            {
-                return m_AosSkillBonuses;
-            }
-            set
-            {
-            }
-        }
+        public AosSkillBonuses SkillBonuses { get { return m_AosSkillBonuses; } set {  } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public AosElementAttributes Resistances
-        {
-            get
-            {
-                return m_AosResistances;
-            }
-            set
-            {
-            }
-        }
+        public AosElementAttributes Resistances { get { return m_AosResistances; } set  { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public SAAbsorptionAttributes SAAbsorptionAttributes
-        {
-            get
-            {
-                return m_SAAbsorptionAttributes;
-            }
-            set
-            {
-            }
-        }
+        public SAAbsorptionAttributes SAAbsorptionAttributes { get { return m_SAAbsorptionAttributes; } set { } }
 
         [CommandProperty(AccessLevel.GameMaster)]
-        public NegativeAttributes NegativeAttributes
-        {
-            get 
-            { 
-                return m_NegativeAttributes;
-            }
-            set 
-            {
-            }
-        }
+        public NegativeAttributes NegativeAttributes { get { return m_NegativeAttributes; } set { } }
 
-        public virtual int BasePhysicalResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BaseFireResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BaseColdResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BasePoisonResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BaseEnergyResistance
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        [CommandProperty(AccessLevel.GameMaster)]
+        public AosWeaponAttributes WeaponAttributes { get { return m_AosWeaponAttributes; } set { } }
+
+        public virtual int BasePhysicalResistance { get { return 0; } }
+        public virtual int BaseFireResistance { get { return 0; } }
+        public virtual int BaseColdResistance { get { return 0; } }
+        public virtual int BasePoisonResistance { get { return 0; } }
+        public virtual int BaseEnergyResistance { get { return 0; } }
         
         #region Mondain's Legacy Sets
         public override int PhysicalResistance
@@ -557,13 +420,7 @@ namespace Server.Items
         }
         #endregion
 
-        public virtual int ArtifactRarity
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int ArtifactRarity { get { return 0; } }
 
         public override bool DisplayWeight
         {
@@ -576,27 +433,9 @@ namespace Server.Items
             }
         }
 
-        public virtual int BaseStrBonus
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BaseDexBonus
-        {
-            get
-            {
-                return 0;
-            }
-        }
-        public virtual int BaseIntBonus
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public virtual int BaseStrBonus { get { return 0; } }
+        public virtual int BaseDexBonus { get { return 0; } }
+        public virtual int BaseIntBonus { get { return 0; } }
 
         public override double DefaultWeight
         {
@@ -617,13 +456,7 @@ namespace Server.Items
             return base.AllowSecureTrade(from, to, newOwner, accepted);
         }
 
-        public virtual Race RequiredRace
-        {
-            get
-            {
-                return null;
-            }
-        }
+        public virtual Race RequiredRace { get { return null; } }
 
         #region Stygian Abyss
         public virtual bool CanBeWornByGargoyles
@@ -688,7 +521,7 @@ namespace Server.Items
                     if (AllowFemaleWearer)
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1010388); // Only females can wear this.
                     else
-                        from.SendMessage("You may not wear this.");
+                        from.SendLocalizedMessage(1071936); // You cannot equip that.
 
                     return false;
                 }
@@ -697,7 +530,7 @@ namespace Server.Items
                     if (AllowMaleWearer)
                         from.LocalOverheadMessage(MessageType.Regular, 0x3B2, 1063343); // Only males can wear this.
                     else
-                        from.SendMessage("You may not wear this.");
+                        from.SendLocalizedMessage(1071936); // You cannot equip that.
 
                     return false;
                 }
@@ -855,7 +688,7 @@ namespace Server.Items
                         if (clothing.AllowFemaleWearer)
                             m.SendLocalizedMessage(1010388); // Only females can wear this.
                         else
-                            m.SendMessage("You may not wear this.");
+                            m.SendLocalizedMessage(1071936); // You cannot equip that.
 
                         m.AddToBackpack(clothing);
                     }
@@ -864,7 +697,7 @@ namespace Server.Items
                         if (clothing.AllowMaleWearer)
                             m.SendLocalizedMessage(1063343); // Only males can wear this.
                         else
-                            m.SendMessage("You may not wear this.");
+                            m.SendLocalizedMessage(1071936); // You cannot equip that.
 
                         m.AddToBackpack(clothing);
                     }
@@ -1024,6 +857,7 @@ namespace Server.Items
             m_AosResistances = new AosElementAttributes(this);
             m_SAAbsorptionAttributes = new SAAbsorptionAttributes(this);
             m_NegativeAttributes = new NegativeAttributes(this);
+            m_AosWeaponAttributes = new AosWeaponAttributes(this);
 
             #region Mondain's Legacy Sets
             m_SetAttributes = new AosAttributes(this);
@@ -1044,6 +878,7 @@ namespace Server.Items
             clothing.m_AosClothingAttributes = new AosArmorAttributes(newItem, m_AosClothingAttributes);
             clothing.m_SAAbsorptionAttributes = new SAAbsorptionAttributes(newItem, m_SAAbsorptionAttributes);
             clothing.m_NegativeAttributes = new NegativeAttributes(newItem, m_NegativeAttributes);
+            clothing.m_AosWeaponAttributes = new AosWeaponAttributes(newItem, m_AosWeaponAttributes);
 
             #region Mondain's Legacy
             clothing.m_SetAttributes = new AosAttributes(newItem, m_SetAttributes);
@@ -1219,7 +1054,26 @@ namespace Server.Items
                 list.Add(LabelNumber);
             else
                 list.Add(Name);
-			*/
+		*/
+        }
+		
+
+        public override void AddCraftedProperties(ObjectPropertyList list)
+        {
+            if (OwnerName != null)
+                list.Add(1153213, OwnerName);
+
+            if (m_Crafter != null)
+                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
+
+            if (m_Quality == ItemQuality.Exceptional)
+                list.Add(1018303); // Exceptional
+
+            if (IsImbued == true)
+                list.Add(1080418); // (Imbued)
+
+            if (m_Altered)
+                list.Add(1111880); // Altered
         }
 
         public override void AddWeightProperty(ObjectPropertyList list)
@@ -1229,7 +1083,7 @@ namespace Server.Items
             if (IsVvVItem)
                 list.Add(1154937); // VvV Item
 
-            if (!String.IsNullOrEmpty(m_EngravedText))
+            if (!string.IsNullOrEmpty(m_EngravedText))
             {
                 list.Add(1158847, Utility.FixHtml(m_EngravedText)); // Embroidered: ~1_MESSAGE~	
             }
@@ -1238,23 +1092,6 @@ namespace Server.Items
         public override void AddNameProperties(ObjectPropertyList list)
         {
             base.AddNameProperties(list);
-
-            if (OwnerName != null)
-            {
-                list.Add(1153213, OwnerName);
-            }
-
-            if (m_Crafter != null)
-                list.Add(1050043, m_Crafter.TitleName); // crafted by ~1_NAME~
-
-            if (m_Quality == ItemQuality.Exceptional)
-                list.Add(1018303); // Exceptional
-            
-            if (IsImbued == true)
-                list.Add(1080418); // (Imbued)
-
-            if (m_Altered)
-                list.Add(1111880); // Altered
 
             #region Factions
             FactionEquipment.AddFactionProperties(this, list);
@@ -1344,6 +1181,51 @@ namespace Server.Items
 			if ((prop = m_SAAbsorptionAttributes.CastingFocus) != 0)
                 list.Add(1113696, prop.ToString()); // Casting Focus ~1_val~%
             #endregion
+
+            if ((prop = m_AosWeaponAttributes.HitColdArea) != 0)
+                list.Add(1060416, prop.ToString()); // hit cold area ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitDispel) != 0)
+                list.Add(1060417, prop.ToString()); // hit dispel ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitEnergyArea) != 0)
+                list.Add(1060418, prop.ToString()); // hit energy area ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitFireArea) != 0)
+                list.Add(1060419, prop.ToString()); // hit fire area ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitFireball) != 0)
+                list.Add(1060420, prop.ToString()); // hit fireball ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitHarm) != 0)
+                list.Add(1060421, prop.ToString()); // hit harm ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLeechHits) != 0)
+                list.Add(1060422, prop.ToString()); // hit life leech ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLightning) != 0)
+                list.Add(1060423, prop.ToString()); // hit lightning ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLowerAttack) != 0)
+                list.Add(1060424, prop.ToString()); // hit lower attack ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLowerDefend) != 0)
+                list.Add(1060425, prop.ToString()); // hit lower defense ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitMagicArrow) != 0)
+                list.Add(1060426, prop.ToString()); // hit magic arrow ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLeechMana) != 0)
+                list.Add(1060427, prop.ToString()); // hit mana leech ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitPhysicalArea) != 0)
+                list.Add(1060428, prop.ToString()); // hit physical area ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitPoisonArea) != 0)
+                list.Add(1060429, prop.ToString()); // hit poison area ~1_val~%
+
+            if ((prop = m_AosWeaponAttributes.HitLeechStam) != 0)
+                list.Add(1060430, prop.ToString()); // hit stamina leech ~1_val~%
 
             if ((prop = m_AosAttributes.SpellChanneling) != 0)
                 list.Add(1060482); // spell channeling
@@ -1435,7 +1317,7 @@ namespace Server.Items
                 list.Add(1061170, prop.ToString()); // strength requirement ~1_val~
 
             if ((prop = m_AosClothingAttributes.DurabilityBonus) > 0)
-                list.Add(1060410, prop.ToString()); // durability ~1_val~%
+                list.Add(1151780, prop.ToString()); // durability +~1_VAL~%
 
             if (m_HitPoints >= 0 && m_MaxHitPoints > 0)
                 list.Add(1060639, "{0}\t{1}", m_HitPoints, m_MaxHitPoints); // durability ~1_val~ / ~2_val~
@@ -1545,7 +1427,8 @@ namespace Server.Items
             #region Imbuing
             //TimesImbued = 0x12000000,
             #endregion
-            Altered = 0x00001000
+            Altered = 0x00001000,
+            xWeaponAttributes = 0x00002000,
         }
 
         #region Mondain's Legacy Sets
@@ -1579,11 +1462,24 @@ namespace Server.Items
         }
         #endregion
 
+        public void xWeaponAttributesDeserializeHelper(GenericReader reader, BaseClothing item)
+        {
+            SaveFlag flags = (SaveFlag)reader.ReadInt();
+
+            if (flags != SaveFlag.None)
+                flags = SaveFlag.xWeaponAttributes;
+
+            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
+                m_AosWeaponAttributes = new AosWeaponAttributes(item, reader);
+            else
+                m_AosWeaponAttributes = new AosWeaponAttributes(item);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
 
-            writer.Write(11); // version
+            writer.Write(12); // version
 
             // Embroidery Tool version 11
             writer.Write(m_EngravedText);
@@ -1609,11 +1505,11 @@ namespace Server.Items
             writer.Write(m_GorgonLenseCharges);
             writer.Write((int)m_GorgonLenseType);
 
-            writer.Write(m_PhysNonImbuing);
-            writer.Write(m_FireNonImbuing);
-            writer.Write(m_ColdNonImbuing);
-            writer.Write(m_PoisonNonImbuing);
-            writer.Write(m_EnergyNonImbuing);
+            writer.Write(PhysNonImbuing);
+            writer.Write(FireNonImbuing);
+            writer.Write(ColdNonImbuing);
+            writer.Write(PoisonNonImbuing);
+            writer.Write(EnergyNonImbuing);
 
             // Version 6
             writer.Write((int)m_TimesImbued);
@@ -1676,6 +1572,7 @@ namespace Server.Items
             // Version 5
             SaveFlag flags = SaveFlag.None;
 
+            SetSaveFlag(ref flags, SaveFlag.xWeaponAttributes, !m_AosWeaponAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.NegativeAttributes, !m_NegativeAttributes.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.Resource, m_Resource != DefaultResource);
             SetSaveFlag(ref flags, SaveFlag.Attributes, !m_AosAttributes.IsEmpty);
@@ -1684,7 +1581,7 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.Resistances, !m_AosResistances.IsEmpty);
             SetSaveFlag(ref flags, SaveFlag.MaxHitPoints, m_MaxHitPoints != 0);
             SetSaveFlag(ref flags, SaveFlag.HitPoints, m_HitPoints != 0);
-            SetSaveFlag(ref flags, SaveFlag.PlayerConstructed, m_PlayerConstructed != false);
+            SetSaveFlag(ref flags, SaveFlag.PlayerConstructed, PlayerConstructed != false);
             SetSaveFlag(ref flags, SaveFlag.Crafter, m_Crafter != null);
             SetSaveFlag(ref flags, SaveFlag.Quality, m_Quality != ItemQuality.Normal);
             SetSaveFlag(ref flags, SaveFlag.StrReq, m_StrReq != -1);
@@ -1694,6 +1591,9 @@ namespace Server.Items
             SetSaveFlag(ref flags, SaveFlag.Altered, m_Altered);
 
             writer.WriteEncodedInt((int)flags);
+
+            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
+                m_AosWeaponAttributes.Serialize(writer);
 
             if (GetSaveFlag(flags, SaveFlag.NegativeAttributes))
                 m_NegativeAttributes.Serialize(writer);
@@ -1737,6 +1637,7 @@ namespace Server.Items
 
             switch ( version )
             {
+                case 12:
                 case 11:
                     {
                         m_EngravedText = reader.ReadString();
@@ -1779,11 +1680,11 @@ namespace Server.Items
                         m_GorgonLenseCharges = reader.ReadInt();
                         m_GorgonLenseType = (LenseType)reader.ReadInt();
 
-                        m_PhysNonImbuing = reader.ReadInt();
-                        m_FireNonImbuing = reader.ReadInt();
-                        m_ColdNonImbuing = reader.ReadInt();
-                        m_PoisonNonImbuing = reader.ReadInt();
-                        m_EnergyNonImbuing = reader.ReadInt();
+                        PhysNonImbuing = reader.ReadInt();
+                        FireNonImbuing = reader.ReadInt();
+                        ColdNonImbuing = reader.ReadInt();
+                        PoisonNonImbuing = reader.ReadInt();
+                        EnergyNonImbuing = reader.ReadInt();
                         goto case 6;
                     }
                 case 6:
@@ -1847,6 +1748,14 @@ namespace Server.Items
                     {
                         SaveFlag flags = (SaveFlag)reader.ReadEncodedInt();
 
+                        if (version > 11)
+                        {
+                            if (GetSaveFlag(flags, SaveFlag.xWeaponAttributes))
+                                m_AosWeaponAttributes = new AosWeaponAttributes(this, reader);
+                            else
+                                m_AosWeaponAttributes = new AosWeaponAttributes(this);
+                        }
+
                         if (GetSaveFlag(flags, SaveFlag.NegativeAttributes))
                             m_NegativeAttributes = new NegativeAttributes(this, reader);
                         else
@@ -1897,7 +1806,7 @@ namespace Server.Items
                             m_StrReq = -1;
 
                         if (GetSaveFlag(flags, SaveFlag.PlayerConstructed))
-                            m_PlayerConstructed = true;
+                            PlayerConstructed = true;
 
                         if (GetSaveFlag(flags, SaveFlag.Altered))
                             m_Altered = true;
@@ -1921,7 +1830,7 @@ namespace Server.Items
                     }
                 case 2:
                     {
-                        m_PlayerConstructed = reader.ReadBool();
+                        PlayerConstructed = reader.ReadBool();
                         goto case 1;
                     }
                 case 1:
@@ -1947,7 +1856,7 @@ namespace Server.Items
             #endregion
 
             if (version < 2)
-                m_PlayerConstructed = true; // we don't know, so, assume it's crafted
+                PlayerConstructed = true; // we don't know, so, assume it's crafted
 
             if (version < 3)
             {
@@ -1956,6 +1865,9 @@ namespace Server.Items
                 m_AosSkillBonuses = new AosSkillBonuses(this);
                 m_AosResistances = new AosElementAttributes(this);
             }
+
+            if (m_AosWeaponAttributes == null)
+                m_AosWeaponAttributes = new AosWeaponAttributes(this);
 
             if (version < 4)
                 m_Resource = DefaultResource;
@@ -2025,7 +1937,7 @@ namespace Server.Items
 
                     Item res = (Item)Activator.CreateInstance(resourceType);
 
-                    ScissorHelper(from, res, m_PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
+                    ScissorHelper(from, res, PlayerConstructed ? (item.Resources.GetAt(0).Amount / 2) : 1);
 
                     res.LootType = LootType.Regular;
 
@@ -2076,11 +1988,11 @@ namespace Server.Items
             }
 
             #region Stygian Abyss
-            m_PhysNonImbuing = PhysicalResistance;
-            m_FireNonImbuing = FireResistance;
-            m_ColdNonImbuing = ColdResistance;
-            m_PoisonNonImbuing = PoisonResistance;
-            m_EnergyNonImbuing = EnergyResistance;
+            PhysNonImbuing = PhysicalResistance;
+            FireNonImbuing = FireResistance;
+            ColdNonImbuing = ColdResistance;
+            PoisonNonImbuing = PoisonResistance;
+            EnergyNonImbuing = EnergyResistance;
             #endregion
 
             InvalidateProperties();

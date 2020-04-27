@@ -16,26 +16,19 @@ namespace Server.Items
 	public class SantasElfBoots : BaseShoes, IArcaneEquip
 	{
 		#region Arcane Impl
-		private int m_MaxArcaneCharges, m_CurArcaneCharges;
+		[CommandProperty( AccessLevel.GameMaster )]
+		public int TempHue { get; set; }
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int MaxArcaneCharges
-		{
-			get{ return m_MaxArcaneCharges; }
-			set{ m_MaxArcaneCharges = value; InvalidateProperties(); Update(); }
-		}
+		public int MaxArcaneCharges { get; set; }
 
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int CurArcaneCharges
-		{
-			get{ return m_CurArcaneCharges; }
-			set{ m_CurArcaneCharges = value; InvalidateProperties(); Update(); }
-		}
+		public int CurArcaneCharges { get; set; }
 
 		[CommandProperty( AccessLevel.GameMaster )]
 		public bool IsArcane
 		{
-			get{ return ( m_MaxArcaneCharges > 0 && m_CurArcaneCharges >= 0 ); }
+			get{ return ( MaxArcaneCharges > 0 && CurArcaneCharges >= 0 ); }
 		}
 
 		public override void OnSingleClick( Mobile from )
@@ -43,7 +36,7 @@ namespace Server.Items
 			base.OnSingleClick( from );
 
 			if ( IsArcane )
-				LabelTo( from, 1061837, String.Format( "{0}\t{1}", m_CurArcaneCharges, m_MaxArcaneCharges ) );
+				LabelTo( from, 1061837, String.Format( "{0}\t{1}", CurArcaneCharges, MaxArcaneCharges ) );
 		}
 
 		public void Update()
@@ -62,7 +55,7 @@ namespace Server.Items
 			base.GetProperties( list );
 
 			if ( IsArcane )
-				list.Add( 1061837, "{0}\t{1}", m_CurArcaneCharges, m_MaxArcaneCharges ); // arcane charges: ~1_val~ / ~2_val~
+				list.Add( 1061837, "{0}\t{1}", CurArcaneCharges, MaxArcaneCharges ); // arcane charges: ~1_val~ / ~2_val~
 		}
 
 		public void Flip()
@@ -89,6 +82,7 @@ namespace Server.Items
 			
 			MaxArcaneCharges= 25;
 			CurArcaneCharges = 25;
+			TempHue = 1159;
 			
 			Attributes.NightSight = 1;
 			Attributes.BonusDex = 3;
@@ -107,8 +101,8 @@ namespace Server.Items
 			if ( IsArcane )
 			{
 				writer.Write( true );
-				writer.Write( (int) m_CurArcaneCharges );
-				writer.Write( (int) m_MaxArcaneCharges );
+				writer.Write( (int) CurArcaneCharges );
+				writer.Write( (int) MaxArcaneCharges );
 			}
 			else
 			{
@@ -128,8 +122,8 @@ namespace Server.Items
 				{
 					if ( reader.ReadBool() )
 					{
-						m_CurArcaneCharges = reader.ReadInt();
-						m_MaxArcaneCharges = reader.ReadInt();
+						CurArcaneCharges = reader.ReadInt();
+						MaxArcaneCharges = reader.ReadInt();
 
 						if ( Hue == 2118 )
 							Hue = ArcaneGem.DefaultArcaneHue;

@@ -114,14 +114,14 @@ namespace Server.Mobiles
 		                {
 					dropped.Delete(); 
 					mobile.AddToBackpack( new IngotKey() );
-					mobile.SendMessage( "Thank you for your help!" );
+					mobile.SendMessage( "Thank you for your help! Take good care of this, you only get one!" );
                                         acct.SetTag( "RestoredIngotKeyReceived", "true" );
 
 				
          		        }
 				else //what to do if account has already been tagged
          			{
-         				mobile.SendMessage("Have some gold for your troubles.");
+         				mobile.SendMessage("I have only gold for you, I gave you the Ingot Key last time.");
          				mobile.AddToBackpack( new Gold( 5500 ) );
          				dropped.Delete();
          			}

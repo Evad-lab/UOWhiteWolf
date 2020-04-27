@@ -176,10 +176,10 @@ namespace Server.Spells.Spellweaving
                 {
                     m_Owner.DoHarmful(m);
 
-                    if (m_Owner.Map.CanFit(m.Location, 12, true, false))
-                        new FireItem(m_LifeSpan).MoveToWorld(m.Location, m.Map);
+                    if (m_Map.CanFit(m.Location, 12, true, false))
+                        new FireItem(m_LifeSpan).MoveToWorld(m.Location, m_Map);
 
-                    Effects.PlaySound(m.Location, m.Map, 0x5CF);
+                    Effects.PlaySound(m.Location, m_Map, 0x5CF);
                     double sdiBonus = (double)AosAttributes.GetValue(m_Owner, AosAttribute.SpellDamage) / 100;
 
                     if (m is PlayerMobile && sdiBonus > .15)
@@ -201,7 +201,7 @@ namespace Server.Spells.Spellweaving
             {
                 WildfireSpell.DefragTable();
 
-                return m_Spell.AcquireIndirectTargets(m_Location, m_Range).OfType<Mobile>();
+                return m_Spell.AcquireIndirectTargets(m_Location, m_Range).OfType<Mobile>().Where(m => !m_Table.ContainsKey(m));
             }			
         }
 

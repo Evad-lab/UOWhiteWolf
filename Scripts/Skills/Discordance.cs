@@ -15,7 +15,27 @@ namespace Server.SkillHandlers
 {
 	public class Discordance
 	{
-        public static readonly Dictionary<Mobile, DiscordanceInfo> m_Table = new Dictionary<Mobile, DiscordanceInfo>();
+		//UOWW: Compatibility with Squire System
+		//
+        private static Dictionary<Mobile, DiscordanceInfo> m_Table = new Dictionary<Mobile, DiscordanceInfo>();
+		
+		public static Dictionary<Mobile, DiscordanceInfo> Table 
+		{
+			get
+			{
+                return m_Table;
+			}
+			set
+			{
+				try
+				{
+					m_Table = value; 
+				}
+                catch
+				{ }
+			}
+		}
+		//UOWW: end
 
         public static bool UnderEffects(Mobile m)
         {
@@ -75,7 +95,10 @@ namespace Server.SkillHandlers
 			return true;
 		}
 
+		//UOWW: Compatibility with the Squire System
+		//
 		public static void ProcessDiscordance(DiscordanceInfo info)
+		//private static void ProcessDiscordance(DiscordanceInfo info)
 		{
 			Mobile from = info.m_From;
 			Mobile targ = info.m_Target;
@@ -89,7 +112,7 @@ namespace Server.SkillHandlers
             {
                 // According to uoherald bard must remain alive, visible, and 
                 // within range of the target or the effect ends in 15 seconds.
-                if (!targ.Alive || targ.Deleted || !from.Alive || from.Hidden || targ.Hidden)
+                if (!targ.Alive || targ.Deleted || targ.IsDeadBondedPet || !from.Alive || from.Hidden || targ.Hidden || from.IsDeadBondedPet)
                 {
                     ends = true;
                 }
@@ -158,9 +181,8 @@ namespace Server.SkillHandlers
 				{
 					Mobile targ = (Mobile)target;
 
-					if (targ == from ||
-						(targ is BaseCreature && (((BaseCreature)targ).BardImmune || !from.CanBeHarmful(targ, false)) &&
-						 ((BaseCreature)targ).ControlMaster != from))
+					if (targ == from || !from.CanBeHarmful(targ, false) || 
+                        (targ is BaseCreature && ((BaseCreature)targ).BardImmune && ((BaseCreature)targ).ControlMaster != from))
 					{
 						from.SendLocalizedMessage(1049535); // A song of discord would have no effect on that.
 					}
@@ -202,7 +224,11 @@ namespace Server.SkillHandlers
 						else if (from.CheckTargetSkill(SkillName.Discordance, target, diff - 25.0, diff + 25.0))
 						{
 							from.SendLocalizedMessage(1049539); // You play the song surpressing your targets strength
-							m_Instrument.PlayInstrumentWell(from);
+
+                            if (targ.Player)
+                                targ.SendLocalizedMessage(1072061); // You hear jarring music, suppressing your strength.
+
+                            m_Instrument.PlayInstrumentWell(from);
 							m_Instrument.ConsumeUse(from);
 
                             DiscordanceInfo info;
@@ -290,6 +316,10 @@ namespace Server.SkillHandlers
                                 from.CheckSkill(SkillName.Discordance, 0, from.Skills[SkillName.Discordance].Cap);
 
 							from.SendLocalizedMessage(1049540); // You attempt to disrupt your target, but fail.
+
+                            if (targ.Player)
+                                targ.SendLocalizedMessage(1072064); // You hear jarring music, but it fails to disrupt you.
+
                             m_Instrument.PlayInstrumentBadly(from);
 							m_Instrument.ConsumeUse(from);
 
@@ -313,7 +343,10 @@ namespace Server.SkillHandlers
             }
 		}
 
+		//UOWW: Compatibility with the Squire System
+		//
 		public class DiscordanceInfo
+		//private class DiscordanceInfo
 		{
 			public readonly Mobile m_From;
 			public readonly Mobile m_Target;
