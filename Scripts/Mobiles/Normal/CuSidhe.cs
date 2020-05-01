@@ -80,13 +80,6 @@ namespace Server.Mobiles
                 return FoodType.FruitsAndVegies;
             }
         }
-        public override bool CanAngerOnTame
-        {
-            get
-            {
-                return true;
-            }
-        }
         public override bool StatLossAfterTame
         {
             get

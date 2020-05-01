@@ -427,7 +427,7 @@ namespace Server.Mobiles
                         total += vi.Price;
                     }
 
-                    int perDay = (int)(60 + (total / 5000000000) * 3);
+                    int perDay = (int)(1 + (total / 5000000000) * 3);
 
                     MerchantsTrinket trinket = FindItemOnLayer(Layer.Earrings) as MerchantsTrinket;
 

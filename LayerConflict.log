@@ -142,3 +142,9 @@ Offending Item: 0x4015DFDF "PersonalStatueDeed" [Server.Items.PersonalStatueDeed
 Equipped Item: 0x4015DFDE "Gold" [Server.Items.Gold]
 Layer: Invalid
 
+# 4/30/2020 6:31:20 AM
+Offending Mobile: Server.Mobiles.MasterOfTheArts [0x18122 "a master of the arts"]
+Offending Item: 0x4017750C "PersonalStatueDeed" [Server.Items.PersonalStatueDeed]
+Equipped Item: 0x4017750B "Gold" [Server.Items.Gold]
+Layer: Invalid
+

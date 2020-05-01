@@ -39,7 +39,7 @@ namespace Server.Items
 			// break up the text into single line length pieces
 			while(text != null && current < text.Length)
 			{
-				int lineCount = 8;
+				int lineCount = 10;
 				string[] lines = new string[lineCount];
 
 				// place the line on the page
@@ -217,7 +217,7 @@ namespace Server.Items
 
 					int lineCount = pvSrc.ReadUInt16();
 
-					if ( lineCount <= 8 )
+					if ( lineCount <= 10 )
 					{
 						string[] lines = new string[lineCount];
 
@@ -288,7 +288,7 @@ namespace Server.Items
 
                         int lineCount = pvSrc.ReadUInt16();
 
-                        if (lineCount <= 8)
+                        if (lineCount <= 10)
                         {
                             string[] lines = new string[lineCount];
 

@@ -65,6 +65,9 @@ namespace Server.Regions
 
         public override bool CanSee(Mobile m, IEntity e)
         {
+			return true;
+			
+			/*
             Item item = e as Item;
 
             if (item != null && ((m.PublicHouseContent && House.Public) ||
@@ -76,6 +79,7 @@ namespace Server.Regions
             }
 
             return false;
+			*/
         }
 
         private bool ExcludeItem(Item item)

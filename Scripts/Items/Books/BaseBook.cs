@@ -202,7 +202,7 @@ namespace Server.Items
             {
                 List<string> lines = new List<string>();
 
-                for (int i = 0; i < 8; ++i)
+                for (int i = 0; i < 10; ++i)
                 {
                     if (content.Length - pos < cpl)
                     {
@@ -552,7 +552,7 @@ namespace Server.Items
 
                     int lineCount = pvSrc.ReadUInt16();
 
-                    if (lineCount <= 8)
+                    if (lineCount <= 10)
                     {
                         string[] lines = new string[lineCount];
 
