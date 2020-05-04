@@ -524,7 +524,7 @@ namespace Server.Items
 
                     if (m_Patient.Body.IsMonster || m_Patient.Body.IsAnimal)
                     {
-                        toHeal += m_Patient.HitsMax / 100;
+                        toHeal += m_Patient.HitsMax / 10.0;
                     }
 
                     if (Core.AOS)

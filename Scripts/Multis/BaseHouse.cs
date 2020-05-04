@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,7 +20,7 @@ using Server.Engines.NewMagincia;
 namespace Server.Multis
 {
     public abstract class BaseHouse : BaseMulti
-    {
+    {		
         public static int AccountHouseLimit { get; } = Config.Get("Housing.AccountHouseLimit", 1);
 
         public static bool NewVendorSystem { get { return Core.AOS; } } // Is new player vendor system enabled?
@@ -29,6 +30,15 @@ namespace Server.Multis
         public const int MaxCoOwners = 15;
         public static int MaxFriends { get { return !Core.AOS ? 50 : 140; } }
         public static int MaxBans { get { return !Core.AOS ? 50 : 140; } }
+
+		//UOWW: fix for turning classic houses into customizable ones
+        private Dictionary<Serial, IEntity> _internalList;
+        private object _locker;
+		private DynamicComponentList _containedObjects;
+		
+		[CommandProperty(AccessLevel.GameMaster)]
+        public DynamicComponentList ContainedObjects { get { return _containedObjects; } }			
+		//UOWW: end
 
         #region Dynamic decay system
         private DecayLevel m_CurrentStage;
@@ -628,20 +638,31 @@ namespace Server.Multis
                 m_Trash = null;
             }
 
-            foreach (Item item in LockDowns.Keys)
-            {
-                if (!item.Deleted)
-                {
-                    item.IsLockedDown = false;
-                    item.IsSecure = false;
-                    item.Movable = true;
+			//UOWW: fix for turning classic houses into customizable ones
+			//	
+			List<Item> list = new List<Item>();
+			list = LockDowns.Keys.ToList();
+			
+			foreach (object o in list)
+			{			
+				if (o is Item)
+				{
+					Item item = (Item)o;
+					
+					if (item != null && !(item.Deleted))
+					{
+						item.IsLockedDown = false;
+						item.IsSecure = false;
+						item.Movable = true;
 
-                    if (item.Parent == null)
-                        DropToMovingCrate(item);
-                }
-            }
-
-            LockDowns.Clear();
+						if (item.Parent == null)							
+							DropToMovingCrate(item);								
+					}
+				}
+			}	
+				
+			LockDowns.Clear();
+			//UOWW: end
 
             foreach (Item item in VendorRentalContracts)
             {
@@ -1375,6 +1396,11 @@ namespace Server.Multis
             }
 
             Movable = false;
+			
+			//UOWW: 
+			//
+			_containedObjects = new DynamicComponentList();	
+			//
         }
 
         public BaseHouse(Serial serial)
@@ -4328,6 +4354,105 @@ namespace Server.Multis
             eable.Free();
             return null;
         }
+		
+		//UOWW: fix for turning classic houses into customizable ones
+		private class InternalComparer : IEqualityComparer<Serial>
+        {
+            public bool Equals(Serial a, Serial b) { return a == b; }
+
+            public int GetHashCode(Serial e) { return e; }
+        }
+		
+		public void ForEachItem(Action<Item> itemCmd)
+        {
+            lock (_locker)
+            {
+                foreach (IEntity obj in _internalList.Values)
+                {
+                    if (obj is Item)
+                        itemCmd.Invoke((Item)obj);
+                }
+            }
+        }
+
+        public void Embark(Item item)
+        {
+            if (item == null || item.Deleted || item == this)
+                return;
+
+			if (_containedObjects != null)
+				_containedObjects.Add(item);					
+        }
+		
+		public void Embark(Mobile mob)
+        {
+            if (mob == null || mob.Deleted)
+                return;
+			
+			if (_containedObjects != null)
+				_containedObjects.Add(mob);		
+        }
+
+        public void Disembark(Item item)
+        {
+            if (_containedObjects != null && item != null)
+                _containedObjects.Remove(item);
+        }
+
+        public void Disembark(Mobile mob)
+        {
+            if (_containedObjects != null && mob != null)
+                _containedObjects.Remove(mob);			
+
+        }
+		
+		public virtual void GetMovingEntities()
+		{
+			//Include new moving entities
+			Map map = Map;
+			
+			if (map == null || map == Map.Internal)
+				return;			
+			
+			MultiComponentList mcl = Components;
+			
+			foreach (object o in map.GetObjectsInBounds(new Rectangle2D(X + mcl.Min.X, Y + mcl.Min.Y, mcl.Width, mcl.Height)))
+			{
+				if (o is Item)
+				{
+					Item item = (Item)o;
+					if (Contains(item) && item.Visible && item.Z >= Z)
+						Embark(item);
+				}
+				else if (o is Mobile)
+				{
+					Mobile m = (Mobile)o;
+					if (Contains(m) && m.Z > Z)
+						Embark(m);
+				}
+			}
+			
+			//Exclude non moving entities
+			List<IEntity> list = new List<IEntity>();
+			list = _containedObjects.ToList();
+			
+			foreach (object o in list)
+			{			
+				if (o is Item)
+				{
+					Item item = (Item)o;
+					if (!Contains(item))
+						Disembark(item);
+				}
+				else if (o is Mobile)
+				{
+					Mobile m = (Mobile)o;
+					if (!Contains(m))
+						Disembark(m);
+				}
+			}		
+		}			
+		//UOWW: end
     }
 
     public enum DecayType
@@ -5016,4 +5141,168 @@ namespace Server.Multis
             return from == m_RegionOwner || AccountHandler.CheckAccount(from, m_RegionOwner);
         }
     }
+	
+	//UOWW: fix for turning classic houses into customizable ones
+	//
+	public class DynamicComponentList
+    {
+        private Dictionary<Serial, IEntity> _internalList;
+        private object _locker;
+
+        public int Count { get { return _internalList.Values.Count; } }
+        
+        public DynamicComponentList()
+        {
+            _internalList = new Dictionary<Serial, IEntity>(new InternalComparer());
+            _locker = ((ICollection)_internalList).SyncRoot;
+        }
+
+        public DynamicComponentList(GenericReader reader)
+        {
+            Deserialize(reader);
+        }
+
+        public void Add(Item i)
+        {
+            lock (_locker)
+            {
+                if (!_internalList.ContainsKey(i.Serial))
+                    _internalList.Add(i.Serial, i);
+            }
+        }
+
+        public void Add(Mobile m)
+        {
+            lock (_locker)
+            {
+                if (!_internalList.ContainsKey(m.Serial))
+                    _internalList.Add(m.Serial, m);
+            }
+        }
+
+        public void Remove(Item i)
+        {
+            lock (_locker)
+            {
+                _internalList.Remove(i.Serial);
+            }
+        }
+
+        public void Remove(Mobile m)
+        {
+            lock (_locker)
+            {
+                _internalList.Remove(m.Serial);
+            }
+        }
+
+        public bool Contains(Item item)
+        {
+            return _internalList.ContainsKey(item.Serial);
+        }
+
+        public bool Contains(Mobile mob)
+        {
+            return _internalList.ContainsKey(mob.Serial);
+        }
+
+        public bool Contains(int x, int y)
+        {
+            return _internalList.Values.OfType<Item>().FirstOrDefault(item => item.X == x && item.Y == y) != null;
+        }
+
+        public void ForEachItem(Action<Item> itemCmd)
+        {
+            lock (_locker)
+            {
+                foreach (IEntity obj in _internalList.Values)
+                {
+                    if (obj is Item)
+                        itemCmd.Invoke((Item)obj);
+                }
+            }
+        }
+
+        public void ForEachMobile(Action<Mobile> mobCmd)
+        {
+            lock (_locker)
+            {
+                foreach (IEntity obj in _internalList.Values)
+                {
+                    if (obj is Mobile)
+                        mobCmd.Invoke((Mobile)obj);
+                }
+            }
+        }
+
+        public void ForEachObject(Action<Item> itemCmd, Action<Mobile> mobCmd)
+        {
+            lock (_locker)
+            {
+                foreach (IEntity obj in _internalList.Values)
+                {
+                    if (obj is Item)
+                        itemCmd.Invoke((Item)obj);
+                    else
+                        mobCmd.Invoke((Mobile)obj);
+                }
+            }
+        }
+
+        public List<IEntity> ToList()
+        {
+            return new List<IEntity>(_internalList.Values);
+        }
+
+        #region Serialization
+        public void Serialize(GenericWriter writer)
+        {
+            writer.Write((int)0);
+
+            int itemSize = _internalList.Values.Count(obj => obj is Item);
+            writer.Write((int)itemSize);
+
+            foreach (Item obj in _internalList.Values.OfType<Item>())
+                writer.Write((Item)obj);
+
+            writer.Write((int)_internalList.Values.Count - itemSize);
+
+            foreach (Mobile mob in _internalList.Values.OfType<Mobile>())
+                writer.Write((Mobile)mob);
+        }
+
+        public void Deserialize(GenericReader reader)
+        {
+            reader.ReadInt();
+
+            int itemSize = reader.ReadInt();
+            _internalList = new Dictionary<Serial, IEntity>(new InternalComparer());
+            _locker = ((ICollection)_internalList).SyncRoot;
+
+            Item it;
+            for (int i = 0; i < itemSize; i++)
+            {
+                it = reader.ReadItem();
+                _internalList.Add(it.Serial, it);
+            }
+
+            int mobSize = reader.ReadInt();
+
+            Mobile mob;
+            for (int i = 0; i < mobSize; i++)
+            {
+                mob = reader.ReadMobile();
+                _internalList.Add(mob.Serial, mob);
+            }
+        }
+        #endregion
+
+        private class InternalComparer : IEqualityComparer<Serial>
+        {
+            public bool Equals(Serial a, Serial b) { return a == b; }
+
+            public int GetHashCode(Serial e) { return e; }
+        }
+    }
+	//UOWW: end
 }

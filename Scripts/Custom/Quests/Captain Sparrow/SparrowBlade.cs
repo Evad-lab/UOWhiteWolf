@@ -7,9 +7,9 @@ namespace Server.Items
 	{
 		public override int ArtifactRarity{ get{ return 6; } }
 
-		public override WeaponAbility PrimaryAbility{ get{ return WeaponAbility.ParalyzingBlow; } }
+		public override WeaponAbility PrimaryAbility{ get{ return WeaponAbility.DoubleStrike; } }
 
-		public override WeaponAbility SecondaryAbility{ get{ return WeaponAbility.MortalStrike; } }
+		public override WeaponAbility SecondaryAbility{ get{ return WeaponAbility.ArmorIgnore; } }
 
 		public override float MlSpeed{ get{ return 2.25f; } }
 

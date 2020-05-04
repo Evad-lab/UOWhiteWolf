@@ -28,8 +28,8 @@ namespace Server.Engines.BulkOrders
     public class BulkOrderSystem
     {
         // Logic (EA says 3 cached): 2 cached, 1 in the pipe if the last bod > 6 hours = 3
-        public static readonly int MaxCachedDeeds = 2;
-        public static readonly int Delay = 6;
+        public static readonly int MaxCachedDeeds = 24;
+        public static readonly int Delay = 3;
 
         public static bool NewSystemEnabled = Core.TOL;
         public static BulkOrderSystem Instance { get; set; }
