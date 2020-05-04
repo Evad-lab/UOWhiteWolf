@@ -94,27 +94,7 @@ namespace Server.Mobiles
                 else if (m.Player)
                     list.Add(m);
             }
-
-            eable.Free();
-
-            foreach (Mobile m in list)
-            {
-                (new DarkWisp()).MoveToWorld(new Point3D(Location), Map);
-                int teleportchance = Hits / HitsMax;
-
-                if (teleportchance < Utility.RandomDouble() && m.Alive)
-                {
-                    switch (Utility.Random(6))
-                    {
-                        case 0: m.MoveToWorld(new Point3D(6431, 1664, 0), Map); break;
-                        case 1: m.MoveToWorld(new Point3D(6432, 1634, 0), Map); break;
-                        case 2: m.MoveToWorld(new Point3D(6401, 1657, 0), Map); break;
-                        case 3: m.MoveToWorld(new Point3D(6401, 1637, 0), Map); break;
-                        default: m.MoveToWorld(new Point3D(Location), Map); break;
-                    }
-                }
-            }
-        }	
+		}
 
 		public override void Serialize( GenericWriter writer )
 		{
