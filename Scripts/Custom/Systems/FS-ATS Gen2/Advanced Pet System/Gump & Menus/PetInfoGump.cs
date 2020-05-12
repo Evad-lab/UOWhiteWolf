@@ -30,7 +30,7 @@ namespace Server.Gumps
 			AddPage(0);
 			AddBackground(24, 25, 346, 289, 5120);
 			
-			if (bc != null)
+			if (bc != null && bc.Name != null)
 				AddLabel(33, 27, 1160, bc.Name.ToString() );
 			else
 				AddLabel(33, 27, 1160, @"Pet" );
