@@ -58,7 +58,7 @@ namespace Server.Mobiles
         {
             m_Altar = altar;
             Name = "Bat Can Fix It!";
-            BaseSoundID = 609;
+            BaseSoundID = 0;
             BodyValue = 39;
             Hue = 1157;
 
@@ -403,6 +403,14 @@ namespace Server.Mobiles
             writer.Write(m_Helpers.Count);
             foreach (BaseCreature bc in m_Helpers)
                 writer.Write(bc);
+        }
+		
+		public override bool AlwaysMurderer
+        {
+            get
+            {
+                return true;
+            }
         }
 
         public override void Deserialize(GenericReader reader)

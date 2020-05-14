@@ -16,7 +16,7 @@ namespace Server.Mobiles
 		public Triceratop( string name ) : base( AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{
 
-
+			Name = "Triceratops";
 			BodyValue = 1415;
 			BaseSoundID = 0;
 

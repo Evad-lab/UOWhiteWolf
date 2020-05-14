@@ -57,8 +57,8 @@ namespace Server.Mobiles
             : base(null, AIType.AI_NecroMage, FightMode.Closest)
         {
             m_Altar = altar;
-            Name = "Cat Can Fix It!";
-            BaseSoundID = 609;
+            Name = "Cat Can Kill It!";
+            BaseSoundID = 0;
             BodyValue = 1254;
             Hue = 1166;
 
@@ -313,6 +313,14 @@ namespace Server.Mobiles
             eable.Free();
 
             m_NextArea = DateTime.UtcNow + TimeSpan.FromSeconds(Utility.RandomMinMax(60, 180));
+        }
+		
+		public override bool AlwaysMurderer
+        {
+            get
+            {
+                return true;
+            }
         }
 
         public void DoDamage_Callback(object o)

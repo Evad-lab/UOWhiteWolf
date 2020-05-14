@@ -16,7 +16,7 @@ namespace Server.Mobiles
 		public Najasaur( string name ) : base( AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{
 
-
+			Name = "Najasaurus";
 			BodyValue = 1289;
 			BaseSoundID = 0;
 

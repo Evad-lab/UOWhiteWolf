@@ -49,7 +49,11 @@ namespace Server.Gumps
 				AddLabel(107, 80, 64, @"Female");
 			else
 				AddLabel(107, 80, 64, @"Male");
-			AddLabel(96, 100, 64, bc.Name.ToString() );
+			
+			if (bc != null && bc.Name != null)
+				AddLabel(96, 100, 64, bc.Name.ToString() );
+			else
+				AddLabel(96, 100, 64, @"Pet" );
 
 			AddLabel(22, 140, 1149, @"Property Name");
 			AddLabel(330, 140, 1149, @"Amount");

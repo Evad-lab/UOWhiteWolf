@@ -16,7 +16,7 @@ namespace Server.Mobiles
 		public Allosaur( string name ) : base( AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{
 
-
+			Name = "Allosaurus";
 			BodyValue = 1290;
 			BaseSoundID = 0;
 

@@ -111,6 +111,14 @@ namespace Server.Mobiles
                 return false;
             }
         }
+		
+		public override bool AlwaysMurderer
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         public override void GenerateLoot()
         {

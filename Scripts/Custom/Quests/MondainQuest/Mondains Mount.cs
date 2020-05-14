@@ -31,32 +31,46 @@ namespace Server.Mobiles
 			Hue = 1176;
 
 			SetStr( 800 );
-                                               SetDex( 789, 812 );
-                                               SetInt( 778, 800 );
-                                               SetHits( 7500, 8000 );
-                                               SetDamage( 50 );
-                                               SetDamageType( ResistanceType.Physical, 100 );
-                                               SetDamageType( ResistanceType.Cold, 98 );
-                                               SetDamageType( ResistanceType.Fire, 98 );
-                                               SetDamageType( ResistanceType.Energy, 98 );
-                                               SetDamageType( ResistanceType.Poison, 98 );
+            SetDex( 789, 812 );
+            SetInt( 778, 800 );
+			//SetHits( 7500, 8000 );
+			SetHits( 3500, 4000 );
+            //SetDamage( 50 );
+			SetDamage( 30, 35 );
+			
+			/*SetDamageType( ResistanceType.Physical, 100 );
+            SetDamageType( ResistanceType.Cold, 98 );
+            SetDamageType( ResistanceType.Fire, 98 );
+			SetDamageType( ResistanceType.Energy, 98 );
+            SetDamageType( ResistanceType.Poison, 98 );
+			*/
+			SetDamageType( ResistanceType.Physical, 100 );
+            SetDamageType( ResistanceType.Cold, 50 );
+            SetDamageType( ResistanceType.Fire, 50 );
+			SetDamageType( ResistanceType.Energy, 50 );
+            SetDamageType( ResistanceType.Poison, 50 );
 
-                                               SetResistance( ResistanceType.Physical, 100 );
-                                               SetResistance( ResistanceType.Cold, 80 );
-                                               SetResistance( ResistanceType.Fire, 80 );
-                                               SetResistance( ResistanceType.Energy, 80 );
-                                               SetResistance( ResistanceType.Poison, 80 );
+			/*SetResistance( ResistanceType.Physical, 100 );
+            SetResistance( ResistanceType.Cold, 80 );
+			SetResistance( ResistanceType.Fire, 80 );
+            SetResistance( ResistanceType.Energy, 80 );
+            SetResistance( ResistanceType.Poison, 80 );
+			*/
+			SetResistance( ResistanceType.Physical, 80 );
+            SetResistance( ResistanceType.Cold, 75 );
+			SetResistance( ResistanceType.Fire, 75 );
+            SetResistance( ResistanceType.Energy, 75 );
+            SetResistance( ResistanceType.Poison, 75 );
 
+			SetSkill( SkillName.EvalInt, 150.4, 200.0 );
+			SetSkill( SkillName.Magery, 130.4, 150.0 );
+			SetSkill( SkillName.MagicResist, 135.3, 150.0 );
+			SetSkill( SkillName.Tactics, 137.6, 158.0 );
+			SetSkill( SkillName.Wrestling, 130.5, 152.5 );
 
-						SetSkill( SkillName.EvalInt, 150.4, 200.0 );
-						SetSkill( SkillName.Magery, 130.4, 150.0 );
-						SetSkill( SkillName.MagicResist, 135.3, 150.0 );
-						SetSkill( SkillName.Tactics, 137.6, 158.0 );
-						SetSkill( SkillName.Wrestling, 130.5, 152.5 );
-
-                                               Fame = 1200;
-                                               Karma = 1200;
-                                               VirtualArmor = 60;
+            Fame = 1200;
+            Karma = 1200;
+            VirtualArmor = 60;
      
 			Tamable = false;
 			ControlSlots = 6;

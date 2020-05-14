@@ -16,7 +16,7 @@ namespace Server.Mobiles
 		public KeepRolling( string name ) : base( AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{
 
-
+			Name = "Keep Rolling";
 			BodyValue = 1431;
 			BaseSoundID = 0;
 

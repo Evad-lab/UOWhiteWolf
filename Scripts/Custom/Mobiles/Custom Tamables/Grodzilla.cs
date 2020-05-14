@@ -16,7 +16,7 @@ namespace Server.Mobiles
 		public Grodzilla( string name ) : base( AIType.AI_Mage, FightMode.Aggressor, 10, 1, 0.2, 0.4 )
 		{
 
-
+			Name = "Grodzilla";
 			BodyValue = 1308;
 			BaseSoundID = 0;
 

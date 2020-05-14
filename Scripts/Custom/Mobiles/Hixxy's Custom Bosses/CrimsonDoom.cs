@@ -58,7 +58,7 @@ namespace Server.Mobiles
             Karma = -20000;
 			
 			PackItem( new WhiteFang(30) );	
-			PackItem( new DonationToken(1) );	
+			PackItem( new DonationToken(3) );	
 			PackItem( new MagicClothDeed(1) );
 			
 			Tamable = false; 

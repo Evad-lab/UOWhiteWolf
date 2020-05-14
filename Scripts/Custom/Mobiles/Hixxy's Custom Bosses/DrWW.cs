@@ -12,7 +12,7 @@ namespace Server.Mobiles
             : base(AIType.AI_Melee, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "Dr. White Wolf";
-            Title = "th Corrupted Butcher";
+            Title = "the Corrupted Butcher";
 
             BodyValue = 1405;
     
@@ -148,7 +148,14 @@ namespace Server.Mobiles
 
             int version = reader.ReadInt();
         }
-
+		
+		public override bool AlwaysMurderer
+        {
+            get
+            {
+                return true;
+            }
+        }
         private void ScaleResistances()
         {
             double hitsLost = (HitsMax - Hits) / (double)HitsMax;
