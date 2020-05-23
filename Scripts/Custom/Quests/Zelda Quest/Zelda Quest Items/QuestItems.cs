@@ -185,7 +185,7 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-	public class GreatFairyS : BaseSword
+	public class GreatFairyS : Longsword
 	{
 
 	      public override WeaponAbility PrimaryAbility{ get{ return WeaponAbility.Disarm; } }

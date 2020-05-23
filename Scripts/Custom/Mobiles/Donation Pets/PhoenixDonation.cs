@@ -10,7 +10,7 @@ namespace Server.Mobiles
 		
         [Constructable]
         public PhoenixDonation()
-            : base(AIType.AI_Necro, FightMode.Aggressor, 10, 1, 0.2, 0.4)
+            : base(AIType.AI_Necro, FightMode.Closest, 10, 1, 0.2, 0.4)
         {
             Name = "a phoenix";
             Body = 0x340;
@@ -20,36 +20,47 @@ namespace Server.Mobiles
             SetDex(402, 410);
             SetInt(804, 810);
 
-            SetHits(1000, 1383);
+            SetHits(4500);
 
-            SetDamage(20, 35);
+            SetDamage(35, 50);
 
             SetDamageType(ResistanceType.Physical, 50);
-            SetDamageType(ResistanceType.Fire, 50);
+            SetDamageType(ResistanceType.Fire, 100);
+			SetDamageType(ResistanceType.Cold, 50);
+			SetDamageType(ResistanceType.Energy, 50);
+			SetDamageType(ResistanceType.Poison, 50);
 
             SetResistance(ResistanceType.Physical, 45, 55);
             SetResistance(ResistanceType.Fire, 60, 70);
             SetResistance(ResistanceType.Poison, 25, 35);
             SetResistance(ResistanceType.Energy, 40, 50);
 
-            SetSkill(SkillName.SpiritSpeak, 90.2, 100.0);
-            SetSkill(SkillName.Necromancy, 90.2, 100.0);
-            SetSkill(SkillName.Poisoning, 90.1, 100.0);
+            SetSkill(SkillName.SpiritSpeak, 90.2, 130.0);
+            SetSkill(SkillName.Necromancy, 90.2, 140.0);
+            SetSkill(SkillName.Poisoning, 90.1, 120.0);
             SetSkill(SkillName.MagicResist, 125.0, 135.0);
             SetSkill(SkillName.Tactics, 110.0, 115.0);
 			SetSkill(SkillName.Anatomy, 110.0, 115.0);
             SetSkill(SkillName.Wrestling, 115.6, 120.8);
             SetSkill(SkillName.DetectHidden, 70.0, 80.0);
-			SetSkill(SkillName.Healing, 50.0, 80.0);
+			SetSkill(SkillName.Healing, 50.0, 120.0);
+			
+
+			SetSpecialAbility(SpecialAbility.AngryFire);
+			SetSpecialAbility(SpecialAbility.Inferno);
+			SetSpecialAbility(SpecialAbility.DragonBreath);
+			SetSpecialAbility(SpecialAbility.LifeDrain);
+			SetSpecialAbility(SpecialAbility.RagingBreath);
+			
 
             Fame = 15000;
             Karma = 0;
 			Female = true;
 
-            VirtualArmor = 60;
+            VirtualArmor = 80;
 
             Tamable = true;
-            ControlSlots = 4;
+            ControlSlots = 3;
             MinTameSkill = 120.0;
 
             SetAreaEffect(AreaEffect.AuraDamage);
@@ -65,6 +76,8 @@ namespace Server.Mobiles
         public override MeatType MeatType { get { return MeatType.Bird; } }
         public override int Feathers { get { return 36; } }
         public override bool CanFly { get { return true; } }
+		public override Poison PoisonImmune{ get{ return Poison.Lethal; } }
+
 
         public void AuraEffect(Mobile m)
         {
@@ -82,6 +95,8 @@ namespace Server.Mobiles
                 profile.RemoveAbility(AreaEffect.AuraDamage);
             }
         }
+		
+		
 
         public override void GenerateLoot()
         {

@@ -53,6 +53,8 @@ namespace Server.Mobiles
 
 			Tamable = true;
 			ControlSlots = 5;
+			ControlSlotsMin = 5;
+			ControlSlotsMax = 5;
 			MinTameSkill = 100.0;
 			
 			Name = "a Vampiriac Steed";

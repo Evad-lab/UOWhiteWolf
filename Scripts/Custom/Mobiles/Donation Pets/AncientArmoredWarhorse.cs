@@ -25,16 +25,16 @@ namespace Server.Mobiles
 			Hue = 1857;
 			BodyValue = 0x11C;
 
-			SetStr( 589, 640 );
-            SetDex( 603, 712 );
+			SetStr( 800, 1000 );
+            SetDex( 803, 1112 );
 			SetInt( 670, 700 );								   
-            SetHits( 1200 );                                   
-            SetDamage( 35 );                                  
-            SetDamageType( ResistanceType.Physical, 50 );
-            SetDamageType( ResistanceType.Cold, 50 );
-            SetDamageType( ResistanceType.Fire, 50 );
-            SetDamageType( ResistanceType.Energy, 50 );
-            SetDamageType( ResistanceType.Poison, 50 );
+            SetHits( 4500, 5000 );                                   
+            SetDamage( 35, 40 );                                  
+            SetDamageType( ResistanceType.Physical, 100 );
+            SetDamageType( ResistanceType.Cold, 98 );
+            SetDamageType( ResistanceType.Fire, 98 );
+			SetDamageType( ResistanceType.Energy, 98 );
+            SetDamageType( ResistanceType.Poison, 98 );
 
             SetResistance( ResistanceType.Physical, 70 );
             SetResistance( ResistanceType.Cold, 80 );
